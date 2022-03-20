@@ -12,8 +12,12 @@ Debug/
 Release/
 Flash/
 RAM/
-.settings/
-targetConfigs/
+.settings/	   #Just not sure if these should be ignored
+targetConfigs/ #Just not sure if these should be ignored
+*.ccsproject
+*.cproject
+*.project
+*.cmd
 # Generated build artifacts
 makefile
 *.map
