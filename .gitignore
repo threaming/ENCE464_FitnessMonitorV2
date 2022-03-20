@@ -12,6 +12,8 @@ Debug/
 Release/
 Flash/
 RAM/
+.settings/
+targetConfigs/
 # Generated build artifacts
 makefile
 *.map
