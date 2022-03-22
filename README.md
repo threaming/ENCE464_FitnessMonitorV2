@@ -1,4 +1,4 @@
-# ENCE361 Group 4
+# ENCE361 Group 1
 Matthew Suter, Tim Preston-Marshall, Daniel Rabbidge
 
 # Sampling Rate Notes/Working
@@ -25,7 +25,7 @@ git config --global user.email "mrs163@uclive.ac.nz"
 ## Create a new repository
 
 ```
-git clone git@eng-git.canterbury.ac.nz:ence361-2022/group4.git
+git clone git@eng-git.canterbury.ac.nz:ence361-2022/group1.git
 cd group4
 git switch -c main
 touch README.md
@@ -39,7 +39,7 @@ git push -u origin main
 ```
 cd existing_folder
 git init --initial-branch=main
-git remote add origin git@eng-git.canterbury.ac.nz:ence361-2022/group4.git
+git remote add origin git@eng-git.canterbury.ac.nz:ence361-2022/group1.git
 git add .
 git commit -m "Initial commit"
 git push -u origin main
@@ -50,7 +50,7 @@ git push -u origin main
 ```
 cd existing_repo
 git remote rename origin old-origin
-git remote add origin git@eng-git.canterbury.ac.nz:ence361-2022/group4.git
+git remote add origin git@eng-git.canterbury.ac.nz:ence361-2022/group1.git
 git push -u origin --all
 git push -u origin --tags
 ```
