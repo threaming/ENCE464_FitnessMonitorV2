@@ -39,7 +39,7 @@
  *      Local prototypes
  *******************************************/
 static void displayLine(char* inStr, uint8_t row, textAlignment_t alignment);
-
+static void displayValue(char* prefix, char* suffix, int16_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting);
 
 
 /*******************************************
@@ -59,13 +59,11 @@ void displayUpdate(displayMode_t displayMode, uint32_t steps_taken)
     switch (displayMode) {
     case DISPLAY_STEPS:
         displayLine("Steps", 0, ALIGN_CENTRE);
-        displayLine("Steps", 1, ALIGN_LEFT);
-        displayLine("Steps", 2, ALIGN_RIGHT);
+        displayValue("dist", "m",  20, 1, ALIGN_CENTRE, false);
+        displayValue("dist", "km", 20, 2, ALIGN_CENTRE, true);
         break;
     }
 }
-
-
 
 
 
@@ -83,10 +81,11 @@ static void displayLine(char* inStr, uint8_t row, textAlignment_t alignment)
 
     // Create a 16-char long array to write to
     uint8_t i = 0;
-    char toDraw[DISPLAY_WIDTH];
+    char toDraw[DISPLAY_WIDTH+1]; // Must be one character longer to account for EOFs
     for (i = 0; i < DISPLAY_WIDTH; i++) {
         toDraw[i] = ' ';
     }
+    toDraw[DISPLAY_WIDTH + 1] = '\0'; // Set the last character to EOF
 
     // Set the starting position based on the alignment specified
     uint8_t startPos = 0;
@@ -102,17 +101,31 @@ static void displayLine(char* inStr, uint8_t row, textAlignment_t alignment)
         break;
     }
 
-
+    // Copy the string we were given onto the 16-char row
     for (i = 0; i < inStrLength; i++) {
         toDraw[i + startPos] = inStr[i];
     }
 
     OLEDStringDraw (toDraw, 0, row);
-
-//    SerialSend("Drawing: ");
-//    SerialSend(toDraw);
-//    SerialSend("\n");
 }
 
+
+
+// Display a value, with a prefix and suffix
+// Can optionally divide the value by 1000, to mimic floats without actually having to use them
+static void displayValue(char* prefix, char* suffix, int16_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting)
+{
+    char toDraw[DISPLAY_WIDTH+1]; // Must be one character longer to account for EOFs
+
+    if (thousandsFormatting) {
+        // Print a number/1000 to 3dp, with decimal point and sign
+        // Use a mega cool ternary operator to decide whether to use a minus sign
+        usnprintf(toDraw, DISPLAY_WIDTH + 1, "%s %c%d.%03d %s", prefix, value<0? '-':' ', abs(value / 1000), abs(value) % 1000, suffix);
+    } else {
+        usnprintf(toDraw, DISPLAY_WIDTH + 1, "%s %d %s", prefix, value, suffix); // Can use %4d if we want uniform spacing
+    }
+
+    displayLine(toDraw, row, alignment);
+}
 
 
