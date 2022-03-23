@@ -31,7 +31,7 @@
 // Constants and static vars
 //********************************************************
 
-#define MS_TO_KMH 10/36
+#define MS_TO_KMH 36/10
 
 
 
