@@ -173,7 +173,7 @@ main(void)
     uint8_t stepping = false;
     uint32_t steps = 0;
     vector3_t mean;
-    displayMode_t displayMode = DISPLAY_STEPS;
+    displayMode_t displayMode = DISPLAY_DISTANCE;
 
     initClock ();
     displayInit ();

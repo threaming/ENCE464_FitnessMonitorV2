@@ -31,7 +31,7 @@
 // Constants and static vars
 //********************************************************
 
-
+#define MS_TO_KMH 10/36
 
 
 
@@ -39,7 +39,7 @@
  *      Local prototypes
  *******************************************/
 static void displayLine(char* inStr, uint8_t row, textAlignment_t alignment);
-static void displayValue(char* prefix, char* suffix, uint32_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting);
+static void displayValue(char* prefix, char* suffix, int32_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting);
 static void displayTime(char* prefix, uint16_t time, uint8_t row, textAlignment_t alignment);
 
 
@@ -59,13 +59,20 @@ void displayUpdate(displayMode_t displayMode, uint32_t steps_taken, uint16_t sec
 {
     displayTime("Time:", secondsElapsed, 2, ALIGN_CENTRE);
 
+    uint16_t mTravelled = 0; // TODO: If I put this inside the case statement it won't compile. Work out why!
+
     switch (displayMode) {
     case DISPLAY_STEPS:
-//        displayLine("Steps", 0, ALIGN_CENTRE);
-//        displayValue("dist", "m",  20, 1, ALIGN_CENTRE, false);
-//        displayValue("dist", "km", 20, 2, ALIGN_CENTRE, true);
-
         displayValue("", "steps", steps_taken, 1, ALIGN_CENTRE, false);
+        break;
+    case DISPLAY_DISTANCE:
+        mTravelled = steps_taken * M_PER_STEP;
+        displayValue("Dist:", "km", steps_taken, 1, ALIGN_CENTRE, true);
+        uint16_t speed = (1000 * mTravelled / secondsElapsed) * MS_TO_KMH; // km/h
+        displayValue("Speed", "kph", speed, 3, ALIGN_CENTRE, true);
+        break;
+    case DISPLAY_SET_GOAL:
+        // TODO: Write goal setting UI
         break;
     }
 }
@@ -129,7 +136,7 @@ static void displayLine(char* inStr, uint8_t row, textAlignment_t alignment)
 
 // Display a value, with a prefix and suffix
 // Can optionally divide the value by 1000, to mimic floats without actually having to use them
-static void displayValue(char* prefix, char* suffix, uint32_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting)
+static void displayValue(char* prefix, char* suffix, int32_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting)
 {
     char toDraw[DISPLAY_WIDTH+1]; // Must be one character longer to account for EOFs
 
