@@ -72,7 +72,7 @@ void acclProcess(void)
 // Return the mean acceleration stored within the circular buffers
 vector3_t acclMean(void)
 {
-    return getAcclData();
+//    return getAcclData();
 
 
 
