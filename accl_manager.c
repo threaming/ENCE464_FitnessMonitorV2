@@ -90,13 +90,22 @@ vector3_t acclMean(void)
         result.z = result.z + readCircBuf(&zBuffer);
     }*/
 
+    // Sum with 32-bit ints to prevent overflow, then dividing the total sum for better accuracy
+    int32_t result_x = 0;
+    int32_t result_y = 0;
+    int32_t result_z = 0;
+
     uint8_t i = 0;
     while (i < BUF_SIZE) {
-        result.x = result.x + readCircBuf(&xBuffer) / BUF_SIZE;
-        result.y = result.y + readCircBuf(&yBuffer) / BUF_SIZE;
-        result.z = result.z + readCircBuf(&zBuffer) / BUF_SIZE;
+        result_x = result_x + readCircBuf(&xBuffer);
+        result_y = result_y + readCircBuf(&yBuffer);
+        result_z = result_z + readCircBuf(&zBuffer);
         i++;
     }
+
+    result.x = result_x / BUF_SIZE;
+    result.y = result_y / BUF_SIZE;
+    result.z = result_z / BUF_SIZE;
 
     return result;
 }
