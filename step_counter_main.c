@@ -283,17 +283,20 @@ main(void)
             last_display_process = currentTick;
 
             OLEDStringDraw ("                ", 0, 1);
-            OLEDStringDraw ("                ", 0, 2);
-            OLEDStringDraw ("                ", 0, 3);
+//            OLEDStringDraw ("                ", 0, 2);
+//            OLEDStringDraw ("                ", 0, 3);
 
             char stepsStr[MAX_STR_LEN + 1];
-//            usprintf(stepsStr, "# of Steps: %d", steps);
-            usprintf(stepsStr, "Accl.x: %d", mean.x);
+            usprintf(stepsStr, "# of Steps: %d", steps);
             OLEDStringDraw (stepsStr, 0, 1);
-            usprintf(stepsStr, "Accl.y: %d", mean.y);
-            OLEDStringDraw (stepsStr, 0, 2);
-            usprintf(stepsStr, "Accl.z: %d", mean.z);
-            OLEDStringDraw (stepsStr, 0, 3);
+
+
+//            usprintf(stepsStr, "Accl.x: %d", mean.x);
+//            OLEDStringDraw (stepsStr, 0, 1);
+//            usprintf(stepsStr, "Accl.y: %d", mean.y);
+//            OLEDStringDraw (stepsStr, 0, 2);
+//            usprintf(stepsStr, "Accl.z: %d", mean.z);
+//            OLEDStringDraw (stepsStr, 0, 3);
 
 
             // OLEDStringDraw (statusStr, 0, 1);
