@@ -282,6 +282,10 @@ main(void)
             // Send message to booster display
             last_display_process = currentTick;
 
+            OLEDStringDraw ("                ", 0, 1);
+            OLEDStringDraw ("                ", 0, 2);
+            OLEDStringDraw ("                ", 0, 3);
+
             char stepsStr[MAX_STR_LEN + 1];
 //            usprintf(stepsStr, "# of Steps: %d", steps);
             usprintf(stepsStr, "Accl.x: %d", mean.x);
