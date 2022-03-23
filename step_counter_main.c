@@ -158,6 +158,7 @@ main(void)
 
         if (last_button_process + RATE_SYSTICK_HZ/RATE_BUTTONS_HZ < currentTick) {
             // poll the buttons
+            // TODO: Code here pls
             last_button_process = currentTick;
         }
 

@@ -55,7 +55,7 @@ void displayInit(void)
 
 
 // Update the display
-void displayUpdate(displayMode_t displayMode, uint32_t steps_taken, uint16_t secondsElapsed)
+void displayUpdate(displayMode_t displayMode, uint32_t stepsTaken, uint16_t secondsElapsed)
 {
     displayTime("Time:", secondsElapsed, 2, ALIGN_CENTRE);
 
@@ -63,11 +63,11 @@ void displayUpdate(displayMode_t displayMode, uint32_t steps_taken, uint16_t sec
 
     switch (displayMode) {
     case DISPLAY_STEPS:
-        displayValue("", "steps", steps_taken, 1, ALIGN_CENTRE, false);
+        displayValue("", "steps", stepsTaken, 1, ALIGN_CENTRE, false);
         break;
     case DISPLAY_DISTANCE:
-        mTravelled = steps_taken * M_PER_STEP;
-        displayValue("Dist:", "km", steps_taken, 1, ALIGN_CENTRE, true);
+        mTravelled = stepsTaken * M_PER_STEP;
+        displayValue("Dist:", "km", stepsTaken, 1, ALIGN_CENTRE, true);
         uint16_t speed = (1000 * mTravelled / secondsElapsed) * MS_TO_KMH; // km/h
         displayValue("Speed", "kph", speed, 3, ALIGN_CENTRE, true);
         break;

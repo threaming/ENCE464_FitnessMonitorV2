@@ -78,10 +78,6 @@ vector3_t acclMean(void)
 {
 //    return getAcclData();
 
-
-
-    vector3_t result = {0};
-
     // For some reason this for loop throws an error
     // TODO: Work out why and solve it!
     /*for (uint8_t i = 0; i < BUF_SIZE; i++) {
@@ -96,13 +92,13 @@ vector3_t acclMean(void)
     int32_t result_z = 0;
 
     uint8_t i = 0;
-    while (i < BUF_SIZE) {
+    for (i = 0; i < BUF_SIZE; i++) {
         result_x = result_x + readCircBuf(&xBuffer);
         result_y = result_y + readCircBuf(&yBuffer);
         result_z = result_z + readCircBuf(&zBuffer);
-        i++;
     }
 
+    vector3_t result = {0};
     result.x = result_x / BUF_SIZE;
     result.y = result_y / BUF_SIZE;
     result.z = result_z / BUF_SIZE;
