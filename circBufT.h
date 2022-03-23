@@ -27,7 +27,7 @@ typedef struct {
 // the start of the buffer.  Dynamically allocate and clear the the 
 // memory and return a pointer for the data.  Return NULL if 
 // allocation fails.
-uint32_t *
+int32_t *
 initCircBuf (circBuf_t *buffer, uint32_t size);
 
 // *******************************************************

@@ -18,14 +18,14 @@
 // the start of the buffer.  Dynamically allocate and clear the the 
 // memory and return a pointer for the data.  Return NULL if 
 // allocation fails.
-uint32_t *
+int32_t *
 initCircBuf (circBuf_t *buffer, uint32_t size)
 {
 	buffer->windex = 0;
 	buffer->rindex = 0;
 	buffer->size = size;
 	buffer->data = 
-        (uint32_t *) calloc (size, sizeof(uint32_t));
+        (int32_t *) calloc (size, sizeof(int32_t));
 	return buffer->data;
 }
    // Note use of calloc() to clear contents.
