@@ -39,7 +39,7 @@
  *      Local prototypes
  *******************************************/
 static void displayLine(char* inStr, uint8_t row, textAlignment_t alignment);
-static void displayValue(char* prefix, char* suffix, int16_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting);
+static void displayValue(char* prefix, char* suffix, uint32_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting);
 
 
 /*******************************************
@@ -58,9 +58,11 @@ void displayUpdate(displayMode_t displayMode, uint32_t steps_taken)
 {
     switch (displayMode) {
     case DISPLAY_STEPS:
-        displayLine("Steps", 0, ALIGN_CENTRE);
-        displayValue("dist", "m",  20, 1, ALIGN_CENTRE, false);
-        displayValue("dist", "km", 20, 2, ALIGN_CENTRE, true);
+//        displayLine("Steps", 0, ALIGN_CENTRE);
+//        displayValue("dist", "m",  20, 1, ALIGN_CENTRE, false);
+//        displayValue("dist", "km", 20, 2, ALIGN_CENTRE, true);
+
+        displayValue("", "steps", steps_taken, 1, ALIGN_CENTRE, false);
         break;
     }
 }
@@ -113,7 +115,7 @@ static void displayLine(char* inStr, uint8_t row, textAlignment_t alignment)
 
 // Display a value, with a prefix and suffix
 // Can optionally divide the value by 1000, to mimic floats without actually having to use them
-static void displayValue(char* prefix, char* suffix, int16_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting)
+static void displayValue(char* prefix, char* suffix, uint32_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting)
 {
     char toDraw[DISPLAY_WIDTH+1]; // Must be one character longer to account for EOFs
 

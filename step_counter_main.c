@@ -153,69 +153,9 @@ unsigned long readCurrentTick(void)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//*****************************************************************************
-// Function to display a changing message on the display.
-// The display has 4 rows of 16 characters, with 0, 0 at top left.
-//*****************************************************************************
-//void
-//displayUpdate (char *str1, char *str2, int16_t num, uint8_t charLine)
-//{
-//    char text_buffer[17];           //Display fits 16 characters wide.
-//
-//    // "Undraw" the previous contents of the line to be updated.
-//    OLEDStringDraw ("                ", 0, charLine);
-//    // Form a new string for the line.  The maximum width specified for the
-//    //  number field ensures it is displayed right justified.
-//    usnprintf(text_buffer, sizeof(text_buffer), "%s %s %3d", str1, str2, num);
-//    // Update line on display.
-//    OLEDStringDraw (text_buffer, 0, charLine);
-//}
-
-
-
-
+/***********************************************************
+ * Main Loop
+ ***********************************************************/
 
 int
 main(void)
@@ -240,7 +180,7 @@ main(void)
     initSysTick ();
     acclInit ();
 
-    OLEDStringDraw ("UART Acc Test", 0, 0);
+//    OLEDStringDraw ("UART Acc Test", 0, 0);
 //    SerialPlot(100, 200, 300, 400);
 
     while(1)
@@ -275,26 +215,6 @@ main(void)
             last_display_process = currentTick;
 
             displayUpdate(displayMode, steps); // pass the current time in here if we also want to display the time since last reset
-
-            /*OLEDStringDraw ("                ", 0, 1);
-//            OLEDStringDraw ("                ", 0, 2);
-//            OLEDStringDraw ("                ", 0, 3);
-
-            char stepsStr[MAX_STR_LEN + 1];
-            usprintf(stepsStr, "# of Steps: %d", steps);
-            OLEDStringDraw (stepsStr, 0, 1);
-
-
-//            usprintf(stepsStr, "Accl.x: %d", mean.x);
-//            OLEDStringDraw (stepsStr, 0, 1);
-//            usprintf(stepsStr, "Accl.y: %d", mean.y);
-//            OLEDStringDraw (stepsStr, 0, 2);
-//            usprintf(stepsStr, "Accl.z: %d", mean.z);
-//            OLEDStringDraw (stepsStr, 0, 3);
-
-
-            // OLEDStringDraw (statusStr, 0, 1);
-            // Just adding this so something changes*/
         }
 
         #ifdef SERIAL_PLOTTING_ENABLED
@@ -305,30 +225,6 @@ main(void)
             SerialPlot(steps, mean.x, mean.y, mean.z);
         }
         #endif // SERIAL_PLOTTING_ENABLED
-
-
-
-/*
-
-
-
-
-//      SysCtlDelay (SysCtlClockGet () / 6);    // Approx 2 Hz
-
-        if(accTick) {
-            accTick = 0;
-
-
-
-//        usprintf(statusStr, "%d", mean.x);
-//        OLEDStringDraw (statusStr, 0, 1);
-        }
-        // Is it time to send a message?
-        if (slowTick)
-        {
-            slowTick = false;
-
-        }*/
 
 
     }
