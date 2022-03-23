@@ -78,36 +78,6 @@ void SysTickIntHandler (void)
     ticksElapsed++;
 }
 
-/*void
-SysTickIntHandler (void)
-{
-    static uint8_t tickCount = 0;
-    static uint8_t acc_tickCount = 0;
-//    const uint8_t ticksPerSlow = SYSTICK_RATE_HZ / SLOWTICK_RATE_HZ;
-    const uint8_t ACCticksPerSlow = ACC_DATA_RATE / SLOWTICK_RATE_HZ;
-    const uint8_t ticksPerACC = SYSTICK_RATE_HZ / ACC_DATA_RATE;
-
-    updateButtons ();       // Poll the buttons
-    if (acc_tickCount >= ACCticksPerSlow)
-    {                       // Signal a slow tick
-        acc_tickCount = 0;
-        slowTick = true;
-    }
-    if (++tickCount >= ticksPerACC)
-    {                       // Signal a slow tick
-        tickCount = 0;
-        accTick = true;
-        acc_tickCount++;
-    }
-//    if (++tickCount >= ticksPerSlow)
-//    {                       // Signal a slow tick
-//        tickCount = 0;
-//        slowTick = true;
-////        acc_tickCount++;
-//    }
-
-}*/
-
 
 
 void

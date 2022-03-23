@@ -1,4 +1,8 @@
-
+/*
+ * Acceleration Manager
+ * Matt Suter, Tim Preston-Marshall, Daniel Rabbidge
+ * ENCE361 2022
+ */
 
 #include <stdint.h>
 #include <stdbool.h>

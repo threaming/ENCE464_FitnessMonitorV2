@@ -1,6 +1,8 @@
 # ENCE361 Group 1
 Matthew Suter, Tim Preston-Marshall, Daniel Rabbidge
 
+Set heap and stack sizes to 512 bytes!
+
 # Sampling Rate Notes/Working
 ## Pot
 Testing in the lab, when using the interrput sampling rate, a buffer <5 values long leads to 'wobble' in the readout
