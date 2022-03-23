@@ -1,36 +1,65 @@
+# Prerequisites
+*.d
 
-# Created by https://www.toptal.com/developers/gitignore/api/codecomposerstudio
-# Edit at https://www.toptal.com/developers/gitignore?templates=codecomposerstudio
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
 
-### CodeComposerStudio ###
-
-tmp/
-*.tmp
-*.bak
-# Generated build artifact directories
-Debug/
-Release/
-Flash/
-RAM/
-.settings/	   #Just not sure if these should be ignored
-targetConfigs/ #Just not sure if these should be ignored
-*.ccsproject
-*.cproject
-*.project
-*.cmd
-# Generated build artifacts
-makefile
+# Linker output
+*.ilk
 *.map
-*.mk
-*.opt
-*.pp
-*.xml
-# Generated directories
-.config/
-.launches/
-# Generated file used to help display error messages in the problems view
-.xdchelp
-# Uniflash session files
-*.uniflashsession
+*.exp
 
-# End of https://www.toptal.com/developers/gitignore/api/codecomposerstudio
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+# CCS files
+*.project
+*.cproject
+*.ccsproject
+tm4c123gh6pm_startup_ccs.c
+tm4c123gh6pm
+.settings/
+Debug/
+targetConfigs/
+
+# This one isn't included in Daniel Morris's gitignore, but it doesn't seem to be source code
+.launches/
