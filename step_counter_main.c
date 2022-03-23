@@ -24,7 +24,6 @@
 #include "utils/ustdlib.h"
 #include "stdio.h"
 #include "stdlib.h"
-#include "OrbitOLED/OrbitOLEDInterface.h"
 #include "utils/ustdlib.h"
 #include "buttons4.h"
 #include "acc.h"
@@ -33,6 +32,7 @@
 #include "circBufT.h"
 #include "serial_sender.h"
 #include "accl_manager.h"
+#include "display_manager.h"
 
 /**********************************************************
  * Constants and types
@@ -59,7 +59,7 @@ void initClock (void);
 void initSysTick (void);
 void initDisplay (void);
 void initAccl (void);
-void displayUpdate (char *str1, char *str2, int16_t num, uint8_t charLine);
+//void displayUpdate (char *str1, char *str2, int16_t num, uint8_t charLine);
 vector3_t getAcclData (void);
 
 
@@ -195,32 +195,23 @@ unsigned long readCurrentTick(void)
 
 
 
-
-void
-initDisplay (void)
-{
-  // intialise the Orbit OLED display
-    OLEDInitialise ();
-}
-
-
 //*****************************************************************************
 // Function to display a changing message on the display.
 // The display has 4 rows of 16 characters, with 0, 0 at top left.
 //*****************************************************************************
-void
-displayUpdate (char *str1, char *str2, int16_t num, uint8_t charLine)
-{
-    char text_buffer[17];           //Display fits 16 characters wide.
-
-    // "Undraw" the previous contents of the line to be updated.
-    OLEDStringDraw ("                ", 0, charLine);
-    // Form a new string for the line.  The maximum width specified for the
-    //  number field ensures it is displayed right justified.
-    usnprintf(text_buffer, sizeof(text_buffer), "%s %s %3d", str1, str2, num);
-    // Update line on display.
-    OLEDStringDraw (text_buffer, 0, charLine);
-}
+//void
+//displayUpdate (char *str1, char *str2, int16_t num, uint8_t charLine)
+//{
+//    char text_buffer[17];           //Display fits 16 characters wide.
+//
+//    // "Undraw" the previous contents of the line to be updated.
+//    OLEDStringDraw ("                ", 0, charLine);
+//    // Form a new string for the line.  The maximum width specified for the
+//    //  number field ensures it is displayed right justified.
+//    usnprintf(text_buffer, sizeof(text_buffer), "%s %s %3d", str1, str2, num);
+//    // Update line on display.
+//    OLEDStringDraw (text_buffer, 0, charLine);
+//}
 
 
 
@@ -240,9 +231,10 @@ main(void)
     uint8_t stepping = false;
     uint32_t steps = 0;
     vector3_t mean;
+    displayMode_t displayMode = DISPLAY_STEPS;
 
     initClock ();
-    initDisplay ();
+    displayInit ();
     initButtons ();
     SerialInit ();
     initSysTick ();
@@ -282,7 +274,9 @@ main(void)
             // Send message to booster display
             last_display_process = currentTick;
 
-            OLEDStringDraw ("                ", 0, 1);
+            displayUpdate(displayMode, steps); // pass the current time in here if we also want to display the time since last reset
+
+            /*OLEDStringDraw ("                ", 0, 1);
 //            OLEDStringDraw ("                ", 0, 2);
 //            OLEDStringDraw ("                ", 0, 3);
 
@@ -300,7 +294,7 @@ main(void)
 
 
             // OLEDStringDraw (statusStr, 0, 1);
-            // Just adding this so something changes
+            // Just adding this so something changes*/
         }
 
         #ifdef SERIAL_PLOTTING_ENABLED

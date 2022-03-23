@@ -15,8 +15,17 @@ typedef enum {
     DISPLAY_NUM_STATES, // Automatically enumerates to the number of display states there can be
 } displayMode_t;
 
-void displayInit(void);
-void displayUpdate(displayMode_t displayMode);
+typedef enum {
+    ALIGN_LEFT = 0,
+    ALIGN_CENTRE,
+    ALIGN_RIGHT,
+} textAlignment_t;
 
+
+void displayInit(void);
+void displayUpdate(displayMode_t displayMode, uint32_t steps_taken);
+
+#define M_PER_STEP 9/10 // 0.9m per step. Defined here so we can access it in the main programme and also when displaying
+#define DISPLAY_WIDTH 16
 
 #endif /* DISPLAY_MANAGER_H_ */
