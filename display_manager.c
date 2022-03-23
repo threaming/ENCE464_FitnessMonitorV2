@@ -40,6 +40,7 @@
  *******************************************/
 static void displayLine(char* inStr, uint8_t row, textAlignment_t alignment);
 static void displayValue(char* prefix, char* suffix, uint32_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting);
+static void displayTime(char* prefix, uint16_t time, uint8_t row, textAlignment_t alignment);
 
 
 /*******************************************
@@ -54,8 +55,10 @@ void displayInit(void)
 
 
 // Update the display
-void displayUpdate(displayMode_t displayMode, uint32_t steps_taken)
+void displayUpdate(displayMode_t displayMode, uint32_t steps_taken, uint16_t secondsElapsed)
 {
+    displayTime("Time:", secondsElapsed, 2, ALIGN_CENTRE);
+
     switch (displayMode) {
     case DISPLAY_STEPS:
 //        displayLine("Steps", 0, ALIGN_CENTRE);
@@ -65,6 +68,17 @@ void displayUpdate(displayMode_t displayMode, uint32_t steps_taken)
         displayValue("", "steps", steps_taken, 1, ALIGN_CENTRE, false);
         break;
     }
+}
+
+
+
+void displayClear(void)
+{
+    char* toDraw = "                ";
+    OLEDStringDraw (toDraw, 0, 0);
+    OLEDStringDraw (toDraw, 0, 1);
+    OLEDStringDraw (toDraw, 0, 2);
+    OLEDStringDraw (toDraw, 0, 3);
 }
 
 
@@ -87,7 +101,7 @@ static void displayLine(char* inStr, uint8_t row, textAlignment_t alignment)
     for (i = 0; i < DISPLAY_WIDTH; i++) {
         toDraw[i] = ' ';
     }
-    toDraw[DISPLAY_WIDTH + 1] = '\0'; // Set the last character to EOF
+    toDraw[DISPLAY_WIDTH] = '\0'; // Set the last character to EOF
 
     // Set the starting position based on the alignment specified
     uint8_t startPos = 0;
@@ -130,4 +144,16 @@ static void displayValue(char* prefix, char* suffix, uint32_t value, uint8_t row
     displayLine(toDraw, row, alignment);
 }
 
+
+
+static void displayTime(char* prefix, uint16_t time, uint8_t row, textAlignment_t alignment)
+{
+    char toDraw[DISPLAY_WIDTH+1]; // Must be one character longer to account for EOFs
+    uint16_t minutes = time / 60;
+    uint16_t seconds = time % 60;
+
+    usnprintf(toDraw, DISPLAY_WIDTH + 1, "%s %01d:%02d", prefix, minutes, seconds);
+
+    displayLine(toDraw, row, alignment);
+}
 

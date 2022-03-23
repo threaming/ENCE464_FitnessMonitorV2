@@ -164,6 +164,8 @@ main(void)
     unsigned long last_accl_process = 0;
     unsigned long last_display_process = 0;
 
+    unsigned long workoutStartTick = 0;
+
     #ifdef SERIAL_PLOTTING_ENABLED
     unsigned long last_serial_process = 0;
     #endif // SERIAL_PLOTTING_ENABLED
@@ -179,9 +181,6 @@ main(void)
     SerialInit ();
     initSysTick ();
     acclInit ();
-
-//    OLEDStringDraw ("UART Acc Test", 0, 0);
-//    SerialPlot(100, 200, 300, 400);
 
     while(1)
     {
@@ -214,7 +213,9 @@ main(void)
             // Send message to booster display
             last_display_process = currentTick;
 
-            displayUpdate(displayMode, steps); // pass the current time in here if we also want to display the time since last reset
+            uint16_t secondsElapsed = (currentTick - workoutStartTick)/RATE_SYSTICK_HZ;
+
+            displayUpdate(displayMode, steps, secondsElapsed); // pass the current time in here if we also want to display the time since last reset
         }
 
         #ifdef SERIAL_PLOTTING_ENABLED

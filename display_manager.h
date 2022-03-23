@@ -23,7 +23,8 @@ typedef enum {
 
 
 void displayInit(void);
-void displayUpdate(displayMode_t displayMode, uint32_t steps_taken);
+void displayUpdate(displayMode_t displayMode, uint32_t steps_taken, uint16_t secondsElapsed);
+void displayClear(void);
 
 #define M_PER_STEP 9/10 // 0.9m per step. Defined here so we can access it in the main programme and also when displaying
 #define DISPLAY_WIDTH 16
