@@ -29,7 +29,7 @@
 //********************************************************
 // Constants and static vars
 //********************************************************
-#define BUF_SIZE 25
+#define BUF_SIZE 15 // WARNING: If this is set too high, we run out of heap space and the z-buffer gets garbled data
 
 
 static circBuf_t xBuffer;
