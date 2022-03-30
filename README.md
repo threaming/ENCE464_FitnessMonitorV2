@@ -1,7 +1,11 @@
 # ENCE361 Group 1
 Matthew Suter, Tim Preston-Marshall, Daniel Rabbidge
 
-# TODO: Fix the speed reading!
+# TODO
+- Fix the speed reading!
+- Maybe change CircBufV to just use three separate circbuf_t instances internally
+
+
 Set heap and stack sizes to 512 bytes!
 
 # Sampling Rate Notes/Working
