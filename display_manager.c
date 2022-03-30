@@ -32,7 +32,7 @@
 //********************************************************
 
 #define MS_TO_KMH 36/10
-
+#define TIME_UNIT_SCALE 60
 
 
 /*******************************************
@@ -57,6 +57,7 @@ void displayInit(void)
 // Update the display
 void displayUpdate(displayMode_t displayMode, uint32_t stepsTaken, uint16_t secondsElapsed)
 {
+    // Display the time since the last reset
     displayTime("Time:", secondsElapsed, 2, ALIGN_CENTRE);
 
     uint16_t mTravelled = 0; // TODO: If I put this inside the case statement it won't compile. Work out why!
@@ -156,10 +157,15 @@ static void displayValue(char* prefix, char* suffix, int32_t value, uint8_t row,
 static void displayTime(char* prefix, uint16_t time, uint8_t row, textAlignment_t alignment)
 {
     char toDraw[DISPLAY_WIDTH+1]; // Must be one character longer to account for EOFs
-    uint16_t minutes = time / 60;
-    uint16_t seconds = time % 60;
+    uint16_t minutes = (time / TIME_UNIT_SCALE) % TIME_UNIT_SCALE;
+    uint16_t seconds = time % TIME_UNIT_SCALE;
+    uint16_t hours =   time / (TIME_UNIT_SCALE * TIME_UNIT_SCALE);
 
-    usnprintf(toDraw, DISPLAY_WIDTH + 1, "%s %01d:%02d", prefix, minutes, seconds);
+    if (hours == 0) {
+        usnprintf(toDraw, DISPLAY_WIDTH + 1, "%s %01d:%02d", prefix, minutes, seconds);
+    } else {
+        usnprintf(toDraw, DISPLAY_WIDTH + 1, "%s %01d:%02d:%02d", prefix, hours, minutes, seconds);
+    }
 
     displayLine(toDraw, row, alignment);
 }
