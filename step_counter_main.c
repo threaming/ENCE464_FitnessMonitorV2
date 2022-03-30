@@ -29,6 +29,8 @@
 #include "acc.h"
 #include "math.h"
 #include "circBufV.h"
+#include "ADC_read.h"
+
 
 #include "serial_sender.h"
 #include "accl_manager.h"
@@ -38,7 +40,7 @@
  * Constants and types
  **********************************************************/
 #define RATE_SYSTICK_HZ 1000
-#define RATE_BUTTONS_HZ 50
+#define RATE_IO_HZ 50
 #define RATE_ACCL_HZ 200
 #define RATE_DISPLAY_UPDATE_HZ 5
 #ifdef SERIAL_PLOTTING_ENABLED
@@ -74,6 +76,7 @@ unsigned long ticksElapsed = 0; // Incremented once every system tick. Must be r
 void SysTickIntHandler (void)
 {
     ticksElapsed++;
+//    ADCTickIntHandler();
 }
 
 
@@ -125,7 +128,7 @@ unsigned long readCurrentTick(void)
 
 int main(void)
 {
-    unsigned long last_button_process= 0;
+    unsigned long last_io_process= 0;
     unsigned long last_accl_process = 0;
     unsigned long last_display_process = 0;
 
@@ -146,15 +149,17 @@ int main(void)
     SerialInit ();
     initSysTick ();
     acclInit ();
+    initADC();
 
     while(1)
     {
         unsigned long currentTick = readCurrentTick();
 
-        if (last_button_process + RATE_SYSTICK_HZ/RATE_BUTTONS_HZ < currentTick) {
+        if (last_io_process + RATE_SYSTICK_HZ/RATE_IO_HZ < currentTick) {
             // poll the buttons
             // TODO: Code here pls
-            last_button_process = currentTick;
+            pollADC();
+            last_io_process = currentTick;
         }
 
         if (last_accl_process + RATE_SYSTICK_HZ/RATE_ACCL_HZ < currentTick) {
