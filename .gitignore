@@ -56,7 +56,7 @@ dkms.conf
 *.cproject
 *.ccsproject
 tm4c123gh6pm_startup_ccs.c
-tm4c123gh6pm
+tm4c123gh6pm*
 .settings/
 Debug/
 targetConfigs/

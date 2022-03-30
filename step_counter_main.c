@@ -61,15 +61,13 @@ void initClock (void);
 void initSysTick (void);
 void initDisplay (void);
 void initAccl (void);
-//void displayUpdate (char *str1, char *str2, int16_t num, uint8_t charLine);
 vector3_t getAcclData (void);
 
 
 /*******************************************
  *      Globals
  *******************************************/
-unsigned long ticksElapsed = 0;
-
+unsigned long ticksElapsed = 0; // Incremented once every system tick. Must be read with SysTickIntHandler(), or you can get garbled data!
 
 
 /***********************************************************
@@ -83,8 +81,7 @@ void SysTickIntHandler (void)
 
 
 
-void
-initClock (void)
+void initClock (void)
 {
     // Set the clock rate to 20 MHz
     SysCtlClockSet (SYSCTL_SYSDIV_10 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |
@@ -93,8 +90,7 @@ initClock (void)
 
 
 
-void
-initSysTick (void)
+void initSysTick (void)
 {
     //
     // Set up the period for the SysTick timer.  The SysTick timer period is
@@ -130,8 +126,7 @@ unsigned long readCurrentTick(void)
  * Main Loop
  ***********************************************************/
 
-int
-main(void)
+int main(void)
 {
     unsigned long last_io_process= 0;
     unsigned long last_accl_process = 0;
