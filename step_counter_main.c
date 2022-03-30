@@ -138,7 +138,7 @@ int main(void)
     uint8_t stepping = false;
     uint32_t steps = 0;
     vector3_t mean;
-    displayMode_t displayMode = DISPLAY_DISTANCE; // TODO: Switch this back to DISPLAY_STEPS once done writing the distance display code
+    displayMode_t displayMode = DISPLAY_SET_GOAL; // TODO: Switch this back to DISPLAY_STEPS once done writing the distance display code
 
     initClock ();
     displayInit ();
@@ -180,8 +180,16 @@ int main(void)
             last_display_process = currentTick;
 
             uint16_t secondsElapsed = (currentTick - workoutStartTick)/RATE_SYSTICK_HZ;
+            uint16_t goalFromPotentiometer = 200; // TODO: When reading from the pot works, feed it through here!
 
-            displayUpdate(displayMode, steps, secondsElapsed); // pass the current time in here if we also want to display the time since last reset
+            // Roll all the info about the user's performance into a struct, for tidiness
+            stepsInfo_t stepInfo;
+            stepInfo.stepsTaken = steps;
+            stepInfo.currentGoal = 9999;
+            stepInfo.newGoal = 999;
+            stepInfo.secondsElapsed = secondsElapsed;
+
+            displayUpdate(displayMode, stepInfo); // pass the current time in here if we also want to display the time since last reset
         }
 
         #ifdef SERIAL_PLOTTING_ENABLED

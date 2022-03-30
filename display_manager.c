@@ -55,25 +55,26 @@ void displayInit(void)
 
 
 // Update the display
-void displayUpdate(displayMode_t displayMode, uint32_t stepsTaken, uint16_t secondsElapsed)
+void displayUpdate(displayMode_t displayMode, stepsInfo_t stepInfo)
 {
-    // Display the time since the last reset
-    displayTime("Time:", secondsElapsed, 2, ALIGN_CENTRE);
-
     uint16_t mTravelled = 0; // TODO: If I put this inside the case statement it won't compile. Work out why!
 
     switch (displayMode) {
     case DISPLAY_STEPS:
-        displayValue("", "steps", stepsTaken, 1, ALIGN_CENTRE, false);
+        displayValue("", "steps", stepInfo.stepsTaken, 1, ALIGN_CENTRE, false);
+        displayTime("Time:", stepInfo.secondsElapsed, 2, ALIGN_CENTRE);
         break;
     case DISPLAY_DISTANCE:
-        mTravelled = stepsTaken * M_PER_STEP;
-        displayValue("Dist:", "km", stepsTaken, 1, ALIGN_CENTRE, true);
-        uint16_t speed = (1000 * mTravelled / secondsElapsed) * MS_TO_KMH; // km/h
+        mTravelled = stepInfo.stepsTaken * M_PER_STEP;
+        displayValue("Dist:", "km", stepInfo.stepsTaken, 1, ALIGN_CENTRE, true);
+        displayTime("Time:", stepInfo.secondsElapsed, 2, ALIGN_CENTRE);
+        uint16_t speed = (1000 * mTravelled / stepInfo.secondsElapsed) * MS_TO_KMH; // km/h
         displayValue("Speed", "kph", speed, 3, ALIGN_CENTRE, true);
         break;
     case DISPLAY_SET_GOAL:
-        // TODO: Write goal setting UI
+        displayLine("Set goal:", 0, ALIGN_CENTRE);
+        displayValue("", "steps", stepInfo.newGoal, 1, ALIGN_CENTRE, false);
+        displayValue("Current:", "", stepInfo.currentGoal, 1, ALIGN_CENTRE, false);
         break;
     }
 }
