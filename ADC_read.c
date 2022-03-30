@@ -26,13 +26,13 @@
 //*****************************************************************************
 // Constants
 //*****************************************************************************
-#define BUF_SIZE 10
+#define ADC_BUF_SIZE 10
 //#define SAMPLE_RATE_HZ 10
 
 //*****************************************************************************
 // Global variables
 //*****************************************************************************
-static circBuf_t g_inBuffer;		// Buffer of size BUF_SIZE integers (sample values)
+static circBuf_t ADC_inBuffer;		// Buffer of size BUF_SIZE integers (sample values)
 //static uint32_t g_ulSampCnt;	// Counter for the interrupts
 
 //*****************************************************************************
@@ -41,12 +41,12 @@ static circBuf_t g_inBuffer;		// Buffer of size BUF_SIZE integers (sample values
 //
 //*****************************************************************************
 void
-ADCTickIntHandler(void)
+pollADC(void)
 {
     //
     // Initiate a conversion
     //
-    ADCProcessorTrigger(ADC0_BASE, 3); 
+    ADCProcessorTrigger(ADC0_BASE, 3);
 //    g_ulSampCnt++;
 }
 
@@ -67,7 +67,7 @@ ADCIntHandler(void)
 	ADCSequenceDataGet(ADC0_BASE, 3, &ulValue);
 	//
 	// Place it in the circular buffer (advancing write index)
-	writeCircBuf (&g_inBuffer, ulValue);
+	writeCircBuf (&ADC_inBuffer, ulValue);
 	//
 	// Clean up, clearing the interrupt
 	ADCIntClear(ADC0_BASE, 3);                          
@@ -99,6 +99,7 @@ void
 initADC (void)
 {
     //
+    initCircBuf (&ADC_inBuffer, ADC_BUF_SIZE);
     // The ADC0 peripheral must be enabled for configuration and use.
     SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
     
@@ -130,14 +131,16 @@ initADC (void)
     //
     // Enable interrupts for ADC0 sequence 3 (clears any outstanding interrupts)
     ADCIntEnable(ADC0_BASE, 3);
+
 }
 
 uint32_t readADC() {
       uint32_t sum = 0;
-      for (i = 0; i < BUF_SIZE; i++)
-          sum = sum + readCircBuf (&g_inBuffer);
+      uint16_t i = 0;
+      for (i = 0; i < ADC_BUF_SIZE; i++)
+          sum = sum + readCircBuf (&ADC_inBuffer);
 
-      return sum/BUF_SIZE;
+      return sum/ADC_BUF_SIZE;
 }
 
 //void
@@ -179,7 +182,7 @@ uint32_t readADC() {
 //	initClock ();
 //	initADC ();
 //	initDisplay ();
-//	initCircBuf (&g_inBuffer, BUF_SIZE);
+//	initCircBuf (&ADC_inBuffer, BUF_SIZE);
 //
 //    //
 //    // Enable interrupts to the processor.
@@ -192,7 +195,7 @@ uint32_t readADC() {
 //		// circular buffer and display it, together with the sample number.
 //		sum = 0;
 //		for (i = 0; i < BUF_SIZE; i++)
-//			sum = sum + readCircBuf (&g_inBuffer);
+//			sum = sum + readCircBuf (&ADC_inBuffer);
 //		// Calculate and display the rounded mean of the buffer contents
 //		displayMeanVal ((2 * sum + BUF_SIZE) / 2 / BUF_SIZE, g_ulSampCnt);
 //
