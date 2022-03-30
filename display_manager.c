@@ -74,7 +74,7 @@ void displayUpdate(displayMode_t displayMode, stepsInfo_t stepInfo)
     case DISPLAY_SET_GOAL:
         displayLine("Set goal:", 0, ALIGN_CENTRE);
         displayValue("", "steps", stepInfo.newGoal, 1, ALIGN_CENTRE, false);
-        displayValue("Current:", "", stepInfo.currentGoal, 1, ALIGN_CENTRE, false);
+        displayValue("Current:", "", stepInfo.currentGoal, 2, ALIGN_CENTRE, false);
         break;
     }
 }

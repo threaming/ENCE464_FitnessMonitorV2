@@ -50,6 +50,7 @@
 //#define ACC_DATA_RATE 200
 #define MAX_STR_LEN 16
 
+#define STEP_GOAL_ROUNDING 100
 #define STEP_THRESHOLD_HIGH 270
 #define STEP_THRESHOLD_LOW 235
 
@@ -191,7 +192,7 @@ int main(void)
             stepsInfo_t stepInfo;
             stepInfo.stepsTaken = steps;
             stepInfo.currentGoal = 9999;
-            stepInfo.newGoal = 999;
+            stepInfo.newGoal = (readADC() / STEP_GOAL_ROUNDING) * STEP_GOAL_ROUNDING; // TODO: Change the range on this
             stepInfo.secondsElapsed = secondsElapsed;
 
             displayUpdate(displayMode, stepInfo); // pass the current time in here if we also want to display the time since last reset

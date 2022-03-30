@@ -3,8 +3,6 @@
 
 #include <stdint.h>
 
-void pollADC(void);
-
 //*****************************************************************************
 //
 // The handler for the ADC conversion complete interrupt.
@@ -14,7 +12,7 @@ void pollADC(void);
 void ADCIntHandler(void);
 
 void initADC (void);
-
+void pollADC(void);
 uint32_t readADC(void);
 
 #endif //ADC_READ_H_
