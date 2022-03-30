@@ -18,8 +18,7 @@
 // the start of the buffer.  Dynamically allocate and clear the the 
 // memory and return a pointer for the data.  Return NULL if 
 // allocation fails.
-vector3_t *
-initCircBuf (circBuf_t *buffer, uint32_t size)
+vector3_t* initVecCircBuf (circBufVec_t *buffer, uint32_t size)
 {
 	buffer->windex = 0;
 	buffer->rindex = 0;
@@ -33,8 +32,7 @@ initCircBuf (circBuf_t *buffer, uint32_t size)
 // *******************************************************
 // writeCircBuf: insert entry at the current windex location,
 // advance windex, modulo (buffer size).
-void
-writeCircBuf (circBuf_t *buffer, vector3_t entry)
+void writeVecCircBuf (circBufVec_t *buffer, vector3_t entry)
 {
 	buffer->data[buffer->windex] = entry;
 	buffer->windex++;
@@ -46,8 +44,7 @@ writeCircBuf (circBuf_t *buffer, vector3_t entry)
 // readCircBuf: return entry at the current rindex location,
 // advance rindex, modulo (buffer size). The function deos not check
 // if reading has advanced ahead of writing.
-vector3_t
-readCircBuf (circBuf_t *buffer)
+vector3_t readVecCircBuf (circBufVec_t *buffer)
 {
     vector3_t entry;
 	
@@ -62,8 +59,7 @@ readCircBuf (circBuf_t *buffer)
 // freeCircBuf: Releases the memory allocated to the buffer data,
 // sets pointer to NULL and ohter fields to 0. The buffer can
 // re-initialised by another call to initCircBuf().
-void
-freeCircBuf (circBuf_t * buffer)
+void freeVecCircBuf (circBufVec_t * buffer)
 {
 	buffer->windex = 0;
 	buffer->rindex = 0;

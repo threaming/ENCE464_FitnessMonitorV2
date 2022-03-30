@@ -23,7 +23,7 @@
 #include "buttons4.h"
 #include "acc.h"
 #include "i2c_driver.h"
-#include "circBufT.h"
+#include "circBufV.h"
 
 
 #include "accl_manager.h"
@@ -36,9 +36,7 @@
 #define BUF_SIZE 15 // WARNING: If this is set too high, we run out of heap space and the z-buffer gets garbled data
 
 
-static circBuf_t xBuffer;
-static circBuf_t yBuffer;
-static circBuf_t zBuffer;
+static circBufVec_t acclBuffer;
 
 
 /*******************************************
@@ -55,9 +53,7 @@ void acclInit(void)
 {
     initAcclChip(); // Init the chip over I2C
 
-    initCircBuf(&xBuffer, BUF_SIZE);
-    initCircBuf(&yBuffer, BUF_SIZE);
-    initCircBuf(&zBuffer, BUF_SIZE);
+    initVecCircBuf(&acclBuffer, BUF_SIZE);
 }
 
 
@@ -66,9 +62,7 @@ void acclInit(void)
 void acclProcess(void)
 {
     vector3_t acceleration = getAcclData();
-    writeCircBuf(&xBuffer, acceleration.x);
-    writeCircBuf(&yBuffer, acceleration.y);
-    writeCircBuf(&zBuffer, acceleration.z);
+    writeVecCircBuf(&acclBuffer, acceleration);
 }
 
 
@@ -93,9 +87,10 @@ vector3_t acclMean(void)
 
     uint8_t i = 0;
     for (i = 0; i < BUF_SIZE; i++) {
-        result_x = result_x + readCircBuf(&xBuffer);
-        result_y = result_y + readCircBuf(&yBuffer);
-        result_z = result_z + readCircBuf(&zBuffer);
+        vector3_t nextVector = readVecCircBuf(&acclBuffer);
+        result_x = result_x + nextVector.x;
+        result_y = result_y + nextVector.y;
+        result_z = result_z + nextVector.z;
     }
 
     vector3_t result = {0};
