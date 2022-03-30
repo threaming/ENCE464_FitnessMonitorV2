@@ -28,8 +28,8 @@
 #include "buttons4.h"
 #include "acc.h"
 #include "math.h"
+#include "circBufV.h"
 
-//#include "circBufT.h"
 #include "serial_sender.h"
 #include "accl_manager.h"
 #include "display_manager.h"
