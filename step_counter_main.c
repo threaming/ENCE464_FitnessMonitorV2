@@ -35,6 +35,7 @@
 #include "serial_sender.h"
 #include "accl_manager.h"
 #include "display_manager.h"
+#include "button_manager.h"
 
 /**********************************************************
  * Constants and types
@@ -142,7 +143,7 @@ int main(void)
     uint8_t stepping = false;
     uint32_t steps = 0;
     vector3_t mean;
-    displayMode_t displayMode = DISPLAY_SET_GOAL; // TODO: Switch this back to DISPLAY_STEPS once done writing the distance display code
+    displayMode_t displayMode = DISPLAY_STEPS; // TODO: Switch this back to DISPLAY_STEPS once done writing the distance display code
 
     initClock ();
     displayInit ();
@@ -159,6 +160,8 @@ int main(void)
         if (last_io_process + RATE_SYSTICK_HZ/RATE_IO_HZ < currentTick) {
             // poll the buttons
             // TODO: Code here pls
+            displayMode = updateState(displayMode);
+
             pollADC();
             last_io_process = currentTick;
         }
