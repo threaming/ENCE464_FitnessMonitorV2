@@ -19,11 +19,11 @@
 
 displayMode_t updateState(displayMode_t currentState) {
     updateButtons();
-    if (checkButton(LEFT) == PUSHED) {
-        displayClear();
-        currentState += 1;
+    if ((checkButton(LEFT) == PUSHED) && (currentState < DISPLAY_SET_GOAL)) {
+        displayClear();                             //Clears whole display to avoid overlapping previous display into empty lines but introduces
+        currentState += 1;                          //flicker when pressing button
     }
-    else if (checkButton(RIGHT) == PUSHED) {
+    else if ((checkButton(RIGHT) == PUSHED) && (currentState > DISPLAY_STEPS)) {
         displayClear();
         currentState -= 1;
     }

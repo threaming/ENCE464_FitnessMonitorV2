@@ -12,7 +12,4 @@
 displayMode_t updateState(displayMode_t);
 
 
-
-
-
 #endif /* BUTTON_MANAGER_H_ */
