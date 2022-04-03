@@ -17,15 +17,19 @@
 #include "display_manager.h"
 
 
-displayMode_t updateState(displayMode_t currentState) {
+stepsInfo_t updateState(stepsInfo_t stepInfo) {
     updateButtons();
-    if ((checkButton(LEFT) == PUSHED) && (currentState < DISPLAY_SET_GOAL)) {
+    if ((checkButton(LEFT) == PUSHED) && (stepInfo.displayMode < DISPLAY_SET_GOAL)) {
         displayClear();                             //Clears whole display to avoid overlapping previous display into empty lines but introduces
-        currentState += 1;                          //flicker when pressing button
-    }
-    else if ((checkButton(RIGHT) == PUSHED) && (currentState > DISPLAY_STEPS)) {
+        stepInfo.displayMode += 1;                          //flicker when pressing button
+    } else if ((checkButton(RIGHT) == PUSHED) && (stepInfo.displayMode > DISPLAY_STEPS)) {
         displayClear();
-        currentState -= 1;
+        stepInfo.displayMode -= 1;
+    } else if ((checkButton(LEFT) == PUSHED) && (stepInfo.displayMode == DISPLAY_SET_GOAL)) {
+        stepInfo.currentGoal = stepInfo.newGoal;
+    } else if (checkButton(DOWN) == PUSHED) {
+        stepInfo.stepsTaken = 0;
+        stepInfo.currentGoal = stepInfo.newGoal;
     }
-    return currentState;
+    return stepInfo;
 }

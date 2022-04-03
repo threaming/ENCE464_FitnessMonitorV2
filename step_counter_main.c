@@ -143,7 +143,13 @@ int main(void)
     uint8_t stepping = false;
     uint32_t steps = 0;
     vector3_t mean;
-    displayMode_t displayMode = DISPLAY_STEPS; // Assigns the initial state
+    //displayMode_t displayMode = DISPLAY_STEPS; // Assigns the initial state
+
+    //Initialize stepInfo characteristics
+    stepsInfo_t stepInfo;
+    stepInfo.displayMode = DISPLAY_STEPS;
+    stepInfo.stepsTaken = steps;
+    stepInfo.currentGoal = 9999;
 
     initClock ();
     displayInit ();
@@ -160,7 +166,7 @@ int main(void)
         if (last_io_process + RATE_SYSTICK_HZ/RATE_IO_HZ < currentTick) {
             // poll the buttons
             // TODO: Code here pls
-            displayMode = updateState(displayMode);
+            stepInfo = updateState(stepInfo);
 
             pollADC();
             last_io_process = currentTick;
@@ -178,7 +184,7 @@ int main(void)
 
             if (combined >= STEP_THRESHOLD_HIGH && stepping == false) {
                 stepping = true;
-                steps++;
+                stepInfo.stepsTaken++;
             } else if (combined <= STEP_THRESHOLD_LOW) {
                 stepping = false;
             }
@@ -192,13 +198,13 @@ int main(void)
             uint16_t goalFromPotentiometer = 200; // TODO: When reading from the pot works, feed it through here!
 
             // Roll all the info about the user's performance into a struct, for tidiness
-            stepsInfo_t stepInfo;
-            stepInfo.stepsTaken = steps;
-            stepInfo.currentGoal = 9999;
+            //stepsInfo_t stepInfo;
+            //stepInfo.stepsTaken = steps;
+            //stepInfo.currentGoal = 9999;
             stepInfo.newGoal = (readADC() / STEP_GOAL_ROUNDING) * STEP_GOAL_ROUNDING; // TODO: Change the range on this
             stepInfo.secondsElapsed = secondsElapsed;
 
-            displayUpdate(displayMode, stepInfo); // pass the current time in here if we also want to display the time since last reset
+            displayUpdate(stepInfo); // pass the current time in here if we also want to display the time since last reset
         }
 
         #ifdef SERIAL_PLOTTING_ENABLED

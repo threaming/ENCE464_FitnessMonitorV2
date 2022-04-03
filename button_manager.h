@@ -9,7 +9,7 @@
 #define BUTTON_MANAGER_H_
 #include "display_manager.h"
 
-displayMode_t updateState(displayMode_t);
+stepsInfo_t updateState(stepsInfo_t);
 
 
 #endif /* BUTTON_MANAGER_H_ */

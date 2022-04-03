@@ -55,11 +55,11 @@ void displayInit(void)
 
 
 // Update the display
-void displayUpdate(displayMode_t displayMode, stepsInfo_t stepInfo)
+void displayUpdate(stepsInfo_t stepInfo)
 {
     uint16_t mTravelled = 0; // TODO: If I put this inside the case statement it won't compile. Work out why!
 
-    switch (displayMode) {
+    switch (stepInfo.displayMode) {
     case DISPLAY_STEPS:
         displayValue("", "steps", stepInfo.stepsTaken, 1, ALIGN_CENTRE, false);
         displayTime("Time:", stepInfo.secondsElapsed, 2, ALIGN_CENTRE);

@@ -26,10 +26,11 @@ typedef struct {
     uint32_t currentGoal;
     uint32_t newGoal;
     uint16_t secondsElapsed;
+    displayMode_t displayMode;
 } stepsInfo_t;
 
 void displayInit(void);
-void displayUpdate(displayMode_t displayMode, stepsInfo_t stepInfo);
+void displayUpdate(stepsInfo_t stepInfo);
 void displayClear(void);
 
 #define M_PER_STEP 9/10 // 0.9m per step. Defined here so we can access it in the main programme and also when displaying
