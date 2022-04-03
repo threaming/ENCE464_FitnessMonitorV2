@@ -141,14 +141,16 @@ int main(void)
     #endif // SERIAL_PLOTTING_ENABLED
 
     uint8_t stepping = false;
-    uint32_t steps = 0;
     vector3_t mean;
+
+    //TODO: Archive of previous code, remove if not needed
     //displayMode_t displayMode = DISPLAY_STEPS; // Assigns the initial state
+    //uint32_t steps = 0;
 
     //Initialize stepInfo characteristics
     stepsInfo_t stepInfo;
     stepInfo.displayMode = DISPLAY_STEPS;
-    stepInfo.stepsTaken = steps;
+    stepInfo.stepsTaken = 0;
     stepInfo.currentGoal = 9999;
 
     initClock ();
@@ -165,9 +167,7 @@ int main(void)
 
         if (last_io_process + RATE_SYSTICK_HZ/RATE_IO_HZ < currentTick) {
             // poll the buttons
-            // TODO: Code here pls
             stepInfo = updateState(stepInfo);
-
             pollADC();
             last_io_process = currentTick;
         }
@@ -197,10 +197,11 @@ int main(void)
             uint16_t secondsElapsed = (currentTick - workoutStartTick)/RATE_SYSTICK_HZ;
             uint16_t goalFromPotentiometer = 200; // TODO: When reading from the pot works, feed it through here!
 
-            // Roll all the info about the user's performance into a struct, for tidiness
+            // TODO: Remove? --- Roll all the info about the user's performance into a struct, for tidiness
             //stepsInfo_t stepInfo;
             //stepInfo.stepsTaken = steps;
             //stepInfo.currentGoal = 9999;
+
             stepInfo.newGoal = (readADC() / STEP_GOAL_ROUNDING) * STEP_GOAL_ROUNDING; // TODO: Change the range on this
             stepInfo.secondsElapsed = secondsElapsed;
 
@@ -212,7 +213,7 @@ int main(void)
             // plot the current data over serial
             last_serial_process = currentTick;
 
-            SerialPlot(steps, mean.x, mean.y, mean.z);
+            SerialPlot(stepInfo.stepsTaken, mean.x, mean.y, mean.z);
         }
         #endif // SERIAL_PLOTTING_ENABLED
 

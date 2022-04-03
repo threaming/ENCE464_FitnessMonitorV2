@@ -20,16 +20,18 @@
 stepsInfo_t updateState(stepsInfo_t stepInfo) {
     updateButtons();
     if ((checkButton(LEFT) == PUSHED) && (stepInfo.displayMode < DISPLAY_SET_GOAL)) {
-        displayClear();                             //Clears whole display to avoid overlapping previous display into empty lines but introduces
+        displayClear();                                     //Clears whole display to avoid overlapping previous display into empty lines but introduces
         stepInfo.displayMode += 1;                          //flicker when pressing button
+
     } else if ((checkButton(RIGHT) == PUSHED) && (stepInfo.displayMode > DISPLAY_STEPS)) {
         displayClear();
         stepInfo.displayMode -= 1;
-    } else if ((checkButton(LEFT) == PUSHED) && (stepInfo.displayMode == DISPLAY_SET_GOAL)) {
+
+    } else if ((checkButton(DOWN) == PUSHED) && (stepInfo.displayMode == DISPLAY_SET_GOAL)) {
         stepInfo.currentGoal = stepInfo.newGoal;
-    } else if (checkButton(DOWN) == PUSHED) {
+
+    } else if ((checkButton(DOWN) == PUSHED) && (stepInfo.displayMode != DISPLAY_SET_GOAL)) { //TODO: Figure out why only the first 'checkButton(DOWN)' works
         stepInfo.stepsTaken = 0;
-        stepInfo.currentGoal = stepInfo.newGoal;
     }
     return stepInfo;
 }
