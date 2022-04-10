@@ -37,6 +37,8 @@
 #include "display_manager.h"
 #include "button_manager.h"
 
+#include "step_counter_main.h"
+
 /**********************************************************
  * Constants and types
  **********************************************************/
@@ -54,6 +56,8 @@
 #define STEP_GOAL_ROUNDING 100
 #define STEP_THRESHOLD_HIGH 270
 #define STEP_THRESHOLD_LOW 235
+
+#define TARGET_DISTANCE_DEFAULT 500
 
 /*******************************************
  *      Local prototypes
@@ -130,14 +134,14 @@ unsigned long readCurrentTick(void)
 
 int main(void)
 {
-    unsigned long last_io_process= 0;
-    unsigned long last_accl_process = 0;
-    unsigned long last_display_process = 0;
+    unsigned long lastIoProcess= 0;
+    unsigned long lastAcclProcess = 0;
+    unsigned long lastDisplayProcess = 0;
 
     unsigned long workoutStartTick = 0;
 
     #ifdef SERIAL_PLOTTING_ENABLED
-    unsigned long last_serial_process = 0;
+    unsigned long lastSerialProcess = 0;
     #endif // SERIAL_PLOTTING_ENABLED
 
     uint8_t stepping = false;
@@ -147,11 +151,21 @@ int main(void)
     //displayMode_t displayMode = DISPLAY_STEPS; // Assigns the initial state
     //uint32_t steps = 0;
 
-    //Initialize stepInfo characteristics
-    stepsInfo_t stepInfo;
-    stepInfo.displayMode = DISPLAY_STEPS;
-    stepInfo.stepsTaken = 0;
-    stepInfo.currentGoal = 9999;
+    // Device state
+    // Omnibus struct that holds loads of info about the device's current state, so it can be updated from any function
+    deviceStateInfo_t deviceState;
+    deviceState.displayMode = DISPLAY_STEPS;
+    deviceState.stepsTaken = 0;
+    deviceState.currentGoal = TARGET_DISTANCE_DEFAULT;
+    deviceState.debugMode = false;
+    deviceState.displayMode = DISPLAY_STEPS;
+    deviceState.displayUnits= UNITS_SI;
+
+//    //Initialize stepInfo characteristics
+//    stepsInfo_t stepInfo;
+//    stepInfo.displayMode = DISPLAY_STEPS;
+//    stepInfo.stepsTaken = 0;
+//    stepInfo.currentGoal = 9999;
 
     initClock ();
     displayInit ();
@@ -165,16 +179,17 @@ int main(void)
     {
         unsigned long currentTick = readCurrentTick();
 
-        if (last_io_process + RATE_SYSTICK_HZ/RATE_IO_HZ < currentTick) {
-            // poll the buttons
-            stepInfo = updateState(stepInfo);
+        // Poll the buttons and potentiometer
+        if (lastIoProcess + RATE_SYSTICK_HZ/RATE_IO_HZ < currentTick) {
+            lastIoProcess = currentTick;
+
+            btnUpdateState(&deviceState);
             pollADC();
-            last_io_process = currentTick;
         }
 
-        if (last_accl_process + RATE_SYSTICK_HZ/RATE_ACCL_HZ < currentTick) {
-            // process the acceleration system
-            last_accl_process = currentTick;
+        // Read and process the accelerometer
+        if (lastAcclProcess + RATE_SYSTICK_HZ/RATE_ACCL_HZ < currentTick) {
+            lastAcclProcess = currentTick;
 
             acclProcess();
 
@@ -184,15 +199,15 @@ int main(void)
 
             if (combined >= STEP_THRESHOLD_HIGH && stepping == false) {
                 stepping = true;
-                stepInfo.stepsTaken++;
+                deviceState.stepsTaken++;
             } else if (combined <= STEP_THRESHOLD_LOW) {
                 stepping = false;
             }
         }
 
-        if (last_display_process + RATE_SYSTICK_HZ/RATE_DISPLAY_UPDATE_HZ < currentTick) {
-            // Send message to booster display
-            last_display_process = currentTick;
+        // Write to the display
+        if (lastDisplayProcess + RATE_SYSTICK_HZ/RATE_DISPLAY_UPDATE_HZ < currentTick) {
+            lastDisplayProcess = currentTick;
 
             uint16_t secondsElapsed = (currentTick - workoutStartTick)/RATE_SYSTICK_HZ;
             uint16_t goalFromPotentiometer = 200; // TODO: When reading from the pot works, feed it through here!
@@ -202,18 +217,20 @@ int main(void)
             //stepInfo.stepsTaken = steps;
             //stepInfo.currentGoal = 9999;
 
-            stepInfo.newGoal = (readADC() / STEP_GOAL_ROUNDING) * STEP_GOAL_ROUNDING; // TODO: Change the range on this
-            stepInfo.secondsElapsed = secondsElapsed;
+            deviceState.newGoal = (readADC() / STEP_GOAL_ROUNDING) * STEP_GOAL_ROUNDING; // TODO: Change the range on this
+//            deviceState.secondsElapsed = secondsElapsed;
 
-            displayUpdate(stepInfo); // pass the current time in here if we also want to display the time since last reset
+
+            displayUpdate(deviceState, goalFromPotentiometer, secondsElapsed);
+//            displayUpdate(stepInfo); // pass the current time in here if we also want to display the time since last reset
         }
 
+        // Send to USB via serial
         #ifdef SERIAL_PLOTTING_ENABLED
-        if (last_serial_process + RATE_SYSTICK_HZ/RATE_SERIAL_PLOT_HZ < currentTick) {
-            // plot the current data over serial
-            last_serial_process = currentTick;
+        if (lastSerialProcess + RATE_SYSTICK_HZ/RATE_SERIAL_PLOT_HZ < currentTick) {
+            lastSerialProcess = currentTick;
 
-            SerialPlot(stepInfo.stepsTaken, mean.x, mean.y, mean.z);
+            SerialPlot(deviceState.stepsTaken, mean.x, mean.y, mean.z);
         }
         #endif // SERIAL_PLOTTING_ENABLED
 

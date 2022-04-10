@@ -7,9 +7,9 @@
 
 #ifndef BUTTON_MANAGER_H_
 #define BUTTON_MANAGER_H_
-#include "display_manager.h"
+#include "step_counter_main.h"
 
-stepsInfo_t updateState(stepsInfo_t);
+void btnUpdateState(deviceStateInfo_t* deviceStateInfo);
 
 
 #endif /* BUTTON_MANAGER_H_ */

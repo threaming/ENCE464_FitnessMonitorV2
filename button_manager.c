@@ -17,21 +17,31 @@
 #include "display_manager.h"
 
 
-stepsInfo_t updateState(stepsInfo_t stepInfo) {
+void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
+{
     updateButtons();
-    if ((checkButton(LEFT) == PUSHED) && (stepInfo.displayMode < DISPLAY_SET_GOAL)) {
-        displayClear();                                     //Clears whole display to avoid overlapping previous display into empty lines but introduces
-        stepInfo.displayMode += 1;                          //flicker when pressing button
 
-    } else if ((checkButton(RIGHT) == PUSHED) && (stepInfo.displayMode > DISPLAY_STEPS)) {
+    displayMode_t currentDisplayMode = deviceStateInfo ->displayMode;
+
+    if (checkButton(LEFT) == PUSHED) {
+        displayClear();                             //Clears whole display to avoid overlapping previous display into empty lines but introduces
+        deviceStateInfo -> displayMode = (deviceStateInfo -> displayMode + 1) % DISPLAY_NUM_STATES;      //flicker when pressing button
+
+    } else if (checkButton(RIGHT) == PUSHED) {
         displayClear();
-        stepInfo.displayMode -= 1;
+        // Can't use mod, as enums behave like an unsigned int, so (0-1)%n != n-1
+        if (deviceStateInfo -> displayMode > 0) {
+            deviceStateInfo -> displayMode--;
+        } else {
+            deviceStateInfo -> displayMode = DISPLAY_NUM_STATES-1;
+        }
+//        deviceStateInfo -> displayMode = (deviceStateInfo -> displayMode - 1) % DISPLAY_NUM_STATES;
 
-    } else if ((checkButton(DOWN) == PUSHED) && (stepInfo.displayMode == DISPLAY_SET_GOAL)) {
-        stepInfo.currentGoal = stepInfo.newGoal;
+    } else if ((checkButton(DOWN) == PUSHED) && (currentDisplayMode == DISPLAY_SET_GOAL)) {
+        deviceStateInfo -> currentGoal = deviceStateInfo -> newGoal;
 
-    } else if ((checkButton(DOWN) == PUSHED) && (stepInfo.displayMode != DISPLAY_SET_GOAL)) { //TODO: Figure out why only the first 'checkButton(DOWN)' works
-        stepInfo.stepsTaken = 0;
+    } else if ((checkButton(DOWN) == PUSHED) && (currentDisplayMode != DISPLAY_SET_GOAL)) { //TODO: Figure out why only the first 'checkButton(DOWN)' works
+        deviceStateInfo -> stepsTaken = 0;
     }
-    return stepInfo;
+//    return stepInfo;
 }
