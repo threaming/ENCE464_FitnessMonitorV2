@@ -138,8 +138,6 @@ int main(void)
     unsigned long lastAcclProcess = 0;
     unsigned long lastDisplayProcess = 0;
 
-    unsigned long workoutStartTick = 0;
-
     #ifdef SERIAL_PLOTTING_ENABLED
     unsigned long lastSerialProcess = 0;
     #endif // SERIAL_PLOTTING_ENABLED
@@ -160,6 +158,7 @@ int main(void)
     deviceState.debugMode = false;
     deviceState.displayMode = DISPLAY_STEPS;
     deviceState.displayUnits= UNITS_SI;
+    deviceState.workoutStartTick = 0;
 
 //    //Initialize stepInfo characteristics
 //    stepsInfo_t stepInfo;
@@ -209,7 +208,7 @@ int main(void)
         if (lastDisplayProcess + RATE_SYSTICK_HZ/RATE_DISPLAY_UPDATE_HZ < currentTick) {
             lastDisplayProcess = currentTick;
 
-            uint16_t secondsElapsed = (currentTick - workoutStartTick)/RATE_SYSTICK_HZ;
+            uint16_t secondsElapsed = (currentTick - deviceState.workoutStartTick)/RATE_SYSTICK_HZ;
             uint16_t goalFromPotentiometer = 200; // TODO: When reading from the pot works, feed it through here!
 
             // TODO: Remove? --- Roll all the info about the user's performance into a struct, for tidiness
@@ -235,6 +234,28 @@ int main(void)
         #endif // SERIAL_PLOTTING_ENABLED
 
 
+
+        // Protection in the unlikely case the device is left running for long enough for the system tick counter to overflow
+        // Prevent the last process ticks from being 'in the future', which would prevent the update functions,
+        // rendering the device inoperable.
+        // This would take ~49 days, but maybe it could be left in a drawer without being turned off
+        if (currentTick < lastIoProcess) {
+            lastIoProcess = 0;
+        }
+
+        if (currentTick < lastAcclProcess) {
+            lastAcclProcess = 0;
+        }
+
+        if (currentTick < lastDisplayProcess) {
+            lastDisplayProcess = 0;
+        }
+
+        #ifdef SERIAL_PLOTTING_ENABLED
+        if (currentTick < lastSerialProcess) {
+            lastSerialProcess = 0;
+        }
+        #endif // SERIAL_PLOTTING_ENABLED
     }
 
 }

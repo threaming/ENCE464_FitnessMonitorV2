@@ -32,6 +32,7 @@ typedef struct {
     bool debugMode;             // Is enable/disable debug functionality
     displayMode_t displayMode;
     displayUnits_t displayUnits;
+    unsigned long workoutStartTick;
 } deviceStateInfo_t;
 
 
