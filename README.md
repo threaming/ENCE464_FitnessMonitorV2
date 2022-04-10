@@ -4,7 +4,7 @@ Matthew Suter, Tim Preston-Marshall, Daniel Rabbidge
 # TODO
 - Fix the speed reading!
 - Maybe change CircBufV to just use three separate circbuf_t instances internally
-
+- Change circ buffers to take 16 bit ints to save on heap
 
 Set heap and stack sizes to 512 bytes!
 
