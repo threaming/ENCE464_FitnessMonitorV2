@@ -184,6 +184,9 @@ int main(void)
 
             deviceState.newGoal = readADC() * POT_SCALE_COEFF; // Set the new goal value, scaling to give the desired range
             deviceState.newGoal = (deviceState.newGoal / STEP_GOAL_ROUNDING) * STEP_GOAL_ROUNDING; // Round to the nearest 100 steps
+            if (deviceState.newGoal == 0) {
+                deviceState.newGoal = STEP_GOAL_ROUNDING; // Minimum value
+            }
         }
 
         // Read and process the accelerometer
