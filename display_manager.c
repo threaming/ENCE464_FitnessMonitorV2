@@ -55,7 +55,7 @@ void displayInit(void)
 
 
 // Update the display
-void displayUpdate(deviceStateInfo_t deviceState, uint32_t newGoal, uint16_t secondsElapsed)
+void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed)
 {
     uint16_t mTravelled = 0; // TODO: If I put this inside the case statement it won't compile. Work out why!
 
@@ -73,7 +73,7 @@ void displayUpdate(deviceStateInfo_t deviceState, uint32_t newGoal, uint16_t sec
         break;
     case DISPLAY_SET_GOAL:
         displayLine("Set goal:", 0, ALIGN_CENTRE);
-        displayValue("", "steps", newGoal, 1, ALIGN_CENTRE, false);
+        displayValue("", "steps", deviceState.newGoal, 1, ALIGN_CENTRE, false);
         displayValue("Current:", "", deviceState.currentGoal, 2, ALIGN_CENTRE, false);
         break;
     }

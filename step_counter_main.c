@@ -59,6 +59,8 @@
 
 #define TARGET_DISTANCE_DEFAULT 500
 
+#define POT_SCALE_COEFF 5000/4095 // in steps, adjusting to account for the potentiometer's maximum possible reading
+
 /*******************************************
  *      Local prototypes
  *******************************************/
@@ -184,6 +186,9 @@ int main(void)
 
             btnUpdateState(&deviceState);
             pollADC();
+
+            deviceState.newGoal = readADC() * POT_SCALE_COEFF; // Set the new goal value, scaling to give the desired range
+            deviceState.newGoal = (deviceState.newGoal / STEP_GOAL_ROUNDING) * STEP_GOAL_ROUNDING; // Round to the nearest 100 steps
         }
 
         // Read and process the accelerometer
@@ -209,18 +214,9 @@ int main(void)
             lastDisplayProcess = currentTick;
 
             uint16_t secondsElapsed = (currentTick - deviceState.workoutStartTick)/RATE_SYSTICK_HZ;
-            uint16_t goalFromPotentiometer = 200; // TODO: When reading from the pot works, feed it through here!
+            // uint16_t goalFromPotentiometer = 200; // TODO: When reading from the pot works, feed it through here!
 
-            // TODO: Remove? --- Roll all the info about the user's performance into a struct, for tidiness
-            //stepsInfo_t stepInfo;
-            //stepInfo.stepsTaken = steps;
-            //stepInfo.currentGoal = 9999;
-
-            deviceState.newGoal = (readADC() / STEP_GOAL_ROUNDING) * STEP_GOAL_ROUNDING; // TODO: Change the range on this
-//            deviceState.secondsElapsed = secondsElapsed;
-
-
-            displayUpdate(deviceState, goalFromPotentiometer, secondsElapsed);
+            displayUpdate(deviceState, secondsElapsed);
 //            displayUpdate(stepInfo); // pass the current time in here if we also want to display the time since last reset
         }
 

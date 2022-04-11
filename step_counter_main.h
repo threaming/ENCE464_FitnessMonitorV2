@@ -27,7 +27,7 @@ typedef enum {
 typedef struct {
     uint32_t stepsTaken;
     uint32_t currentGoal;       // Goal the user is aiming for
-    uint32_t newGoal;           // Value from the potentiometer
+    uint32_t newGoal;           // Value from the potentiometer, processed to give a new goal
 //    uint16_t secondsElapsed;    // Time the user has been running for
     bool debugMode;             // Is enable/disable debug functionality
     displayMode_t displayMode;
