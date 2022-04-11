@@ -31,6 +31,7 @@
 // Constants and static vars
 //********************************************************
 
+#define KM_TO_MILES 100/62 // Multiply by 0.6215 to convert, this should be good enough
 #define MS_TO_KMH 36/10
 #define TIME_UNIT_SCALE 60
 
@@ -61,12 +62,20 @@ void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed)
 
     switch (deviceState.displayMode) {
     case DISPLAY_STEPS:
-        displayValue("", "steps", deviceState.stepsTaken, 1, ALIGN_CENTRE, false);
+        if (deviceState.displayUnits == UNITS_SI) {
+            displayValue("", "steps", deviceState.stepsTaken, 1, ALIGN_CENTRE, false);
+        } else {
+            displayValue("", "% of goal", deviceState.stepsTaken * 100 / deviceState.currentGoal, 1, ALIGN_CENTRE, false);
+        }
         displayTime("Time:", secondsElapsed, 2, ALIGN_CENTRE);
         break;
     case DISPLAY_DISTANCE:
         mTravelled = deviceState.stepsTaken * M_PER_STEP;
-        displayValue("Dist:", "km", deviceState.stepsTaken, 0, ALIGN_CENTRE, true);
+        if (deviceState.displayUnits == UNITS_SI) {
+            displayValue("Dist:", "km", mTravelled, 0, ALIGN_CENTRE, true);
+        } else {
+            displayValue("Dist:", "miles", mTravelled * KM_TO_MILES, 0, ALIGN_CENTRE, true);
+        }
         displayTime("Time:", secondsElapsed, 1, ALIGN_CENTRE);
         uint16_t speed = (1000 * mTravelled / secondsElapsed) * MS_TO_KMH; // km/h
         displayValue("Speed", "kph", speed, 2, ALIGN_CENTRE, true);

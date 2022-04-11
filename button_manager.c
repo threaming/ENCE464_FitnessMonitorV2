@@ -23,6 +23,12 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
 
     displayMode_t currentDisplayMode = deviceStateInfo ->displayMode;
 
+    // Changing units
+    if (checkButton(UP) == PUSHED) {
+        deviceStateInfo -> displayUnits = !(deviceStateInfo -> displayUnits);
+    }
+
+    // Changing screens
     if (checkButton(LEFT) == PUSHED) {
         displayClear();                             //Clears whole display to avoid overlapping previous display into empty lines but introduces
         deviceStateInfo -> displayMode = (deviceStateInfo -> displayMode + 1) % DISPLAY_NUM_STATES;      //flicker when pressing button
@@ -36,10 +42,13 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
             deviceStateInfo -> displayMode = DISPLAY_NUM_STATES-1;
         }
 //        deviceStateInfo -> displayMode = (deviceStateInfo -> displayMode - 1) % DISPLAY_NUM_STATES;
+    }
 
-    } else if ((checkButton(DOWN) == PUSHED) && (currentDisplayMode == DISPLAY_SET_GOAL)) {
+    // Clearing the current steps, setting a new goal
+    if ((checkButton(DOWN) == PUSHED) && (currentDisplayMode == DISPLAY_SET_GOAL)) {
         deviceStateInfo -> currentGoal = deviceStateInfo -> newGoal;
 
+        // TODO: Require a long press here!
     } else if ((checkButton(DOWN) == PUSHED) && (currentDisplayMode != DISPLAY_SET_GOAL)) { //TODO: Figure out why only the first 'checkButton(DOWN)' works
         deviceStateInfo -> stepsTaken = 0;
     }

@@ -8,6 +8,7 @@
 #ifndef STEP_COUNTER_MAIN_H_
 #define STEP_COUNTER_MAIN_H_
 
+#define M_PER_STEP 9/10
 
 typedef enum {
     DISPLAY_STEPS = 0,

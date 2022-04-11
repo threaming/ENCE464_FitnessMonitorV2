@@ -28,7 +28,6 @@ void displayInit(void);
 void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed);
 void displayClear(void);
 
-#define M_PER_STEP 9/10 // 0.9m per step. Defined here so we can access it in the main programme and also when displaying
 #define DISPLAY_WIDTH 16
 
 #endif /* DISPLAY_MANAGER_H_ */

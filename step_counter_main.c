@@ -162,12 +162,7 @@ int main(void)
     deviceState.displayUnits= UNITS_SI;
     deviceState.workoutStartTick = 0;
 
-//    //Initialize stepInfo characteristics
-//    stepsInfo_t stepInfo;
-//    stepInfo.displayMode = DISPLAY_STEPS;
-//    stepInfo.stepsTaken = 0;
-//    stepInfo.currentGoal = 9999;
-
+    // Init libs
     initClock ();
     displayInit ();
     initButtons ();
@@ -207,6 +202,11 @@ int main(void)
             } else if (combined <= STEP_THRESHOLD_LOW) {
                 stepping = false;
             }
+
+            // Don't start the workout until the user begins walking
+            if (deviceState.stepsTaken == 0) {
+                deviceState.workoutStartTick = currentTick;
+            }
         }
 
         // Write to the display
@@ -214,10 +214,7 @@ int main(void)
             lastDisplayProcess = currentTick;
 
             uint16_t secondsElapsed = (currentTick - deviceState.workoutStartTick)/RATE_SYSTICK_HZ;
-            // uint16_t goalFromPotentiometer = 200; // TODO: When reading from the pot works, feed it through here!
-
             displayUpdate(deviceState, secondsElapsed);
-//            displayUpdate(stepInfo); // pass the current time in here if we also want to display the time since last reset
         }
 
         // Send to USB via serial

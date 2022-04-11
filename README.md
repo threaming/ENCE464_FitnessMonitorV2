@@ -6,6 +6,7 @@ Matthew Suter, Tim Preston-Marshall, Daniel Rabbidge
 - Maybe change CircBufV to just use three separate circbuf_t instances internally
 - Change circ buffers to take 16 bit ints to save on heap
 - Add switch polling to buttons4.c
+- Make the reset functionality also reset the workout time
 
 Set heap and stack sizes to 512 bytes!
 
