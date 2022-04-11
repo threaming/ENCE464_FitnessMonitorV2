@@ -5,6 +5,7 @@ Matthew Suter, Tim Preston-Marshall, Daniel Rabbidge
 - Fix the speed reading!
 - Maybe change CircBufV to just use three separate circbuf_t instances internally
 - Change circ buffers to take 16 bit ints to save on heap
+- Add switch polling to buttons4.c
 
 Set heap and stack sizes to 512 bytes!
 
