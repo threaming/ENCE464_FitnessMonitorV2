@@ -7,6 +7,7 @@ Matthew Suter, Tim Preston-Marshall, Daniel Rabbidge
 - Change circ buffers to take 16 bit ints to save on heap
 - Add switch polling to buttons4.c
 - Make the reset functionality also reset the workout time
+- Better way of preventing a goal of zero (ideally without just setting to 100 if 0)
 
 Set heap and stack sizes to 512 bytes!
 
