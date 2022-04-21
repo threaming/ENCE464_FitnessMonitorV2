@@ -25,21 +25,6 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
 
     displayMode_t currentDisplayMode = deviceStateInfo ->displayMode;
 
-    // Test code to ensure switches are reading correctly
-
-    if (isSwitchUp()) {
-        deviceStateInfo -> debugMode = true;
-    } else {
-        deviceStateInfo -> debugMode = false;
-    }
-
-
-
-    // Changing units
-    if (checkButton(UP) == PUSHED) {
-        deviceStateInfo -> displayUnits = !(deviceStateInfo -> displayUnits);
-    }
-
     // Changing screens
     if (checkButton(LEFT) == PUSHED) {
         displayClear();                             //Clears whole display to avoid overlapping previous display into empty lines but introduces
@@ -56,6 +41,54 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
 //        deviceStateInfo -> displayMode = (deviceStateInfo -> displayMode - 1) % DISPLAY_NUM_STATES;
     }
 
+    // Enable/Disable test mode
+    if (isSwitchUp()) {
+            deviceStateInfo -> debugMode = true;
+        } else {
+            deviceStateInfo -> debugMode = false;
+        }
+
+
+    // Usage of UP and DOWN buttons
+    if (deviceStateInfo -> debugMode) {
+        // TEST MODE OPERATION
+        if (checkButton(UP) == PUSHED) {
+            deviceStateInfo -> stepsTaken = deviceStateInfo -> stepsTaken + 100;
+        }
+
+        else if (checkButton(DOWN) == PUSHED) {
+            deviceStateInfo -> stepsTaken = deviceStateInfo -> stepsTaken - 500;
+        }
+
+
+    } else {
+        // NORMAL OPERATION
+
+        // Changing units
+        if (checkButton(UP) == PUSHED) {
+            deviceStateInfo -> displayUnits = !(deviceStateInfo -> displayUnits);
+        }
+
+        // Resetting steps and updating goal with long and short presses
+        if ((isDown(DOWN) == true) && (currentDisplayMode != DISPLAY_SET_GOAL)) {
+            longPressCount++;
+            if (longPressCount >= LONG_PRESS_CYCLES) {
+                deviceStateInfo -> stepsTaken = 0;
+            }
+        } else {
+            if ((currentDisplayMode == DISPLAY_SET_GOAL) && checkButton(DOWN) == PUSHED) {      //Still updates goal if button is held. Check this is ok
+                deviceStateInfo -> currentGoal = deviceStateInfo -> newGoal;
+                deviceStateInfo -> displayMode = DISPLAY_STEPS;
+            }
+            longPressCount = 0;
+        }
+
+
+    }
+
+
+
+
        /*
     // Clearing the current steps, setting a new goal
     if ((checkButton(DOWN) == PUSHED) && (currentDisplayMode == DISPLAY_SET_GOAL)) {
@@ -67,19 +100,8 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
     }
         */
 
-    // Resetting steps and updating goal with long and short presses
-    if ((isDown(DOWN) == true) && (currentDisplayMode != DISPLAY_SET_GOAL)) {
-        longPressCount++;
-        if (longPressCount >= LONG_PRESS_CYCLES) {
-            deviceStateInfo -> stepsTaken = 0;
-        }
-    } else {
-        if ((currentDisplayMode == DISPLAY_SET_GOAL) && checkButton(DOWN) == PUSHED) {      //Still updates goal if button is held. Check this is ok
-            deviceStateInfo -> currentGoal = deviceStateInfo -> newGoal;
-            deviceStateInfo -> displayMode = DISPLAY_STEPS;
-        }
-        longPressCount = 0;
-    }
+
+
 //    return stepInfo;
 }
 
