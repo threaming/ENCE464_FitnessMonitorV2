@@ -75,8 +75,8 @@ updateSwitch (void)
 
 }
 
-bool isSwitchDown(void) {
-    return GPIOPinRead (SW1_PORT_BASE, SW1_PIN);
+bool isSwitchUp(void) {
+    return SW_state;
 }
 
 // *******************************************************

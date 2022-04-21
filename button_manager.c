@@ -26,13 +26,13 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
     displayMode_t currentDisplayMode = deviceStateInfo ->displayMode;
 
     // Test code to ensure switches are reading correctly
-    /*
-    if (isSwitchDown()) {
-        deviceStateInfo -> displayMode = DISPLAY_SET_GOAL;
+
+    if (isSwitchUp()) {
+        deviceStateInfo -> debugMode = true;
     } else {
-        deviceStateInfo -> displayMode = DISPLAY_STEPS;
+        deviceStateInfo -> debugMode = false;
     }
-    */
+
 
 
     // Changing units

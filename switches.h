@@ -49,6 +49,6 @@ updateSwitch (void);
 uint8_t
 checkSwitch (void);
 
-bool isSwitchDown(void);
+bool isSwitchUp(void);
 
 #endif /*SWITCHES_H_*/
