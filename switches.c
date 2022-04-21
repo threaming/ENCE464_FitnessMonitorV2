@@ -2,6 +2,7 @@
  * Module to read values from the Orbit Board toggle switches
  * Created 21/4/22
  * Author: Daniel Rabbidge
+ * Based on the structure of buttons4.c by P.J Bones
  */
 
 #include <stdint.h>
@@ -24,13 +25,10 @@ static bool SW_flag;
 static bool SW_normal;   // Corresponds to the electrical state
 
 // *******************************************************
-// initButtons: Initialise the variables associated with the set of buttons
-// defined by the constants in the buttons2.h header file.
+// initSwitch: Initialise the variables associated with SW1
 void
 initSwitch (void)
 {
-	int i;
-
 	// UP button (active HIGH)
     SysCtlPeripheralEnable (SW1_PERIPH);
     GPIOPinTypeGPIOInput (SW1_PORT_BASE, SW1_PIN);
@@ -43,14 +41,14 @@ initSwitch (void)
 }
 
 // *******************************************************
-// updateButtons: Function designed to be called regularly. It polls all
+// updateSwitch: Function designed to be called regularly. It polls all
 // buttons once and updates variables associated with the buttons if
 // necessary.  It is efficient enough to be part of an ISR, e.g. from
 // a SysTick interrupt.
 // Debounce algorithm: A state machine is associated with each button.
-// A state change occurs only after NUM_BUT_POLLS consecutive polls have
+// A state change occurs only after NUM_SW_POLLS consecutive polls have
 // read the pin in the opposite condition, before the state changes and
-// a flag is set.  Set NUM_BUT_POLLS according to the polling rate.
+// a flag is set.  Set NUM_SW_POLLS according to the polling rate.
 void
 updateSwitch (void)
 {
@@ -75,16 +73,18 @@ updateSwitch (void)
 
 }
 
+
+//A function that returns the switch state in order to abstract GPIO functions in other modules
 bool isSwitchUp(void) {
     return SW_state;
 }
 
 // *******************************************************
-// checkButton: Function returns the new button logical state if the button
-// logical state (PUSHED or RELEASED) has changed since the last call,
+// checkSwitch: Function returns the new button logical state if the button
+// logical state (SW_UP or SW_DOWN) has changed since the last call,
 // otherwise returns NO_CHANGE.
 
-//TODO: I don't think this function is necessary and can likely be deleted
+//TODO: I don't think this function is necessary and can likely be deleted. Checks for switch state changes
 /*
 uint8_t
 checkSwitch (void)

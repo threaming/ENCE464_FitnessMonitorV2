@@ -138,6 +138,7 @@ checkButton (uint8_t butName)
 	return NO_CHANGE;
 }
 
+// Function which returns current button state. Abstracts GPIO function calls for other modules
 bool isDown(uint8_t butName) {
     return but_state[butName];
 }

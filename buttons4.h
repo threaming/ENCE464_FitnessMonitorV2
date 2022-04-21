@@ -71,7 +71,7 @@ updateButtons (void);
 uint8_t
 checkButton (uint8_t butName);
 
-
+// Function which returns current button state. Abstracts GPIO function calls for other modules
 bool isDown(uint8_t butName);
 
 #endif /*BUTTONS_H_*/

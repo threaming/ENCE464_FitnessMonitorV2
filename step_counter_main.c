@@ -57,7 +57,7 @@
 #define STEP_THRESHOLD_HIGH 270
 #define STEP_THRESHOLD_LOW 235
 
-#define TARGET_DISTANCE_DEFAULT 500
+#define TARGET_DISTANCE_DEFAULT 1000
 
 #define POT_SCALE_COEFF 5000/4095 // in steps, adjusting to account for the potentiometer's maximum possible reading
 

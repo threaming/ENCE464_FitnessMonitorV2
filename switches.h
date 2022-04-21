@@ -3,7 +3,8 @@
 
 // *******************************************************
 // Header file for switch reading module
-// 
+// Daniel Rabbidge
+//
 // *******************************************************
 
 #include <stdint.h>
@@ -22,33 +23,35 @@ enum SWStates {SW_UP = 0, SW_DOWN, SW_NO_CHANGE};
 
 
 #define NUM_SW_POLLS 3
-// Debounce algorithm: A state machine is associated with each button.
-// A state change occurs only after NUM_BUT_POLLS consecutive polls have
+// Debounce algorithm: A state machine is associated with the switch.
+// A state change occurs only after NUM_SW_POLLS consecutive polls have
 // read the pin in the opposite condition, before the state changes and
-// a flag is set.  Set NUM_BUT_POLLS according to the polling rate.
+// a flag is set.  Set NUM_SW_POLLS according to the polling rate.
 
 // *******************************************************
-// initButtons: Initialise the variables associated with the set of buttons
+// initSwitch: Initialise the variables associated with the switch
 // defined by the constants above.
 void
 initSwitch (void);
 
 // *******************************************************
-// updateButtons: Function designed to be called regularly. It polls all
-// buttons once and updates variables associated with the buttons if
+// updateSwitch: Function designed to be called regularly. It polls the switch
+// and updates variables associated with the switch if
 // necessary.  It is efficient enough to be part of an ISR, e.g. from
 // a SysTick interrupt.
-void
-updateSwitch (void);
+//
+// void
+// updateSwitch (void);
 
 // *******************************************************
-// checkButton: Function returns the new button state if the button state
-// (PUSHED or RELEASED) has changed since the last call, otherwise returns
-// NO_CHANGE.  The argument butName should be one of constants in the
-// enumeration butStates, excluding 'NUM_BUTS'. Safe under interrupt.
+// checkSwitch: Function returns the new switch state if the switch state
+// (SW_UP or SW_DOWN) has changed since the last call, otherwise returns
+// NO_CHANGE.
 uint8_t
 checkSwitch (void);
 
+// *******************************************************
+// Function that returns the state of the switch. Used to abstract GPIO function calls in other modules
 bool isSwitchUp(void);
 
 #endif /*SWITCHES_H_*/

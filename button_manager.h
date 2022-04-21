@@ -10,7 +10,7 @@
 #include "step_counter_main.h"
 
 #define LONG_PRESS_CYCLES 20
-#define STEP_INCREMENT 1000
+#define STEP_INCREMENT 100
 #define STEP_DECREMENT 500
 
 static uint16_t longPressCount = 0;
