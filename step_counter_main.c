@@ -170,6 +170,7 @@ int main(void)
     initSysTick ();
     acclInit ();
     initADC();
+    initSwitch();
 
     while(1)
     {

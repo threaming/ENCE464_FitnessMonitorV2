@@ -16,12 +16,24 @@
 #include "buttons4.h"
 #include "display_manager.h"
 #include "button_manager.h"
+#include "switches.h"
 
 void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
 {
     updateButtons();
+    updateSwitch();
 
     displayMode_t currentDisplayMode = deviceStateInfo ->displayMode;
+
+    // Test code to ensure switches are reading correctly
+    /*
+    if (isSwitchDown()) {
+        deviceStateInfo -> displayMode = DISPLAY_SET_GOAL;
+    } else {
+        deviceStateInfo -> displayMode = DISPLAY_STEPS;
+    }
+    */
+
 
     // Changing units
     if (checkButton(UP) == PUSHED) {
