@@ -53,11 +53,15 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
     if (deviceStateInfo -> debugMode) {
         // TEST MODE OPERATION
         if (checkButton(UP) == PUSHED) {
-            deviceStateInfo -> stepsTaken = deviceStateInfo -> stepsTaken + 100;
+            deviceStateInfo -> stepsTaken = deviceStateInfo -> stepsTaken + STEP_INCREMENT;
         }
 
         else if (checkButton(DOWN) == PUSHED) {
-            deviceStateInfo -> stepsTaken = deviceStateInfo -> stepsTaken - 500;
+            if (deviceStateInfo -> stepsTaken >= STEP_DECREMENT) {
+                deviceStateInfo -> stepsTaken = deviceStateInfo -> stepsTaken - STEP_DECREMENT;
+            } else {
+                deviceStateInfo -> stepsTaken = 0;
+            }
         }
 
 
