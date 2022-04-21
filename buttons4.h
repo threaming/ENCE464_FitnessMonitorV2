@@ -71,4 +71,7 @@ updateButtons (void);
 uint8_t
 checkButton (uint8_t butName);
 
+
+bool isDown(uint8_t butName);
+
 #endif /*BUTTONS_H_*/

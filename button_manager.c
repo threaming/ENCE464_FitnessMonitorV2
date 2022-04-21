@@ -15,7 +15,7 @@
 #include "inc/tm4c123gh6pm.h"
 #include "buttons4.h"
 #include "display_manager.h"
-
+#include "button_manager.h"
 
 void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
 {
@@ -44,6 +44,7 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
 //        deviceStateInfo -> displayMode = (deviceStateInfo -> displayMode - 1) % DISPLAY_NUM_STATES;
     }
 
+       /*
     // Clearing the current steps, setting a new goal
     if ((checkButton(DOWN) == PUSHED) && (currentDisplayMode == DISPLAY_SET_GOAL)) {
         deviceStateInfo -> currentGoal = deviceStateInfo -> newGoal;
@@ -52,5 +53,21 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
     } else if ((checkButton(DOWN) == PUSHED) && (currentDisplayMode != DISPLAY_SET_GOAL)) { //TODO: Figure out why only the first 'checkButton(DOWN)' works
         deviceStateInfo -> stepsTaken = 0;
     }
+
+        */
+    if ((isDown(DOWN) == true) && (currentDisplayMode != DISPLAY_SET_GOAL)) {
+        longPressCount++;
+        if (longPressCount >= LONG_PRESS_CYCLES) {
+            deviceStateInfo -> stepsTaken = 0;
+        }
+    } else {
+        longPressCount = 0;
+    }
 //    return stepInfo;
 }
+/*
+bool checkLongPress(uint8_t butName)
+{
+     if checkButton(DOWN)
+}
+*/

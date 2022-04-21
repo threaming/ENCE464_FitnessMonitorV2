@@ -9,6 +9,9 @@
 #define BUTTON_MANAGER_H_
 #include "step_counter_main.h"
 
+#define LONG_PRESS_CYCLES 20
+static uint16_t longPressCount = 0;
+
 void btnUpdateState(deviceStateInfo_t* deviceStateInfo);
 
 

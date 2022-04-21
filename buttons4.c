@@ -138,3 +138,6 @@ checkButton (uint8_t butName)
 	return NO_CHANGE;
 }
 
+bool isDown(uint8_t butName) {
+    return but_state[butName];
+}
