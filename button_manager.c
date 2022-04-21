@@ -80,8 +80,9 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
                 deviceStateInfo -> stepsTaken = 0;
             }
         } else {
-            if ((currentDisplayMode == DISPLAY_SET_GOAL) && checkButton(DOWN) == PUSHED) {      //Still updates goal if button is held. Check this is ok
+            if ((currentDisplayMode == DISPLAY_SET_GOAL) && checkButton(DOWN) == PUSHED) {
                 deviceStateInfo -> currentGoal = deviceStateInfo -> newGoal;
+                displayClear();
                 deviceStateInfo -> displayMode = DISPLAY_STEPS;
             }
             longPressCount = 0;
