@@ -53,21 +53,20 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
     } else if ((checkButton(DOWN) == PUSHED) && (currentDisplayMode != DISPLAY_SET_GOAL)) { //TODO: Figure out why only the first 'checkButton(DOWN)' works
         deviceStateInfo -> stepsTaken = 0;
     }
-
         */
+
+    // Resetting steps and updating goal with long and short presses
     if ((isDown(DOWN) == true) && (currentDisplayMode != DISPLAY_SET_GOAL)) {
         longPressCount++;
         if (longPressCount >= LONG_PRESS_CYCLES) {
             deviceStateInfo -> stepsTaken = 0;
         }
     } else {
+        if ((currentDisplayMode == DISPLAY_SET_GOAL) && checkButton(DOWN) == PUSHED) {      //Still updates goal if button is held. Check this is ok
+            deviceStateInfo -> currentGoal = deviceStateInfo -> newGoal;
+        }
         longPressCount = 0;
     }
 //    return stepInfo;
 }
-/*
-bool checkLongPress(uint8_t butName)
-{
-     if checkButton(DOWN)
-}
-*/
+
