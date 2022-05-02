@@ -19,6 +19,9 @@
 #include "switches.h"
 
 
+static uint16_t longPressCount = 0;
+static bool allowLongPress = true;
+
 
 void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
 {
@@ -76,7 +79,7 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
         }
 
         // Resetting steps and updating goal with long and short presses
-        if ((isDown(DOWN) == true) && (currentDisplayMode != DISPLAY_SET_GOAL)) {
+        if ((isDown(DOWN) == true) && (currentDisplayMode != DISPLAY_SET_GOAL) && (allowLongPress)) {
             longPressCount++;
             if (longPressCount >= LONG_PRESS_CYCLES) {
                 deviceStateInfo -> stepsTaken = 0;
@@ -87,8 +90,14 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
                 deviceStateInfo -> currentGoal = deviceStateInfo -> newGoal;
                 displayClear();
                 deviceStateInfo -> displayMode = DISPLAY_STEPS;
+
+                allowLongPress = false; // Protection against double-registering as a short press then a long press
             }
             longPressCount = 0;
+        }
+
+        if (checkButton(DOWN) == RELEASED) {
+            allowLongPress = true;
         }
 
 

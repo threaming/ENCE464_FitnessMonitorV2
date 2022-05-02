@@ -13,8 +13,6 @@
 #define STEP_INCREMENT 100
 #define STEP_DECREMENT 500
 
-static uint16_t longPressCount = 0;
-
 void btnUpdateState(deviceStateInfo_t* deviceStateInfo);
 
 

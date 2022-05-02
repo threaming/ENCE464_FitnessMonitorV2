@@ -143,7 +143,8 @@ void flashMessage(char* toShow)
 
         i++;
     }
-    deviceState.flashMessage)[i] = '\0';
+
+    deviceState.flashMessage[i] = '\0';
 }
 
 
