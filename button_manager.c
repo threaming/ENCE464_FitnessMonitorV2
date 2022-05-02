@@ -56,7 +56,7 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
             deviceStateInfo -> stepsTaken = deviceStateInfo -> stepsTaken + STEP_INCREMENT;
         }
 
-        else if (checkButton(DOWN) == PUSHED) {
+        if (checkButton(DOWN) == PUSHED) {
             if (deviceStateInfo -> stepsTaken >= STEP_DECREMENT) {
                 deviceStateInfo -> stepsTaken = deviceStateInfo -> stepsTaken - STEP_DECREMENT;
             } else {

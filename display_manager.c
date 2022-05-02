@@ -74,11 +74,11 @@ void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed)
         if (deviceState.displayUnits == UNITS_SI) {
             displayValue("Dist:", "km", mTravelled, 0, ALIGN_CENTRE, true);
         } else {
-            displayValue("Dist:", "miles", mTravelled * KM_TO_MILES, 0, ALIGN_CENTRE, true);
+            displayValue("Dist:", "mi", mTravelled * KM_TO_MILES, 0, ALIGN_CENTRE, true);
         }
         displayTime("Time:", secondsElapsed, 1, ALIGN_CENTRE);
-        uint16_t speed = (1000 * mTravelled / secondsElapsed) * MS_TO_KMH; // km/h
-        displayValue("Speed", "kph", speed, 2, ALIGN_CENTRE, true);
+        uint16_t speed = (mTravelled / secondsElapsed) * MS_TO_KMH; // km/h
+        displayValue("Speed", "kph", speed, 2, ALIGN_CENTRE, false);
         break;
     case DISPLAY_SET_GOAL:
         displayLine("Set goal:", 0, ALIGN_CENTRE);
@@ -154,7 +154,7 @@ static void displayValue(char* prefix, char* suffix, int32_t value, uint8_t row,
     if (thousandsFormatting) {
         // Print a number/1000 to 3dp, with decimal point and sign
         // Use a mega cool ternary operator to decide whether to use a minus sign
-        usnprintf(toDraw, DISPLAY_WIDTH + 1, "%s %c%d.%03d %s", prefix, value<0? '-':' ', abs(value / 1000), abs(value) % 1000, suffix);
+        usnprintf(toDraw, DISPLAY_WIDTH + 1, "%s%c%d.%03d %s", prefix, value<0? '-':' ', abs(value / 1000), abs(value) % 1000, suffix);
     } else {
         usnprintf(toDraw, DISPLAY_WIDTH + 1, "%s %d %s", prefix, value, suffix); // Can use %4d if we want uniform spacing
     }

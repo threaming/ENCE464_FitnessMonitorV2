@@ -155,7 +155,7 @@ int main(void)
     // Omnibus struct that holds loads of info about the device's current state, so it can be updated from any function
     deviceStateInfo_t deviceState;
     deviceState.displayMode = DISPLAY_STEPS;
-    deviceState.stepsTaken = 0;
+    deviceState.stepsTaken = 123; // 0; Milestone 1 requires a non-zero starting number of steps!
     deviceState.currentGoal = TARGET_DISTANCE_DEFAULT;
     deviceState.debugMode = false;
     deviceState.displayMode = DISPLAY_STEPS;
