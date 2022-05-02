@@ -109,7 +109,9 @@ void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed)
             distance = distance * KM_TO_MILES;
         }
 
-        if (distance < 10*1000) { // if <10 km/miles, use a decimal point
+        // Display the step/distance preview
+        // if <10 km/miles, use a decimal point. Otherwise display whole units (to save space)
+        if (distance < 10*1000) {
             usnprintf(toDraw, DISPLAY_WIDTH + 1, "%d stps/%d.%01d%s", deviceState.newGoal, distance / 1000, (distance % 1000)/100, deviceState.displayUnits == UNITS_SI ? "km" : "mi");
         } else {
             usnprintf(toDraw, DISPLAY_WIDTH + 1, "%d stps/%d%s", deviceState.newGoal, distance / 1000, deviceState.displayUnits == UNITS_SI ? "km" : "mi");
