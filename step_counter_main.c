@@ -61,7 +61,7 @@
 
 #define TARGET_DISTANCE_DEFAULT 1000
 
-#define POT_SCALE_COEFF 5000/4095 // in steps, adjusting to account for the potentiometer's maximum possible reading
+#define POT_SCALE_COEFF 20000/4095 // in steps, adjusting to account for the potentiometer's maximum possible reading
 
 /*******************************************
  *      Local prototypes
@@ -133,6 +133,7 @@ unsigned long readCurrentTick(void)
 
 
 
+// Flash a message onto the screen, overriding everything else
 void flashMessage(char* toShow)
 {
     deviceState.flashTicksLeft = RATE_DISPLAY_UPDATE_HZ * FLASH_MESSAGE_TIME;
@@ -265,7 +266,7 @@ int main(void)
         // Protection in the unlikely case the device is left running for long enough for the system tick counter to overflow
         // Prevent the last process ticks from being 'in the future', which would prevent the update functions,
         // rendering the device inoperable.
-        // This would take ~49 days, but maybe it could be left in a drawer without being turned off
+        // This would take ~49 days, but maybe it could be left in a drawer without being turned off?
         if (currentTick < lastIoProcess) {
             lastIoProcess = 0;
         }

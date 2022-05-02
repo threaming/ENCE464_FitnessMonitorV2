@@ -56,7 +56,7 @@ void displayInit(void)
 
 
 
-// Update the display
+// Update the display, called on a loop
 void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed)
 {
     // Check for flash message override
@@ -98,8 +98,25 @@ void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed)
         break;
     case DISPLAY_SET_GOAL:
         displayLine("Set goal:", 0, ALIGN_CENTRE);
-        displayValue("", "steps", deviceState.newGoal, 1, ALIGN_CENTRE, false);
         displayValue("Current:", "", deviceState.currentGoal, 2, ALIGN_CENTRE, false);
+
+        //displayValue("", "steps", deviceState.newGoal, 1, ALIGN_CENTRE, false);
+
+        char toDraw[DISPLAY_WIDTH+1]; // Must be one character longer to account for EOFs
+        uint16_t distance = deviceState.newGoal * M_PER_STEP;
+
+        if (deviceState.displayUnits != UNITS_SI) {
+            distance = distance * KM_TO_MILES;
+        }
+
+        if (distance < 10*1000) { // if <10 km/miles, use a decimal point
+            usnprintf(toDraw, DISPLAY_WIDTH + 1, "%d stps/%d.%01d%s", deviceState.newGoal, distance / 1000, (distance % 1000)/100, deviceState.displayUnits == UNITS_SI ? "km" : "mi");
+        } else {
+            usnprintf(toDraw, DISPLAY_WIDTH + 1, "%d stps/%d%s", deviceState.newGoal, distance / 1000, deviceState.displayUnits == UNITS_SI ? "km" : "mi");
+        }
+
+        displayLine(toDraw, 1, ALIGN_CENTRE);
+
         break;
     }
 }
@@ -180,6 +197,7 @@ static void displayValue(char* prefix, char* suffix, int32_t value, uint8_t row,
 
 
 
+// Display a given number of seconds, formatted as mm:ss or hh:mm:ss
 static void displayTime(char* prefix, uint16_t time, uint8_t row, textAlignment_t alignment)
 {
     char toDraw[DISPLAY_WIDTH+1]; // Must be one character longer to account for EOFs
