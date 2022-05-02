@@ -46,6 +46,7 @@
 #define RATE_IO_HZ 75
 #define RATE_ACCL_HZ 200
 #define RATE_DISPLAY_UPDATE_HZ 5
+#define FLASH_MESSAGE_TIME 3/2 // seconds
 
 #ifdef SERIAL_PLOTTING_ENABLED
 #define RATE_SERIAL_PLOT_HZ 100
@@ -78,6 +79,7 @@ vector3_t getAcclData (void);
  *******************************************/
 unsigned long ticksElapsed = 0; // Incremented once every system tick. Must be read with SysTickIntHandler(), or you can get garbled data!
 
+deviceStateInfo_t deviceState; // Stored as one global so it can be accessed by other helper libs within this main module
 
 /***********************************************************
  * Initialisation functions
@@ -131,6 +133,19 @@ unsigned long readCurrentTick(void)
 
 
 
+void flashMessage(char* toShow)
+{
+    deviceState.flashTicksLeft = RATE_DISPLAY_UPDATE_HZ * FLASH_MESSAGE_TIME;
+
+    uint8_t i = 0;
+    while (toShow[i] != '\0' && i < MAX_STR_LEN) {
+        (deviceState.flashMessage)[i] = toShow[i];
+
+        i++;
+    }
+}
+
+
 /***********************************************************
  * Main Loop
  ***********************************************************/
@@ -154,7 +169,6 @@ int main(void)
 
     // Device state
     // Omnibus struct that holds loads of info about the device's current state, so it can be updated from any function
-    deviceStateInfo_t deviceState;
     deviceState.displayMode = DISPLAY_STEPS;
     deviceState.stepsTaken = 123; // 0; Milestone 1 requires a non-zero starting number of steps!
     deviceState.currentGoal = TARGET_DISTANCE_DEFAULT;
@@ -207,6 +221,12 @@ int main(void)
             if (combined >= STEP_THRESHOLD_HIGH && stepping == false) {
                 stepping = true;
                 deviceState.stepsTaken++;
+
+                // flash a message if the user has reached their goal
+                if (deviceState.stepsTaken == deviceState.currentGoal) {
+                    flashMessage("Goal reached!");
+                }
+
             } else if (combined <= STEP_THRESHOLD_LOW) {
                 stepping = false;
             }

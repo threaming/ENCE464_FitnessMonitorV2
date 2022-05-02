@@ -10,7 +10,6 @@
 
 #define M_PER_STEP 9/10
 #define MAX_STR_LEN 16
-#define MESSAGE_FLASH_TICKS 10
 
 typedef enum {
     DISPLAY_STEPS = 0,
@@ -44,5 +43,7 @@ typedef struct {
 } deviceStateInfo_t;
 
 
+
+void flashMessage(char* toShow);
 
 #endif /* STEP_COUNTER_MAIN_H_ */
