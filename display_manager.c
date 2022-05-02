@@ -100,16 +100,13 @@ void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed)
         displayLine("Set goal:", 0, ALIGN_CENTRE);
         displayValue("Current:", "", deviceState.currentGoal, 2, ALIGN_CENTRE, false);
 
-        //displayValue("", "steps", deviceState.newGoal, 1, ALIGN_CENTRE, false);
-
+        // Display the step/distance preview
         char toDraw[DISPLAY_WIDTH+1]; // Must be one character longer to account for EOFs
         uint16_t distance = deviceState.newGoal * M_PER_STEP;
-
         if (deviceState.displayUnits != UNITS_SI) {
             distance = distance * KM_TO_MILES;
         }
 
-        // Display the step/distance preview
         // if <10 km/miles, use a decimal point. Otherwise display whole units (to save space)
         if (distance < 10*1000) {
             usnprintf(toDraw, DISPLAY_WIDTH + 1, "%d stps/%d.%01d%s", deviceState.newGoal, distance / 1000, (distance % 1000)/100, deviceState.displayUnits == UNITS_SI ? "km" : "mi");
