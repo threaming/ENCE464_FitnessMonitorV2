@@ -43,9 +43,10 @@
  * Constants and types
  **********************************************************/
 #define RATE_SYSTICK_HZ 1000
-#define RATE_IO_HZ 50
+#define RATE_IO_HZ 75
 #define RATE_ACCL_HZ 200
 #define RATE_DISPLAY_UPDATE_HZ 5
+
 #ifdef SERIAL_PLOTTING_ENABLED
 #define RATE_SERIAL_PLOT_HZ 100
 #endif // SERIAL_PLOTTING_ENABLED
