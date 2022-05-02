@@ -135,14 +135,14 @@ unsigned long readCurrentTick(void)
 
 void flashMessage(char* toShow)
 {
-    deviceState.flashTicksLeft = RATE_DISPLAY_UPDATE_HZ * FLASH_MESSAGE_TIME;
-
     uint8_t i = 0;
     while (toShow[i] != '\0' && i < MAX_STR_LEN) {
         (deviceState.flashMessage)[i] = toShow[i];
 
         i++;
     }
+
+    deviceState.flashTicksLeft = RATE_DISPLAY_UPDATE_HZ * FLASH_MESSAGE_TIME;
 }
 
 
@@ -223,7 +223,7 @@ int main(void)
                 deviceState.stepsTaken++;
 
                 // flash a message if the user has reached their goal
-                if (deviceState.stepsTaken == deviceState.currentGoal) {
+                if (deviceState.stepsTaken == deviceState.currentGoal && deviceState.flashTicksLeft == 0) {
                     flashMessage("Goal reached!");
                 }
 
