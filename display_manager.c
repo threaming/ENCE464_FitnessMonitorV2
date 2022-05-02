@@ -74,6 +74,7 @@ void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed)
 
     switch (deviceState.displayMode) {
     case DISPLAY_STEPS:
+        displayLine("", 0, ALIGN_CENTRE); // Clear the top line
         if (deviceState.displayUnits == UNITS_SI) {
             displayValue("", "steps", deviceState.stepsTaken, 1, ALIGN_CENTRE, false);
         } else {
@@ -105,14 +106,14 @@ void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed)
 
 
 
-void displayClear(void)
-{
-    char* toDraw = "                ";
-    OLEDStringDraw (toDraw, 0, 0);
-    OLEDStringDraw (toDraw, 0, 1);
-    OLEDStringDraw (toDraw, 0, 2);
-    OLEDStringDraw (toDraw, 0, 3);
-}
+//void displayClear(void)
+//{
+//    char* toDraw = "                ";
+//    OLEDStringDraw (toDraw, 0, 0);
+//    OLEDStringDraw (toDraw, 0, 1);
+//    OLEDStringDraw (toDraw, 0, 2);
+//    OLEDStringDraw (toDraw, 0, 3);
+//}
 
 
 

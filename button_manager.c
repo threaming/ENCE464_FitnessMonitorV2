@@ -32,11 +32,11 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
 
     // Changing screens
     if (checkButton(LEFT) == PUSHED) {
-        displayClear();                             //Clears whole display to avoid overlapping previous display into empty lines but introduces
+//        displayClear();                             //Clears whole display to avoid overlapping previous display into empty lines but introduces
         deviceStateInfo -> displayMode = (deviceStateInfo -> displayMode + 1) % DISPLAY_NUM_STATES;      //flicker when pressing button
 
     } else if (checkButton(RIGHT) == PUSHED) {
-        displayClear();
+//        displayClear();
         // Can't use mod, as enums behave like an unsigned int, so (0-1)%n != n-1
         if (deviceStateInfo -> displayMode > 0) {
             deviceStateInfo -> displayMode--;
@@ -88,7 +88,7 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
         } else {
             if ((currentDisplayMode == DISPLAY_SET_GOAL) && checkButton(DOWN) == PUSHED) {
                 deviceStateInfo -> currentGoal = deviceStateInfo -> newGoal;
-                displayClear();
+//                displayClear();
                 deviceStateInfo -> displayMode = DISPLAY_STEPS;
 
                 allowLongPress = false; // Protection against double-registering as a short press then a long press

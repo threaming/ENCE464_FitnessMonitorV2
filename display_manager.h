@@ -26,7 +26,7 @@ typedef struct {
 
 void displayInit(void);
 void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed);
-void displayClear(void);
+//void displayClear(void);
 
 #define DISPLAY_WIDTH 16
 
