@@ -9,6 +9,8 @@
 #define STEP_COUNTER_MAIN_H_
 
 #define M_PER_STEP 9/10
+#define MAX_STR_LEN 16
+#define MESSAGE_FLASH_TICKS 10
 
 typedef enum {
     DISPLAY_STEPS = 0,
@@ -34,6 +36,11 @@ typedef struct {
     displayMode_t displayMode;
     displayUnits_t displayUnits;
     unsigned long workoutStartTick;
+
+    // For displaying temporary messages over the top of everything else
+    char *flashMessage;
+//    char flashMessage[MAX_STR_LEN];
+    unsigned long flashTicksLeft;
 } deviceStateInfo_t;
 
 

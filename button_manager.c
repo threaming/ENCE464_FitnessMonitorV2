@@ -18,6 +18,10 @@
 #include "button_manager.h"
 #include "switches.h"
 
+
+void flashMessage(deviceStateInfo_t* deviceStateInfo, char* toShow);
+
+
 void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
 {
     updateButtons();
@@ -78,6 +82,7 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
             longPressCount++;
             if (longPressCount >= LONG_PRESS_CYCLES) {
                 deviceStateInfo -> stepsTaken = 0;
+                flashMessage(deviceStateInfo, "Reset!");
             }
         } else {
             if ((currentDisplayMode == DISPLAY_SET_GOAL) && checkButton(DOWN) == PUSHED) {
@@ -108,5 +113,18 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
 
 
 //    return stepInfo;
+}
+
+
+void flashMessage(deviceStateInfo_t* deviceStateInfo, char* toShow)
+{
+    deviceStateInfo -> flashTicksLeft = MESSAGE_FLASH_TICKS;
+
+    uint8_t i = 0;
+    while (toShow[i] != '\0' && i < MAX_STR_LEN) {
+        (deviceStateInfo -> flashMessage)[i] = toShow[i];
+
+        i++;
+    }
 }
 

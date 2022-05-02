@@ -59,6 +59,17 @@ void displayInit(void)
 // Update the display
 void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed)
 {
+    // Check for flash message override
+    if (deviceState.flashTicksLeft != 0) {
+        char* emptyLine = "                ";
+        OLEDStringDraw (emptyLine, 0, 0);
+        displayLine(deviceState.flashMessage, 1, ALIGN_CENTRE);
+        OLEDStringDraw (emptyLine, 0, 2);
+        OLEDStringDraw (emptyLine, 0, 3);
+        return;
+    }
+
+
     uint32_t mTravelled = 0; // TODO: If I put this inside the case statement it won't compile. Work out why!
 
     switch (deviceState.displayMode) {

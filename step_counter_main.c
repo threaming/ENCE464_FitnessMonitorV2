@@ -52,7 +52,7 @@
 #endif // SERIAL_PLOTTING_ENABLED
 //#define SLOWTICK_RATE_HZ 100
 //#define ACC_DATA_RATE 200
-#define MAX_STR_LEN 16
+
 
 #define STEP_GOAL_ROUNDING 100
 #define STEP_THRESHOLD_HIGH 270
@@ -162,6 +162,9 @@ int main(void)
     deviceState.displayMode = DISPLAY_STEPS;
     deviceState.displayUnits= UNITS_SI;
     deviceState.workoutStartTick = 0;
+    deviceState.flashTicksLeft = 0;
+//    deviceState.flashMessage = ['R', 's', 't', '\0']; //"Testing";
+    deviceState.flashMessage = calloc(MAX_STR_LEN, sizeof(char));
 
     // Init libs
     initClock ();
@@ -217,6 +220,10 @@ int main(void)
         // Write to the display
         if (lastDisplayProcess + RATE_SYSTICK_HZ/RATE_DISPLAY_UPDATE_HZ < currentTick) {
             lastDisplayProcess = currentTick;
+
+            if (deviceState.flashTicksLeft > 0) {
+                deviceState.flashTicksLeft--;
+            }
 
             uint16_t secondsElapsed = (currentTick - deviceState.workoutStartTick)/RATE_SYSTICK_HZ;
             displayUpdate(deviceState, secondsElapsed);
