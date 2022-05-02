@@ -162,7 +162,7 @@ int main(void)
     unsigned long lastSerialProcess = 0;
     #endif // SERIAL_PLOTTING_ENABLED
 
-    uint8_t stepping = false;
+    uint8_t stepHigh = false;
     vector3_t mean;
 
     //TODO: Archive of previous code, remove if not needed
@@ -220,8 +220,8 @@ int main(void)
 
             uint16_t combined = sqrt(mean.x*mean.x + mean.y*mean.y + mean.z*mean.z);
 
-            if (combined >= STEP_THRESHOLD_HIGH && stepping == false) {
-                stepping = true;
+            if (combined >= STEP_THRESHOLD_HIGH && stepHigh == false) {
+                stepHigh = true;
                 deviceState.stepsTaken++;
 
                 // flash a message if the user has reached their goal
@@ -230,7 +230,7 @@ int main(void)
                 }
 
             } else if (combined <= STEP_THRESHOLD_LOW) {
-                stepping = false;
+                stepHigh = false;
             }
 
             // Don't start the workout until the user begins walking
