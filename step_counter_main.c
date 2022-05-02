@@ -135,14 +135,15 @@ unsigned long readCurrentTick(void)
 
 void flashMessage(char* toShow)
 {
+    deviceState.flashTicksLeft = RATE_DISPLAY_UPDATE_HZ * FLASH_MESSAGE_TIME;
+
     uint8_t i = 0;
     while (toShow[i] != '\0' && i < MAX_STR_LEN) {
         (deviceState.flashMessage)[i] = toShow[i];
 
         i++;
     }
-
-    deviceState.flashTicksLeft = RATE_DISPLAY_UPDATE_HZ * FLASH_MESSAGE_TIME;
+    deviceState.flashMessage)[i] = '\0';
 }
 
 
@@ -178,7 +179,7 @@ int main(void)
     deviceState.workoutStartTick = 0;
     deviceState.flashTicksLeft = 0;
 //    deviceState.flashMessage = ['R', 's', 't', '\0']; //"Testing";
-    deviceState.flashMessage = calloc(MAX_STR_LEN, sizeof(char));
+    deviceState.flashMessage = calloc(MAX_STR_LEN + 1, sizeof(char));
 
     // Init libs
     initClock ();
