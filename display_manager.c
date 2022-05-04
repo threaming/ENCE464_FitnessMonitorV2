@@ -85,7 +85,14 @@ void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed)
     case DISPLAY_DISTANCE:
         displayTime("Time:", secondsElapsed, 1, ALIGN_CENTRE);
         mTravelled = deviceState.stepsTaken * M_PER_STEP;
-        uint16_t speed = (mTravelled / secondsElapsed) * MS_TO_KMH; // in km/h
+
+        // Protection against division by zero
+        uint16_t speed;
+        if (secondsElapsed != 0) {
+            speed = (mTravelled / secondsElapsed) * MS_TO_KMH; // in km/h
+        } else {
+            speed = mTravelled * MS_TO_KMH; // if zero seconds elapsed, act as if it's at least one
+        }
 
         if (deviceState.displayUnits == UNITS_SI) {
             displayValue("Dist:", "km", mTravelled, 0, ALIGN_CENTRE, true);
