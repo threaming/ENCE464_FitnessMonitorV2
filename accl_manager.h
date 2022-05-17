@@ -10,13 +10,6 @@
 
 #include <stdint.h> // needed to init the vector type
 
-//typedef struct {
-//    int16_t x;
-//    int16_t y;
-//    int16_t z;
-//} vector3_t;
-
-
 
 void acclInit(void);       // set up library
 void acclProcess(void);     // Run periodically

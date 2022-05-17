@@ -11,7 +11,6 @@
 #include "inc/hw_types.h"
 #include "inc/hw_ints.h"
 #include "driverlib/gpio.h"
-// #include "driverlib/uart.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/systick.h"
 #include "driverlib/debug.h"
@@ -70,16 +69,6 @@ void acclProcess(void)
 // Return the mean acceleration stored within the circular buffers
 vector3_t acclMean(void)
 {
-//    return getAcclData();
-
-    // For some reason this for loop throws an error
-    // TODO: Work out why and solve it!
-    /*for (uint8_t i = 0; i < BUF_SIZE; i++) {
-        result.x = result.x + readCircBuf(&xBuffer);
-        result.y = result.y + readCircBuf(&yBuffer);
-        result.z = result.z + readCircBuf(&zBuffer);
-    }*/
-
     // Sum with 32-bit ints to prevent overflow, then dividing the total sum for better accuracy
     int32_t result_x = 0;
     int32_t result_y = 0;

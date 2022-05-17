@@ -1,8 +1,10 @@
 /*
  * display_manager.h
  *
+ * Handles drawing to the device's screen, given its current state
+ *
  *  Created on: 23/03/2022
- *      Author: mattr
+ *      Author: Matthew Suter
  */
 
 #ifndef DISPLAY_MANAGER_H_
@@ -24,9 +26,9 @@ typedef struct {
     displayMode_t displayMode;
 } stepsInfo_t;
 
-void displayInit(void);
-void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed);
-//void displayClear(void);
+
+void displayInit(void); // Initalize the display
+void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed); // Update the display, given the device's state and the length of the current workout
 
 #define DISPLAY_WIDTH 16
 

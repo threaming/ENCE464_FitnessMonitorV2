@@ -1,8 +1,10 @@
 /*
  * display_manager.c
  *
+ * Handles drawing to the device's screen, given its current state
+ *
  *  Created on: 23/03/2022
- *      Author: mattr
+ *      Author: Matthew Suter
  */
 
 
@@ -32,7 +34,6 @@
 //********************************************************
 
 #define KM_TO_MILES 62/100 // Multiply by 0.6215 to convert, this should be good enough
-// #define KPH_TO_MPH 62/100 // TODO: Rework so we don't need this constant
 #define MS_TO_KMH 36/10
 #define TIME_UNIT_SCALE 60
 
@@ -126,18 +127,6 @@ void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed)
         break;
     }
 }
-
-
-
-//void displayClear(void)
-//{
-//    char* toDraw = "                ";
-//    OLEDStringDraw (toDraw, 0, 0);
-//    OLEDStringDraw (toDraw, 0, 1);
-//    OLEDStringDraw (toDraw, 0, 2);
-//    OLEDStringDraw (toDraw, 0, 3);
-//}
-
 
 
 /*******************************************

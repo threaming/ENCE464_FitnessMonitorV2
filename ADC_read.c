@@ -27,21 +27,18 @@
 // Constants
 //*****************************************************************************
 #define ADC_BUF_SIZE 10
-//#define SAMPLE_RATE_HZ 10
 
 //*****************************************************************************
 // Global variables
 //*****************************************************************************
 static circBuf_t ADC_inBuffer;		// Buffer of size BUF_SIZE integers (sample values)
-//static uint32_t g_ulSampCnt;	// Counter for the interrupts
 
 //*****************************************************************************
 //
 // The interrupt handler for the for SysTick interrupt.
 //
 //*****************************************************************************
-void
-pollADC(void)
+void pollADC(void)
 {
     //
     // Initiate a conversion
@@ -56,12 +53,10 @@ pollADC(void)
 // Writes to the circular buffer.
 //
 //*****************************************************************************
-void
-ADCIntHandler(void)
+void ADCIntHandler(void)
 {
 	uint32_t ulValue;
 	
-	//
 	// Get the single sample from ADC0.  ADC_BASE is defined in
 	// inc/hw_memmap.h
 	ADCSequenceDataGet(ADC0_BASE, 3, &ulValue);
@@ -74,29 +69,10 @@ ADCIntHandler(void)
 }
 
 //*****************************************************************************
-// Initialisation functions for the clock (incl. SysTick), ADC, display
+// Initialisation functions for the ADC
 //*****************************************************************************
-//void
-//initClock (void)
-//{
-//    // Set the clock rate to 20 MHz
-//    SysCtlClockSet (SYSCTL_SYSDIV_10 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |
-//                   SYSCTL_XTAL_16MHZ);
-//    //
-//    // Set up the period for the SysTick timer.  The SysTick timer period is
-//    // set as a function of the system clock.
-//    SysTickPeriodSet(SysCtlClockGet() / SAMPLE_RATE_HZ);
-//    //
-//    // Register the interrupt handler
-//    SysTickIntRegister(SysTickIntHandler);
-//    //
-//    // Enable interrupt and device
-//    SysTickIntEnable();
-//    SysTickEnable();
-//}
 
-void 
-initADC (void)
+void initADC (void)
 {
     //
     initCircBuf (&ADC_inBuffer, ADC_BUF_SIZE);
@@ -142,64 +118,4 @@ uint32_t readADC() {
 
       return sum/ADC_BUF_SIZE;
 }
-
-//void
-//initDisplay (void)
-//{
-//    // intialise the Orbit OLED display
-//    OLEDInitialise ();
-//}
-
-//*****************************************************************************
-//
-// Function to display the mean ADC value (10-bit value, note) and sample count.
-//
-//*****************************************************************************
-//void
-//displayMeanVal(uint16_t meanVal, uint32_t count)
-//{
-//	char string[17];  // 16 characters across the display
-//
-//    OLEDStringDraw ("ADC demo 1", 0, 0);
-//
-//    // Form a new string for the line.  The maximum width specified for the
-//    //  number field ensures it is displayed right justified.
-//    usnprintf (string, sizeof(string), "Mean ADC = %4d", meanVal);
-//    // Update line on display.
-//    OLEDStringDraw (string, 0, 1);
-//
-//    usnprintf (string, sizeof(string), "Sample # %5d", count);
-//    OLEDStringDraw (string, 0, 3);
-//}
-
-//
-//int
-//main(void)
-//{
-//	uint16_t i;
-//	int32_t sum;
-//
-//	initClock ();
-//	initADC ();
-//	initDisplay ();
-//	initCircBuf (&ADC_inBuffer, BUF_SIZE);
-//
-//    //
-//    // Enable interrupts to the processor.
-//    IntMasterEnable();
-//
-//	while (1)
-//	{
-//		//
-//		// Background task: calculate the (approximate) mean of the values in the
-//		// circular buffer and display it, together with the sample number.
-//		sum = 0;
-//		for (i = 0; i < BUF_SIZE; i++)
-//			sum = sum + readCircBuf (&ADC_inBuffer);
-//		// Calculate and display the rounded mean of the buffer contents
-//		displayMeanVal ((2 * sum + BUF_SIZE) / 2 / BUF_SIZE, g_ulSampCnt);
-//
-//		SysCtlDelay (SysCtlClockGet() / 6);  // Update display at ~ 2 Hz
-//	}
-//}
 

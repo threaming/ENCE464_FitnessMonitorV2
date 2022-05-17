@@ -11,6 +11,9 @@
 #define M_PER_STEP 9/10
 #define MAX_STR_LEN 16
 
+#define DEBUG_STEP_INCREMENT 100
+#define DEBUG_STEP_DECREMENT 500
+
 typedef enum {
     DISPLAY_STEPS = 0,
     DISPLAY_DISTANCE,
@@ -30,7 +33,6 @@ typedef struct {
     uint32_t stepsTaken;
     uint32_t currentGoal;       // Goal the user is aiming for
     uint32_t newGoal;           // Value from the potentiometer, processed to give a new goal
-//    uint16_t secondsElapsed;    // Time the user has been running for
     bool debugMode;             // Is enable/disable debug functionality
     displayMode_t displayMode;
     displayUnits_t displayUnits;
@@ -38,7 +40,6 @@ typedef struct {
 
     // For displaying temporary messages over the top of everything else
     char *flashMessage;
-//    char flashMessage[MAX_STR_LEN];
     unsigned long flashTicksLeft;
 } deviceStateInfo_t;
 

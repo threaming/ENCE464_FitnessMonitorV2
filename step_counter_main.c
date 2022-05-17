@@ -2,11 +2,13 @@
  * Step_Counter_Main.c
  *
  *  Created on: 23/03/2022
- *      Author: mattr
+ *      Authors: Matthew Suter, Daniel Rabbidge, Timothy Preston-Marshall
+ *
+ *  Main code for the ENCE361 step counter project
  */
 
 // Comment this out to disable serial plotting
-#define SERIAL_PLOTTING_ENABLED
+//#define SERIAL_PLOTTING_ENABLED
 
 
 #include <stdint.h>
@@ -16,7 +18,6 @@
 #include "inc/hw_types.h"
 #include "inc/hw_ints.h"
 #include "driverlib/gpio.h"
-// #include "driverlib/uart.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/systick.h"
 #include "driverlib/debug.h"
@@ -25,14 +26,15 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "utils/ustdlib.h"
-#include "buttons4.h"
 #include "acc.h"
 #include "math.h"
 #include "circBufV.h"
 #include "ADC_read.h"
 
-
+#ifdef SERIAL_PLOTTING_ENABLED
 #include "serial_sender.h"
+#endif //SERIAL_PLOTTING_ENABLED
+
 #include "accl_manager.h"
 #include "display_manager.h"
 #include "button_manager.h"
@@ -51,8 +53,6 @@
 #ifdef SERIAL_PLOTTING_ENABLED
 #define RATE_SERIAL_PLOT_HZ 100
 #endif // SERIAL_PLOTTING_ENABLED
-//#define SLOWTICK_RATE_HZ 100
-//#define ACC_DATA_RATE 200
 
 
 #define STEP_GOAL_ROUNDING 100
@@ -87,7 +87,6 @@ deviceStateInfo_t deviceState; // Stored as one global so it can be accessed by 
 void SysTickIntHandler (void)
 {
     ticksElapsed++;
-//    ADCTickIntHandler();
 }
 
 
@@ -103,7 +102,6 @@ void initClock (void)
 
 void initSysTick (void)
 {
-    //
     // Set up the period for the SysTick timer.  The SysTick timer period is
     // set as a function of the system clock.
     SysTickPeriodSet (SysCtlClockGet () / RATE_SYSTICK_HZ);
@@ -166,32 +164,30 @@ int main(void)
     uint8_t stepHigh = false;
     vector3_t mean;
 
-    //TODO: Archive of previous code, remove if not needed
-    //displayMode_t displayMode = DISPLAY_STEPS; // Assigns the initial state
-    //uint32_t steps = 0;
-
     // Device state
     // Omnibus struct that holds loads of info about the device's current state, so it can be updated from any function
     deviceState.displayMode = DISPLAY_STEPS;
-    deviceState.stepsTaken = 123; // 0; Milestone 1 requires a non-zero starting number of steps!
+    deviceState.stepsTaken = 0;
     deviceState.currentGoal = TARGET_DISTANCE_DEFAULT;
     deviceState.debugMode = false;
     deviceState.displayMode = DISPLAY_STEPS;
     deviceState.displayUnits= UNITS_SI;
     deviceState.workoutStartTick = 0;
     deviceState.flashTicksLeft = 0;
-//    deviceState.flashMessage = ['R', 's', 't', '\0']; //"Testing";
     deviceState.flashMessage = calloc(MAX_STR_LEN + 1, sizeof(char));
 
     // Init libs
-    initClock ();
-    displayInit ();
-    initButtons ();
-    SerialInit ();
-    initSysTick ();
-    acclInit ();
+    initClock();
+    displayInit();
+    btnInit();
+    initSysTick();
+    acclInit();
     initADC();
-    initSwitch();
+
+    #ifdef SERIAL_PLOTTING_ENABLED
+    SerialInit ();
+    #endif // SERIAL_PLOTTING_ENABLED
+
 
     while(1)
     {
@@ -201,6 +197,7 @@ int main(void)
         if (lastIoProcess + RATE_SYSTICK_HZ/RATE_IO_HZ < currentTick) {
             lastIoProcess = currentTick;
 
+//            updateSwitch();
             btnUpdateState(&deviceState);
             pollADC();
 

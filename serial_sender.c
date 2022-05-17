@@ -1,8 +1,10 @@
 /*
  * serial_sender.c
  *
+ * Sends comma-separated values over serial to a plotter
+ *
  *  Created on: 23/03/2022
- *      Author: mattr
+ *      Author: Matt Suter
  */
 
 #include <stdint.h>
@@ -93,13 +95,6 @@ void SerialSend (char *pucBuffer)
 void SerialPlot(int16_t value1, int16_t value2, int16_t value3, int16_t value4)
 {
     usprintf(sendStr, "%d, %d, %d, %d\n", value1, value2, value3, value4); // * usprintf
-    // usprintf (statusStr, "%d, %d\n", steps, combined);
     SerialSend(sendStr);
 }
-
-/*******************************************
- *      Local Functions
- *******************************************/
-
-
 
