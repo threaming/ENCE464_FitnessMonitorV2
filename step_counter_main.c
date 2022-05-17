@@ -261,9 +261,9 @@ int main(void)
 
 
         // Protection in the unlikely case the device is left running for long enough for the system tick counter to overflow
-        // Prevent the last process ticks from being 'in the future', which would prevent the update functions,
+        // This prevents the last process ticks from being 'in the future', which would prevent the update functions from being called,
         // rendering the device inoperable.
-        // This would take ~49 days, but maybe it could be left in a drawer without being turned off?
+        // This would take ~49 days, but is not impossible if the user forgets to turn it off before they put it away (assuming th battery lasts that long)
         if (currentTick < lastIoProcess) {
             lastIoProcess = 0;
         }
