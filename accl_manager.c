@@ -32,7 +32,7 @@
 //********************************************************
 // Constants and static vars
 //********************************************************
-#define BUF_SIZE 25 // WARNING: If this is set too high, we run out of heap space and the z-buffer gets garbled data
+#define BUF_SIZE 20 // WARNING: If this is set too high, we run out of heap space and the z-buffer gets garbled data
 
 
 static circBufVec_t acclBuffer;
