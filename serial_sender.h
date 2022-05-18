@@ -5,6 +5,8 @@
  *
  *  Created on: 23/03/2022
  *      Author: Matt Suter
+ *
+ *  FitnessThur9-1
  */
 
 #ifndef SERIAL_SENDER_H_

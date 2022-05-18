@@ -3,6 +3,8 @@
  *
  *  Created on: 1/04/2022
  *      Author: Daniel Rabbidge
+ *
+ *  FitnessThur9-1
  */
 
 #ifndef BUTTON_MANAGER_H_

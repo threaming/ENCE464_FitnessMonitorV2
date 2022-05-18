@@ -2,7 +2,9 @@
  * accl_manager.h
  *
  *  Created on: 23/03/2022
- *      Author: mattr
+ *      Author: Matt Suter
+ *
+ *  FitnessThur9-1
  */
 
 #ifndef ACCL_MANAGER_H_

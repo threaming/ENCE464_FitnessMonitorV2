@@ -5,6 +5,8 @@
 // Header file for switch reading module
 // Daniel Rabbidge
 //
+// FitnessThur9-1
+//
 // *******************************************************
 
 #include <stdint.h>

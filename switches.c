@@ -3,6 +3,8 @@
  * Created 21/4/22
  * Author: Daniel Rabbidge
  * Based on the structure of buttons4.c by P.J Bones
+ *
+ * FitnessThur9-1
  */
 
 #include <stdint.h>

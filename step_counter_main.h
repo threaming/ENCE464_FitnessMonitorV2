@@ -2,7 +2,9 @@
  * display_manager.h
  *
  *  Created on: 10/04/2022
- *      Author: mattr
+ *      Author: Matthew Suter, Tim Preston-Marshall, Daniel Rabbidge
+ *
+ *  FitnessThur9-1
  */
 
 #ifndef STEP_COUNTER_MAIN_H_

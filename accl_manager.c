@@ -2,6 +2,8 @@
  * Acceleration Manager
  * Matt Suter, Tim Preston-Marshall, Daniel Rabbidge
  * ENCE361 2022
+ *
+ * FitnessThur9-1
  */
 
 #include <stdint.h>

@@ -5,6 +5,8 @@
  *      Authors: Matthew Suter, Daniel Rabbidge, Timothy Preston-Marshall
  *
  *  Main code for the ENCE361 step counter project
+ *
+ *  FitnessThur9-1
  */
 
 // Comment this out to disable serial plotting
