@@ -13,7 +13,7 @@
 #include <stdint.h> // needed to init the vector type
 
 
-void acclInit(void);       // set up library
+void acclInit(void);        // set up library
 void acclProcess(void);     // Run periodically
 vector3_t acclMean(void);   // Return mean acceleration, calculated using circular buffers
 

@@ -17,6 +17,6 @@
 
 void SerialInit (void); // Init this library
 void SerialSend (char *pucBuffer); // Send an arbitrary string over serial
-void SerialPlot(int16_t value1, int16_t value2, int16_t value3, int16_t value4); // Send four values over serial, to be used by a plotter programme
+void SerialPlot(int16_t value1, int16_t value2, int16_t value3, int16_t value4); // Send four values over serial, to be used by a plotter program
 
 #endif /* SERIAL_SENDER_H_ */

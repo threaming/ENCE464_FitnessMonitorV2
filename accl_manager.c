@@ -35,9 +35,8 @@
 // Constants and static vars
 //********************************************************
 #define BUF_SIZE 20 // WARNING: If this is set too high, we run out of heap space and the z-buffer gets garbled data
-
-
 static circBufVec_t acclBuffer;
+
 
 
 /*******************************************
@@ -45,6 +44,8 @@ static circBufVec_t acclBuffer;
  *******************************************/
 void initAcclChip(void);
 vector3_t getAcclData(void);
+
+
 
 /*******************************************
  *      Global functions
@@ -135,7 +136,6 @@ void initAcclChip(void)
     toAccl[0] = ACCL_PWR_CTL;
     toAccl[1] = ACCL_MEASURE;
     I2CGenTransmit(toAccl, 1, WRITE, ACCL_ADDR);
-
 
     toAccl[0] = ACCL_BW_RATE;
     toAccl[1] = ACCL_RATE_100HZ;

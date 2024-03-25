@@ -96,7 +96,7 @@ void SerialSend (char *pucBuffer)
 // Plot four values over serial
 void SerialPlot(int16_t value1, int16_t value2, int16_t value3, int16_t value4)
 {
-    usprintf(sendStr, "%d, %d, %d, %d\n", value1, value2, value3, value4); // * usprintf
+    usprintf(sendStr, "%d, %d, %d, %d\n", value1, value2, value3, value4);
     SerialSend(sendStr);
 }
 

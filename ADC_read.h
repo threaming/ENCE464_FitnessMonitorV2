@@ -12,7 +12,7 @@
 void ADCIntHandler(void);
 
 void initADC (void);
-void pollADC(void);
-uint32_t readADC(void);
+void pollADC(void);         // Called periodically at high frequency
+uint32_t readADC(void);     // Call to read the averaged readings from the buffer
 
 #endif //ADC_READ_H_

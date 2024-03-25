@@ -67,10 +67,10 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
 
     // Enable/Disable test mode
     if (isSwitchUp()) {
-            deviceStateInfo -> debugMode = true;
-        } else {
-            deviceStateInfo -> debugMode = false;
-        }
+        deviceStateInfo -> debugMode = true;
+    } else {
+        deviceStateInfo -> debugMode = false;
+    }
 
 
     // Usage of UP and DOWN buttons
@@ -113,7 +113,7 @@ void btnUpdateState(deviceStateInfo_t* deviceStateInfo)
                 deviceStateInfo -> currentGoal = deviceStateInfo -> newGoal;
                 deviceStateInfo -> displayMode = DISPLAY_STEPS;
 
-                allowLongPress = false; // Protection against double-registering as a short press then a long press
+                allowLongPress = false; // Hacky solution: Protection against double-registering as a short press then a long press
             }
             longPressCount = 0;
         }

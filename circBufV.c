@@ -1,6 +1,6 @@
 // *******************************************************
 // 
-// circBufT.c
+// circBufV.c
 //
 // Support for a circular buffer of vector3 (3*int16_t) values on the
 //  Tiva processor.
