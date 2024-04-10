@@ -1,10 +1,10 @@
 PROJECT_DIR = ../..
 
-VPATH = OrbitOLED OrbitOLED/lib_OrbitOled
+VPATH = ${PROJECT_DIR}/OrbitOLED ${PROJECT_DIR}/OrbitOLED/lib_OrbitOled
 SRC = \
 	pwm-oled.c \
 	buttons.c \
 	OrbitOLEDInterface.c \
-	$(notdir $(wildcard OrbitOLED/lib_OrbitOled/*.c))
+	$(notdir $(wildcard ${PROJECT_DIR}/OrbitOLED/lib_OrbitOled/*.c))
 
 include $(PROJECT_DIR)/tiva-freertos.mk
