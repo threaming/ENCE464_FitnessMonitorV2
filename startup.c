@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "driverlib/fpu.h"
 
 #define WEAK __attribute__((weak))
 #define UNUSED(x) ((void)(x))
@@ -213,6 +214,8 @@ ResetISR(void) {
 
     /* Call constructors and init functions.   */
     __libc_init_array ();
+
+    FPUEnable();
 
     /* Run user code. */
     main ();
