@@ -14,8 +14,9 @@ debugging common errors.
 
 ## Directory structure
 
-* `apps/`: Programs for the device; contains a number of demo programs.
-* `FreeRTOS-Kernel-10.4.6/`: FreeRTOS kernel source
+* `fitness-tracker/`: Contains source code for the project.
+* `test-apps/`: Programs for the device; contains a number of demo programs.
+* `freertos`: A git submodule that links to the FreeRTOS kernel.
 * `FreeRTOSConfig.h`: FreeRTOS config header (see FreeRTOS docs)
 * `SW-TM4C-2.2.0.295/`: Header files, source files, and precompiled static
   libraries for the TivaWare SDK, which provides a hardware abstraction library
@@ -23,11 +24,9 @@ debugging common errors.
 * `scripts/`: Linker script and GDB configs
 * `startup.c`: MCU initialisation code; contains fault handler functions which
   can be customised for custom error handling (e.g., toggle a GPIO).
-* `scripts/`: User programs; currently contains two demo programs: `blinky`
-  (simple LED flasher) and `usb_serial`.
 * `tiva-freertos.mk`: Makefile fragment for building and programming using GCC
   and OpenOCD with TivaWare and FreeRTOS. Include in your top-level Makefile.
-  (See Makefiles in demo programs in `apps` directory.)
+  (See Makefiles in demo programs in `test-apps` directory.)
 
 ## Note on path names
 
@@ -106,9 +105,9 @@ include $(PROJECT_DIR)/tiva-freertos.mk
 ```
 
 In order to follow software engineering best practices in this project, you
-should minimise code repetition between both boards. For example, you might
-write a common PWM duty cycle reader for both boards (since they both require
-this) that has this directory structure:
+should minimise code repetition between multiple apps. For example, you might
+write a common PWM duty cycle reader for multiple programs that has this
+directory structure:
 
     libs/
     ├── include
@@ -143,6 +142,10 @@ this README to explain your structure.
 
 ### FreeRTOS configuration
 
+The inclusion of FreeRTOS in your project is determined via the `USE_FREERTOS`
+Makefile variable; by default this is set to `1` (true) in tiva-freertos.mk.
+However, each program's makefile can override this.
+
 The FreeRTOS architecture is set via the `FREERTOS_ARCH` Makefile variable; by
 default this is set to `GCC/ARM_CM4F`.
 
@@ -158,7 +161,7 @@ heap implementations.
 
 ### Command line
 
-Navigate to the any of the apps provided (where a Makefile is present) and the
+Navigate to any of the apps provided (where a Makefile is present) and the
 following targets are available:
 
 * `make` (or `make all`): Build the source code into a binary; build outputs are
@@ -270,9 +273,10 @@ machines.)
 ## Coding style
 
 You will note that there are a variety of coding styles present in this project.
-TivaWare uses CamelCase, FreeRTOS uses a prefixed CamelCase, and I use
-snake_case. I suggest picking whichever you prefer and sticking with it.
-CamelCase would be a good choice here as it is similar to the existing code.
+TivaWare uses camelCase, FreeRTOS uses a prefixed camelCase, and the original
+code authors use camelCase. I suggest picking whichever you prefer and sticking
+with it. camelCase would be a good choice here as it is similar to the existing 
+code.
 
 According to
 [FreeRTOS](https://www.freertos.org/FreeRTOS-Coding-Standard-and-Style-Guide.html),
