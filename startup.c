@@ -13,9 +13,15 @@ void NmiSR(void);
 void FaultISR(void);
 void IntDefaultHandler(void);
 
+#ifdef USE_FREERTOS
 extern void xPortPendSVHandler( void );
 extern void xPortSysTickHandler( void );
 extern void vPortSVCHandler( void );
+#else
+#define xPortPendSVHandler IntDefaultHandler
+#define xPortSysTickHandler IntDefaultHandler
+#define vPortSVCHandler IntDefaultHandler
+#endif
 
 extern char __stack_start__;    /** Initial value for the stack pointer.  */
 extern char __vectors_start__;  /** Start of vector table.  */

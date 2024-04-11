@@ -24,6 +24,7 @@ endif
 
 OPENOCD ?= openocd
 
+USE_FREERTOS ?= 1
 FREERTOS_ARCH ?= GCC/ARM_CM4F
 FREERTOS_PORT_SRC ?= port.c
 FREERTOS_HEAP_IMPL ?= heap_4
@@ -53,11 +54,20 @@ FREERTOS_SRC = \
 	$(FREERTOS_DIR)/portable/MemMang/$(FREERTOS_HEAP_IMPL).c \
 	$(addprefix $(FREERTOS_ARCH_DIR)/,$(FREERTOS_PORT_SRC))
 
-SRC += startup.c $(notdir $(TIVAWARE_SRC) $(FREERTOS_SRC))
-OBJS = $(addprefix $(BUILD_DIR)/, $(patsubst %.c,%.o,$(SRC)))
-VPATH += $(PROJECT_DIR) $(sort $(dir $(TIVAWARE_SRC) $(FREERTOS_SRC)))
+SRC += startup.c $(notdir $(TIVAWARE_SRC))
+VPATH += $(PROJECT_DIR) $(sort $(dir $(TIVAWARE_SRC)))
 LDLIBS += $(TIVAWARE_LIBS)
-INCLUDES += -I"$(PROJECT_DIR)" $(FREERTOS_INCLUDES) $(TIVAWARE_INCLUDES)
+INCLUDES += -I"$(PROJECT_DIR)" $(TIVAWARE_INCLUDES)
+ifneq ($(USE_FREERTOS),0)
+	SRC += $(notdir $(FREERTOS_SRC))
+	VPATH += $(sort $(dir $(FREERTOS_SRC)))
+	INCLUDES += $(FREERTOS_INCLUDES)
+	CFLAGS += -DUSE_FREERTOS
+else
+	CFLAGS += -UUSE_FREERTOS
+endif
+
+OBJS = $(addprefix $(BUILD_DIR)/, $(patsubst %.c,%.o,$(SRC)))
 DEPS = $(patsubst %.o,%.d,$(OBJS))
 
 CFLAGS += \

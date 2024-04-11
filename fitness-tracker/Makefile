@@ -17,4 +17,6 @@ SRC = \
 	$(notdir $(wildcard ${PROJECT_DIR}/OrbitOLED/lib_OrbitOled/*.c)) \
 	$(notdir $(wildcard ${PROJECT_DIR}/OrbitOLED/*.c))
 
+USE_FREERTOS = 0
+
 include $(PROJECT_DIR)/tiva-freertos.mk
