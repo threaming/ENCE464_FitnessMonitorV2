@@ -73,6 +73,8 @@ DEPS = $(patsubst %.o,%.d,$(OBJS))
 CFLAGS += \
 	-mcpu=cortex-m4 \
 	-mthumb \
+	-specs=nano.specs \
+	-specs=nosys.specs \
 	-mfloat-abi=hard \
 	-mfpu=fpv4-sp-d16 \
 	-DPART_TM4C123GH6PM \
@@ -84,6 +86,8 @@ LDFLAGS += \
 	-T$(SCRIPTS_DIR)/link.ld \
 	-mcpu=cortex-m4 \
 	-mthumb \
+	-specs=nano.specs \
+	-specs=nosys.specs \
 	-mfloat-abi=hard \
 	-mfpu=fpv4-sp-d16 \
 	$(LDFLAGS_EXTRA)
