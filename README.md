@@ -14,7 +14,7 @@ debugging common errors.
 
 ## Directory structure
 
-* `fitness-tracker/`: Contains source code for the project.
+* `src/`: Contains source code for the project.
 * `test-apps/`: Programs for the device; contains a number of demo programs.
 * `freertos`: A git submodule that links to the FreeRTOS kernel.
 * `FreeRTOSConfig.h`: FreeRTOS config header (see FreeRTOS docs)
