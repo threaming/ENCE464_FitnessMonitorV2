@@ -1,6 +1,7 @@
 PROJECT_DIR = ..
 
 VPATH = ${PROJECT_DIR}/OrbitOLED ${PROJECT_DIR}/OrbitOLED/lib_OrbitOled
+LDLIBS = -lm
 SRC = \
 	accl_manager.c \
 	ADC_read.c \
