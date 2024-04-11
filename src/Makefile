@@ -1,6 +1,5 @@
 PROJECT_DIR = ..
 
-VPATH = ${PROJECT_DIR}/OrbitOLED ${PROJECT_DIR}/OrbitOLED/lib_OrbitOled
 LDLIBS = -lm
 SRC = \
 	accl_manager.c \
@@ -13,10 +12,9 @@ SRC = \
 	i2c_driver.c \
 	serial_sender.c \
 	step_counter_main.c \
-	switches.c \
-	$(notdir $(wildcard ${PROJECT_DIR}/OrbitOLED/lib_OrbitOled/*.c)) \
-	$(notdir $(wildcard ${PROJECT_DIR}/OrbitOLED/*.c))
+	switches.c
 
 USE_FREERTOS = 0
 
+include $(PROJECT_DIR)/libs/OrbitOLED/orbit-oled.mk
 include $(PROJECT_DIR)/tiva-freertos.mk
