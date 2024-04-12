@@ -1,11 +1,16 @@
-# ENCE 464 TivaWare + FreeRTOS + GCC + OpenOCD Makefile Example
+# ENCE464 Fitness Tracker Project
 
-This project is an example of how the TM4C microcontrollers can be programmed
-using GCC and OpenOCD as the primary toolchain. This includes the TivaWare and
-FreeRTOS libraries also.
+This project is based on the final code submission for an ENCE361 project 
+developed by the students Matthew Suter, Daniel Rabbidge, Timothy Preston-Marshall. 
+The project has been adapted to be programmed using command-line and VS Code.
 
-This repository has been adapted fron Ben Mitchell's
-[original](https://eng-git.canterbury.ac.nz/bmi32/464_freertos_makefile).
+The project set up has been ported from these repositories:
+[Ben Mitchell's](https://eng-git.canterbury.ac.nz/bmi32/464_freertos_makefile) &
+[Harry Mander's](https://eng-git.canterbury.ac.nz/hma199/tivaware-freertos).
+The following is a summary of what is supported:
+* **Toolchain:** Make, GCC, OpenOCD, GDB 
+* **Libraries:** TivaWare, FreeRTOS
+* **IDE support:** VS Code
 
 See [the FAQ](./FAQ.md) for answers to some common questions and tips for
 debugging common errors.
@@ -29,7 +34,7 @@ debugging common errors.
   can be customised for custom error handling (e.g., toggle a GPIO).
 * `tiva-freertos.mk`: Makefile fragment for building and programming using GCC
   and OpenOCD with TivaWare and FreeRTOS. Include in your top-level Makefile.
-  (See Makefiles in demo programs in `test-apps` directory.)
+  (See Makefiles in demo programs in `demos/` directory.)
 
 ## Note on path names
 
