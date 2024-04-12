@@ -107,23 +107,24 @@ SRC = blinky.c
 include $(PROJECT_DIR)/tiva-freertos.mk
 ```
 
-In order to follow software engineering best practices in this project, you
-should minimise code repetition between multiple apps. For example, you might
-write a common PWM duty cycle reader for multiple programs that has this
-directory structure:
+To improve ease of testing, you should try to keep your hardware-specific code
+separate from your application code or libraries. For example, you may write
+a module that implements a circular buffer with this directory structure:
 
-    libs/
-    ├── include
-    │   └── pwm.h
-    ├── libs.mk
-    └── pwm.c
+```
+libs/
+└── circbuf
+    ├── circbuf.c
+    ├── circbuf.h
+    └── circbuf.mk
+```
 
-Then in `libs.mk`:
+Then in `circbuf.mk`:
 
 ```makefile
-VPATH += $(PROJECT_DIR)/libs
-SRC += pwm.c
-INCLUDES += -I"$(PROJECT_DIR)/libs/include"
+VPATH += $(PROJECT_DIR)/libs/circbuf
+SRC += circbuf.c
+INCLUDES += -I"$(PROJECT_DIR)/libs/circbuf"
 ```
 
 (The [VPATH
@@ -133,7 +134,7 @@ directory of the main Makefile that includes it as well as the source
 directories for FreeRTOS and TivaWare.) Then add to your program's Makefile:
 
 ```makefile
-include $(PROJECT_DIR)/libs/libs.mk
+include $(PROJECT_DIR)/libs/circbuf/circbuf.mk
 ```
 
 **Before** the `include $(PROJECT_DIR)/tiva-freertos.mk` line.
