@@ -15,12 +15,15 @@ debugging common errors.
 ## Directory structure
 
 * `src/`: Contains source code for the project.
-* `test-apps/`: Programs for the device; contains a number of demo programs.
-* `freertos`: A git submodule that links to the FreeRTOS kernel.
+* `demos/`: A number of simple demo programs showing FreeRTOS and TivaWare
+  usage.
+* `freertos/`: FreeRTOS kernel.
 * `FreeRTOSConfig.h`: FreeRTOS config header (see FreeRTOS docs)
-* `SW-TM4C-2.2.0.295/`: Header files, source files, and precompiled static
+* `tivaware/`: Header files, source files, and precompiled static
   libraries for the TivaWare SDK, which provides a hardware abstraction library
   for the Tiva's peripherals (e.g., PWM, GPIO).
+* `libs/`: Additional libraries, currently contains a library for writing to the
+  Orbit BoosterPack's OLED display.
 * `scripts/`: Linker script and GDB configs
 * `startup.c`: MCU initialisation code; contains fault handler functions which
   can be customised for custom error handling (e.g., toggle a GPIO).
@@ -88,12 +91,12 @@ remember to change the path of the above command.)
 
 ### Makefiles
 
-Each program you develop (e.g., vehicle simulator and ABS controller) should
-include `tiva-freertos.mk` in its Makefile. Before including this file, you need
-to set the `PROJECT_DIR` variable to the path of the top level directory (i.e.
-this directory which contains `tiva-freertos.mk`) relative to the Makefile.
+Each program you develop for the target should include `tiva-freertos.mk` in its
+Makefile. Before including this file, you need to set the `PROJECT_DIR` variable
+to the path of the top level directory (i.e. this directory which contains
+`tiva-freertos.mk`) relative to the location Makefile.
 
-The `apps/blinky` program provides an example of a simple single-file
+The program in `demos/blinky` provides an example of a simple single-file
 application:
 
 ```makefile
@@ -104,23 +107,24 @@ SRC = blinky.c
 include $(PROJECT_DIR)/tiva-freertos.mk
 ```
 
-In order to follow software engineering best practices in this project, you
-should minimise code repetition between multiple apps. For example, you might
-write a common PWM duty cycle reader for multiple programs that has this
-directory structure:
+To improve ease of testing, you should try to keep your hardware-specific code
+separate from your application code or libraries. For example, you may write
+a module that implements a circular buffer with this directory structure:
 
-    libs/
-    ├── include
-    │   └── pwm.h
-    ├── libs.mk
-    └── pwm.c
+```
+libs/
+└── circbuf
+    ├── circbuf.c
+    ├── circbuf.h
+    └── circbuf.mk
+```
 
-Then in `libs.mk`:
+Then in `circbuf.mk`:
 
 ```makefile
-VPATH += $(PROJECT_DIR)/libs
-SRC += pwm.c
-INCLUDES += -I"$(PROJECT_DIR)/libs/include"
+VPATH += $(PROJECT_DIR)/libs/circbuf
+SRC += circbuf.c
+INCLUDES += -I"$(PROJECT_DIR)/libs/circbuf"
 ```
 
 (The [VPATH
@@ -130,7 +134,7 @@ directory of the main Makefile that includes it as well as the source
 directories for FreeRTOS and TivaWare.) Then add to your program's Makefile:
 
 ```makefile
-include $(PROJECT_DIR)/libs/libs.mk
+include $(PROJECT_DIR)/libs/circbuf/circbuf.mk
 ```
 
 **Before** the `include $(PROJECT_DIR)/tiva-freertos.mk` line.
