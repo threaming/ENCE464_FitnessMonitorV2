@@ -1,5 +1,3 @@
-PROJECT_DIR = ..
-
 LDLIBS = -lm
 SRC = \
 	accl_manager.c \
@@ -14,7 +12,5 @@ SRC = \
 	step_counter_main.c \
 	switches.c
 
-USE_FREERTOS = 0
-
-include $(PROJECT_DIR)/libs/OrbitOLED/orbit-oled.mk
-include $(PROJECT_DIR)/tiva-freertos.mk
+include ../libs/OrbitOLED/orbit-oled.mk
+include ../make.mk

@@ -22,19 +22,18 @@ debugging common errors.
 * `src/`: Contains source code for the project.
 * `demos/`: A number of simple demo programs showing FreeRTOS and TivaWare
   usage.
-* `freertos/`: FreeRTOS kernel.
 * `FreeRTOSConfig.h`: FreeRTOS config header (see FreeRTOS docs)
-* `tivaware/`: Header files, source files, and precompiled static
-  libraries for the TivaWare SDK, which provides a hardware abstraction library
-  for the Tiva's peripherals (e.g., PWM, GPIO).
-* `libs/`: Additional libraries, currently contains a library for writing to the
-  Orbit BoosterPack's OLED display.
+* `libs/`: Additional libraries, currently contains the TivaWare SDK, FreeRTOS
+  kernel, and OrbitOLED library.
 * `scripts/`: Linker script and GDB configs
 * `startup.c`: MCU initialisation code; contains fault handler functions which
   can be customised for custom error handling (e.g., toggle a GPIO).
-* `tiva-freertos.mk`: Makefile fragment for building and programming using GCC
-  and OpenOCD with TivaWare and FreeRTOS. Include in your top-level Makefile.
+* `make.mk`: Makefile fragment for building and programming using GCC and
+  OpenOCD with TivaWare and FreeRTOS. Include last in your top-level Makefile.
   (See Makefiles in demo programs in `demos/` directory.)
+* `toolchains/`: Contains Makefile fragments for specifying the compiler
+  toolchains for targetting different platforms (i.e. the microcontroller or the
+  build host).
 
 ## Note on path names
 
@@ -79,7 +78,7 @@ The following packages are expected to be on PATH:
 * `openocd`
 
 Note: if your system provides `gdb-multiarch` instead, you will need to edit
-`tiva-freertos.mk` to account for this.
+`toolchain/tm4c.mk` to account for this.
 
 On the Windows machines in the Embedded Systems Laboratory run the following
 command in a Command Prompt window to add the toolchain to your path:
@@ -96,20 +95,18 @@ remember to change the path of the above command.)
 
 ### Makefiles
 
-Each program you develop for the target should include `tiva-freertos.mk` in its
-Makefile. Before including this file, you need to set the `PROJECT_DIR` variable
-to the path of the top level directory (i.e. this directory which contains
-`tiva-freertos.mk`) relative to the location Makefile.
+Each program you develop for the target should include `make.mk` in its Makefile
+alongside the Makefile fragments for any other libraries you require (e.g.
+FreeRTOS, OrbitOLED).
 
 The program in `demos/blinky` provides an example of a simple single-file
 application:
 
 ```makefile
-PROJECT_DIR = ../..
-
 SRC = blinky.c
 
-include $(PROJECT_DIR)/tiva-freertos.mk
+include ../../libs/freertos/freertos.mk
+include ../../make.mk  # should be included after other libraries
 ```
 
 To improve ease of testing, you should try to keep your hardware-specific code
@@ -127,33 +124,30 @@ libs/
 Then in `circbuf.mk`:
 
 ```makefile
-VPATH += $(PROJECT_DIR)/libs/circbuf
+# Store the path of the current file (circbuf.mk) in CIRCBUF_DIR
+CIRCBUF_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
+
+VPATH += $(CIRCBUF_DIR)
 SRC += circbuf.c
-INCLUDES += -I"$(PROJECT_DIR)/libs/circbuf"
+INCLUDES += -I"$(CIRCBUF_DIR)"
 ```
 
 (The [VPATH
 variable](https://www.gnu.org/software/make/manual/html_node/General-Search.html)
-tells make where to look for source files: `tiva-freertos.mk` already adds the
-directory of the main Makefile that includes it as well as the source
-directories for FreeRTOS and TivaWare.) Then add to your program's Makefile:
+tells make where to look for source files.) Then add to your program's Makefile:
 
 ```makefile
-include $(PROJECT_DIR)/libs/circbuf/circbuf.mk
+include ../libs/circbuf/circbuf.mk
 ```
 
-**Before** the `include $(PROJECT_DIR)/tiva-freertos.mk` line.
+**Before** the `include ../make.mk` line.
 
 **This is just one way to do it**: design your project structure however you see
 fit. You are more than welcome to change the structure of this entire repository
-including the `tiva-freertos.mk` to suit your project; just make sure you update
+including the `make.mk` to suit your project; just make sure you update
 this README to explain your structure.
 
 ### FreeRTOS configuration
-
-The inclusion of FreeRTOS in your project is determined via the `USE_FREERTOS`
-Makefile variable; by default this is set to `1` (true) in tiva-freertos.mk.
-However, each program's makefile can override this.
 
 The FreeRTOS architecture is set via the `FREERTOS_ARCH` Makefile variable; by
 default this is set to `GCC/ARM_CM4F`.

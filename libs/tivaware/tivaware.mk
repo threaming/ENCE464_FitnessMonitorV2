@@ -1,0 +1,10 @@
+TIVAWARE_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
+
+TIVAWARE_INCLUDES = -I"$(TIVAWARE_DIR)"
+TIVAWARE_LIBS = $(TIVAWARE_DIR)driverlib/gcc/libdriver.a
+TIVAWARE_SRC = $(TIVAWARE_DIR)utils/ustdlib.c
+
+SRC += $(notdir $(TIVAWARE_SRC))
+VPATH += $(sort $(dir $(TIVAWARE_SRC)))
+LDLIBS += $(TIVAWARE_LIBS)
+INCLUDES += $(TIVAWARE_INCLUDES)

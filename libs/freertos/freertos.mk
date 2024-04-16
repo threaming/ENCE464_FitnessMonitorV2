@@ -1,0 +1,25 @@
+FREERTOS_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
+
+FREERTOS_ARCH ?= GCC/ARM_CM4F
+FREERTOS_PORT_SRC ?= port.c
+FREERTOS_HEAP_IMPL ?= heap_4
+
+FREERTOS_ARCH_DIR = $(FREERTOS_DIR)portable/$(FREERTOS_ARCH)
+FREERTOS_INCLUDES = \
+	-I"$(FREERTOS_DIR)include" \
+	-I"$(FREERTOS_ARCH_DIR)"
+FREERTOS_SRC = \
+	$(FREERTOS_DIR)croutine.c \
+	$(FREERTOS_DIR)event_groups.c \
+	$(FREERTOS_DIR)list.c \
+	$(FREERTOS_DIR)queue.c \
+	$(FREERTOS_DIR)stream_buffer.c \
+	$(FREERTOS_DIR)tasks.c \
+	$(FREERTOS_DIR)timers.c \
+	$(FREERTOS_DIR)portable/MemMang/$(FREERTOS_HEAP_IMPL).c \
+	$(addprefix $(FREERTOS_ARCH_DIR)/,$(FREERTOS_PORT_SRC))
+
+SRC += $(notdir $(FREERTOS_SRC))
+VPATH += $(sort $(dir $(FREERTOS_SRC)))
+INCLUDES += $(FREERTOS_INCLUDES)
+CFLAGS += -DUSE_FREERTOS
