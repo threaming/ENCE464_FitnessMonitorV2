@@ -1,6 +1,8 @@
-VPATH += ${PROJECT_DIR}/libs/OrbitOLED ${PROJECT_DIR}/libs/OrbitOLED/lib_OrbitOled
+ORBIT_OLED_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 
-SRC += 	$(notdir $(wildcard ${PROJECT_DIR}/libs/OrbitOLED/lib_OrbitOled/*.c)) \
-		$(notdir $(wildcard ${PROJECT_DIR}/libs/OrbitOLED/*.c))
+VPATH += $(ORBIT_OLED_DIR) $(ORBIT_OLED_DIR)lib_OrbitOled
 
-INCLUDES += -I"$(PROJECT_DIR)/libs"
+SRC += 	$(notdir $(wildcard $(ORBIT_OLED_DIR)lib_OrbitOled/*.c)) \
+		$(notdir $(wildcard $(ORBIT_OLED_DIR)*.c))
+
+INCLUDES += -I"$(ORBIT_OLED_DIR).."
