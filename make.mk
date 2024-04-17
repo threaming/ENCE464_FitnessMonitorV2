@@ -31,8 +31,10 @@ ifndef VERBOSE
 Q=@
 endif
 
-$(BUILD_DIR)/%.o: %.c
-	@mkdir -p "$(@D)"
+$(BUILD_DIR):
+	@mkdir -p $@
+
+$(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 	$(info CC $<)
 	$(Q)$(CC) $(CFLAGS) -MMD -MP -o $@ -c $<
 
@@ -43,8 +45,10 @@ $(TARGET): $(OBJS)
 	$(Q)$(LD) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 PREPROCESSED_DIR = $(BUILD_DIR)/preprocessed
-$(PREPROCESSED_DIR)/%: %
-	@mkdir -p "$(@D)"
+$(PREPROCESSED_DIR):
+	@mkdir -p $@
+
+$(PREPROCESSED_DIR)/%: % | $(PREPROCESSED_DIR)
 	$(info CPP $<)
 	$(Q)$(CPP) -o "$(@)" $(CFLAGS) $<
 
