@@ -1,12 +1,4 @@
 {
     "windowsToolchainEnvCmd": "C:\\ence461\\ence461-path.bat",
-    "files.associations": {
-        "cmath": "cpp",
-        "complex": "cpp",
-        "pin_map.h": "c",
-        "stdio.h": "c",
-        "adc_read.h": "c",
-        "hw_ints.h": "c",
-        "hw_memmap.h": "c"
-    }
+    "cmake.configureOnOpen": false
 }

@@ -1,0 +1,5 @@
+add_subdirectory(blinky)
+add_subdirectory(pulse-timer)
+add_subdirectory(pwm-oled)
+add_subdirectory(timer-interrupts)
+add_subdirectory(usb-serial)
