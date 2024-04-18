@@ -1,4 +1,7 @@
 {
     "windowsToolchainEnvCmd": "C:\\ence461\\ence461-path.bat",
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "files.associations": {
+        "*.h": "c"
+    }
 }
