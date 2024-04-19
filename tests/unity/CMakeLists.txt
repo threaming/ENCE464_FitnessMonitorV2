@@ -5,7 +5,6 @@
 find_program(RUBY NAMES ruby ruby3.0 ruby2.0 REQUIRED)
 
 set(UNITY_AUTO_DIR ${CMAKE_CURRENT_LIST_DIR}/auto PARENT_SCOPE)
-file(GLOB UNITY_AUTO ${UNITY_AUTO_DIR}/*)
 
 add_library(unity STATIC unity.c)
 target_compile_definitions(unity PUBLIC UNITY_USE_COMMAND_LINE_ARGS=1)
@@ -13,6 +12,12 @@ target_include_directories(unity PUBLIC .)
 
 function(add_unity_test TARGET MAIN_TEST_FILE)
     set(runner_src ${CMAKE_CURRENT_BINARY_DIR}/${TARGET}.runner.c)
+    set(UNITY_AUTO
+        ${UNITY_AUTO_DIR}/generate_test_runner.rb
+        ${UNITY_AUTO_DIR}/run_test.erb
+        ${UNITY_AUTO_DIR}/type_sanitizer.rb
+        ${UNITY_AUTO_DIR}/yaml_helper.rb
+    )
     add_custom_command(
         OUTPUT ${runner_src}
         COMMENT "Generating test runner for ${MAIN_TEST_FILE}"
