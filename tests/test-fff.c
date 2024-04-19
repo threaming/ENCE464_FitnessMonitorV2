@@ -27,11 +27,6 @@ void test_call_mocked_function(void)
     TEST_ASSERT_EQUAL(2, mocked_function_fake.call_count);
 }
 
-void test_1_equals_1(void)
-{
-    TEST_ASSERT_EQUAL(1, 1);
-}
-
 void display_number(int number)
 {
     char str[255];
