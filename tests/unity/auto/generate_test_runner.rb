@@ -4,6 +4,11 @@
 #   Unity Project - A Test Framework for C
 #   Copyright (c) 2007 Mike Karlesky, Mark VanderVoord, Greg Williams
 #   [Released under MIT License. Please refer to license.txt for details]
+#
+#   Modified by Harry Mander (2024) to simplify behaviour of -l flag: just
+#   prints a list of each test name on a new line without any indentation
+#   or additional text. (This makes it easier to parse the tests for
+#   automatic test detection in CMake.)
 # ==========================================
 
 class UnityTestRunnerGenerator
@@ -406,15 +411,13 @@ class UnityTestRunnerGenerator
       output.puts('  {')
       output.puts('    if (parse_status < 0)')
       output.puts('    {')
-      output.puts("      UnityPrint(\"#{filename.gsub('.c', '').gsub(/\\/, '\\\\\\')}.\");")
-      output.puts('      UNITY_PRINT_EOL();')
       tests.each do |test|
         if (!@options[:use_param_tests]) || test[:args].nil? || test[:args].empty?
-          output.puts("      UnityPrint(\"  #{test[:test]}\");")
+          output.puts("      UnityPrint(\"#{test[:test]}\");")
           output.puts('      UNITY_PRINT_EOL();')
         else
           test[:args].each do |args|
-            output.puts("      UnityPrint(\"  #{test[:test]}(#{args})\");")
+            output.puts("      UnityPrint(\"#{test[:test]}(#{args})\");")
             output.puts('      UNITY_PRINT_EOL();')
           end
         end
