@@ -1,3 +1,7 @@
+# CMake support for the FreeRTOS kernel in the ENCE464 fitness tracker project
+# Harry Mander 2024
+# FreeRTOS is copyright of Amazon.com or affiliates
+
 set(ARCH_DIR portable/GCC/ARM_CM4F)
 set(FREERTOS_CONFIG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../..)
 

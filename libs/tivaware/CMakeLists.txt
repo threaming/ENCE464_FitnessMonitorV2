@@ -1,3 +1,7 @@
+# CMake support for TivaWare in the ENCE464 fitness tracker project
+# Harry Mander 2024
+# TivaWare is copyright of Texas Instruments Incorporated
+
 set(TIVAWARE_MCU TM4C123GH6PM CACHE STRING "MCU part number")
 
 add_library(tivaware STATIC ../../startup.c utils/ustdlib.c)

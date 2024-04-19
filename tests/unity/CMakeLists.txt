@@ -1,3 +1,7 @@
+# CMake support for Unity test framework
+# Harry Mander 2024
+# Unity is copyright of Mike Karlesky, Mark VanderVoord, Greg Williams
+
 find_program(RUBY NAMES ruby ruby3.0 ruby2.0 REQUIRED)
 
 set(UNITY_AUTO_DIR ${CMAKE_CURRENT_LIST_DIR}/auto PARENT_SCOPE)
