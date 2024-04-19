@@ -2,6 +2,9 @@
     Unity Project - A Test Framework for C
     Copyright (c) 2007-21 Mike Karlesky, Mark VanderVoord, Greg Williams
     [Released under MIT License. Please refer to license.txt for details]
+
+    Modified by Harry Mander (2024) to add support for running tests whose
+    name exactly matches a string passed via the -t CLI flag.
 ============================================================================ */
 
 #include "unity.h"
@@ -1587,35 +1590,29 @@ void UnityAssertNumbersArrayWithin(const UNITY_UINT delta,
 }
 
 /*-----------------------------------------------*/
+static int AreStringsEqual(const char *s1, const char *s2)
+{
+    if (s1 && s2) {
+        while (*s1 || *s2) {
+            if (*s1 != *s2)
+                return 0;
+            s1++;
+            s2++;
+        }
+        return 1;
+    }
+
+    return !(s1 || s2);
+}
+
 void UnityAssertEqualString(const char* expected,
                             const char* actual,
                             const char* msg,
                             const UNITY_LINE_TYPE lineNumber)
 {
-    UNITY_UINT32 i;
-
     RETURN_IF_FAIL_OR_IGNORE;
 
-    /* if both pointers not null compare the strings */
-    if (expected && actual)
-    {
-        for (i = 0; expected[i] || actual[i]; i++)
-        {
-            if (expected[i] != actual[i])
-            {
-                Unity.CurrentTestFailed = 1;
-                break;
-            }
-        }
-    }
-    else
-    { /* fail if either null but not if both */
-        if (expected || actual)
-        {
-            Unity.CurrentTestFailed = 1;
-        }
-    }
-
+    Unity.CurrentTestFailed = !AreStringsEqual(expected, actual);
     if (Unity.CurrentTestFailed)
     {
         UnityTestResultsFailBegin(lineNumber);
@@ -2269,6 +2266,7 @@ int UnityEnd(void)
 
 char* UnityOptionIncludeNamed = NULL;
 char* UnityOptionExcludeNamed = NULL;
+char* UnityOptionRunExactNamed = NULL;
 int UnityVerbosity            = 1;
 
 /*-----------------------------------------------*/
@@ -2277,6 +2275,7 @@ int UnityParseOptions(int argc, char** argv)
     int i;
     UnityOptionIncludeNamed = NULL;
     UnityOptionExcludeNamed = NULL;
+    UnityOptionRunExactNamed = NULL;
 
     for (i = 1; i < argc; i++)
     {
@@ -2286,6 +2285,22 @@ int UnityParseOptions(int argc, char** argv)
             {
                 case 'l': /* list tests */
                     return -1;
+                case 't': /* run test with exact name */
+                    if (argv[i][2] == '=')
+                    {
+                        UnityOptionRunExactNamed = &argv[i][3];
+                    }
+                    else if (++i < argc)
+                    {
+                        UnityOptionRunExactNamed = argv[i];
+                    }
+                    else
+                    {
+                        UnityPrint("ERROR: No Test Name String to Run");
+                        UNITY_PRINT_EOL();
+                        return 1;
+                    }
+                    break;
                 case 'n': /* include tests with name including this string */
                 case 'f': /* an alias for -n */
                     if (argv[i][2] == '=')
@@ -2334,6 +2349,7 @@ int UnityParseOptions(int argc, char** argv)
                 case 'h':
                     UnityPrint("Options: "); UNITY_PRINT_EOL();
                     UnityPrint("-l        List all tests and exit"); UNITY_PRINT_EOL();
+                    UnityPrint("-t NAME   Run only the test with the exact NAME"); UNITY_PRINT_EOL();
                     UnityPrint("-f NAME   Filter to run only tests whose name includes NAME"); UNITY_PRINT_EOL();
                     UnityPrint("-n NAME   (deprecated) alias of -f"); UNITY_PRINT_EOL();
                     UnityPrint("-h        show this Help menu"); UNITY_PRINT_EOL();
@@ -2462,6 +2478,12 @@ int UnityTestMatches(void)
 {
     /* Check if this test name matches the included test pattern */
     int retval;
+
+    if (UnityOptionRunExactNamed)
+    {
+        return AreStringsEqual(UnityOptionRunExactNamed, Unity.CurrentTestName);
+    }
+
     if (UnityOptionIncludeNamed)
     {
         retval = UnityStringArgumentMatches(UnityOptionIncludeNamed);
