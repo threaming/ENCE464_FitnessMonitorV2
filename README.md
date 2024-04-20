@@ -8,6 +8,8 @@ See [CLI](#cli) for instructions on building and running via the command line.
 See [VS Code](#vs-code) for instructions on building and running using Visual
 Studio Code.
 
+For (the FAQ)[./FAQ.md] for tips on debugging FreeRTOS and other issues.
+
 [[_TOC_]]
 
 ## CLI
