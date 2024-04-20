@@ -1,6 +1,14 @@
 # ENCE464 Fitness Tracker Project
 
-## CLI:
+See [TOOLCHAIN](./TOOLCHAIN.md) for information on installing the toolchain on
+your personal machine.
+
+See [CLI](#cli) for instructions on building and running via the command line.
+
+See [VS Code](#vs-code) for instructions on building and running using Visual
+Studio Code.
+
+## CLI
 
 ### Building for microcontroller (target)
 
@@ -70,3 +78,5 @@ Build` command.
 To configure host tests, open `tests/CMakeLists.txt` in the editor. Run `CMake:
 select a kit` and choose a `GCC` compiler for x86 or x86_64. Then run configure
 and build commands as before. (Test explorer currently not working.)
+
+*TODO*: programming and debugging instructions for VS Code.
