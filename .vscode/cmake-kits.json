@@ -1,7 +1,7 @@
 [
     {
         "name": "TM4C123",
-        "toolchainFile": "${workspaceFolder}/cmake/tm4c.cmake",
+        "toolchainFile": "${workspaceFolder}/target/cmake/tm4c.cmake",
         "preferredGenerator": {"name": "Unix Makefiles"}
     }
 ]
