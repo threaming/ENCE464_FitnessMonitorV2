@@ -1,10 +1,10 @@
 [[_TOC_]]
 
-# Windows
+# IDE
 
-## IDE
+Visit https://code.visualstudio.com/download to download latest version.
 
-Update to latest VS Code:
+On Windows you may be able to use `winget` to update or install VS Code:
 
 ```
 winget upgrade --id Microsoft.VisualStudioCode
@@ -13,6 +13,8 @@ winget upgrade --id Microsoft.VisualStudioCode
 On macOS or Linux, you could install VS Code via your package manager, but it is
 probably better to use one of the download methods listed at
 https://code.visualstudio.com/download to get the most up-to-date version.
+
+# Windows
 
 ## Build system
 
