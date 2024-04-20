@@ -16,18 +16,18 @@ For (the FAQ)[./FAQ.md] for tips on debugging FreeRTOS and other issues.
 
 ### Building for microcontroller (target)
 
-```bash
+```sh
+# Run this once to configure the project:
 cd target
 cmake --toolchain cmake/tm4c.cmake -B build -G "Unix Makefiles" .
+
+# ...then run this whenever you want to rebuild the project:
 cmake --build build --parallel
-```
 
-As an alternative to the last command, you can `cd` into the `build` directory
-and run `make` directly:
-
-```bash
+# ...alternatively, you can run make directly inside the build directory:
 cd build
-make -j  # builds `all` target, -j flag uses multiple processes to build
+make -j # builds `all` target, -j flag uses multiple processes to build
+        # (equivalent to --parallel option with cmake)
 ```
 
 To disable building demo apps, add `-DBUILD_DEMO_APPS=off` to above `cmake`
@@ -36,7 +36,7 @@ to `off`.
 
 To program the main program to the microcontroller, run the `program` make target:
 
-```bash
+```sh
 # From the target directory:
 cmake --build build --target program
 
@@ -49,11 +49,19 @@ run `cmake -B build` to see a list of all programming and debug targets.
 
 ### Building and running tests on host machine
 
-```
+```sh
+# Run this once to configure the project:
 cd tests
 cmake -B build -G "Unix Makefiles" .
+
+# ...then run this whenever you want to rebuild and re-run tests
 cmake --build build --parallel
 ctest --test-dir build
+
+# ...alternatively run directly with make from the build directory:
+cd build
+make
+make test
 ```
 
 ## VS Code
@@ -87,5 +95,9 @@ To run the tests, run `CMake: Refresh Tests` via the command palette, then open
 the test explorer from the sidebar on the left (the flask icon). Press the play
 button next to the `tests` line to run all tests, or run a specific test by
 clicking the play button next to its name.
+
+**Note**: you only have to run the configure commands once. Subsequent builds
+can be triggered just via the build command (or pressing F7). You should only
+have to re-configure if you delete the `build` directory.
 
 *TODO*: programming and debugging instructions for VS Code.
