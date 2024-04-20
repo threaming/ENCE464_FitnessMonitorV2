@@ -68,6 +68,14 @@ embedded systems courses. This can be installed via MSYS:
 pacman -S mingw-w64-x86_64-gcc
 ```
 
+[Ruby](https://www.ruby-lang.org/en/downloads/) is also required for test
+discovery. This can also be installed via
+[winget](https://winget.run/pkg/RubyInstallerTeam/Ruby.3.1):
+
+```
+winget install -e --id RubyInstallerTeam.Ruby.3.1
+```
+
 # MacOS
 
 Use [Homebrew](https://formulae.brew.sh/) to install toolchain:
