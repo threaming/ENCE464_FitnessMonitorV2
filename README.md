@@ -79,6 +79,11 @@ Build` command.
 
 To configure host tests, open `tests/CMakeLists.txt` in the editor. Run `CMake:
 select a kit` and choose a `GCC` compiler for x86 or x86_64. Then run configure
-and build commands as before. (Test explorer currently not working.)
+and build commands as before.
+
+To run the tests, run `CMake: Refresh Tests` via the command palette, then open
+the test explorer from the sidebar on the left (the flask icon). Press the play
+button next to the `tests` line to run all tests, or run a specific test by
+clicking the play button next to its name.
 
 *TODO*: programming and debugging instructions for VS Code.
