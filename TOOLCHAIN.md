@@ -63,6 +63,11 @@ For the toolchain (compiler, OpenOCD), there are three options:
    with the Windows filesystem when run from native shells like CMD or
    PowerShell. Rather, install CMake from the official installer linked above.)
 
+(To add variables to `PATH`, search for 'Edit the system environment variables'
+in the Start Menu, then open 'Environment variables...' from the settings
+window, then double-click on the `Path` variable in either the user or system
+variables boxes.)
+
 ## Host toolchain
 
 We could use MSVC to build unit tests to run on the host, but it may be better
