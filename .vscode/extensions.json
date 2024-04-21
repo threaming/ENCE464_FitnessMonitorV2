@@ -2,7 +2,6 @@
     "recommendations": [
         "ms-vscode.cpptools",
         "ms-vscode.cmake-tools",
-        "rioj7.command-variable",
         "twxs.cmake"
     ]
 }
