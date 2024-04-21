@@ -2,99 +2,27 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build",
-            "type": "shell",
-            "windows": {
-                "command": "${config:windowsToolchainEnvCmd} && make -j",
-                "options": {
-                    "shell": {
-                        "executable": "cmd.exe",
-                        "args": [ "/d", "/c" ]
-                    }
-                }
-            },
-            "command": "make -j",
-            "options": {
-                "cwd": "${fileDirname}"
-            },
+            "type": "cmake",
+            "label": "Build all",
+            "command": "build",
             "group": "build",
-            "problemMatcher": ["$gcc"]
+            "detail": "Build all targets"
         },
         {
-            "label": "Clean",
-            "type": "shell",
-            "command": "make clean",
-            "windows": {
-                "command": "${config:windowsToolchainEnvCmd} && make clean",
-                "options": {
-                    "shell": {
-                        "executable": "cmd.exe",
-                        "args": [ "/d", "/c" ]
-                    }
-                }
-            },
-            "options": {
-                "cwd": "${fileDirname}"
-            },
-            "group": "build",
-            "problemMatcher": []
-        },
-        {
+            "type": "cmake",
             "label": "Program",
-            "type": "shell",
-            "command": "make -j program",
-            "windows": {
-                "command": "${config:windowsToolchainEnvCmd} && make -j program",
-                "options": {
-                    "shell": {
-                        "executable": "cmd.exe",
-                        "args": [ "/d", "/c" ]
-                    }
-                }
-            },
-            "options": {
-                "cwd": "${fileDirname}"
-            },
-            "group": "build",
-            "problemMatcher": ["$gcc"]
+            "command": "build",
+            "targets": ["program"],
+            "detail": "Program main program to microcontroller",
+            "group": "build"
         },
         {
-            "label": "Debug",
-            "type": "shell",
-            "command": "make -j debug",
-            "windows": {
-                "command": "${config:windowsToolchainEnvCmd} && make -j debug",
-                "options": {
-                    "shell": {
-                        "executable": "cmd.exe",
-                        "args": [ "/d", "/c" ]
-                    }
-                }
-            },
-            "options": {
-                "cwd": "${fileDirname}"
-            },
+            "type": "cmake",
+            "label": "Clean",
+            "command": "build",
+            "targets": ["clean"],
             "group": "build",
-            "problemMatcher": ["$gcc"]
+            "detail": "Clean build outputs"
         },
-        {
-            "label": "Launch OpenOCD",
-            "type": "shell",
-            "command": "openocd -f board/ek-tm4c123gxl.cfg",
-            "windows": {
-                "command": "${config:windowsToolchainEnvCmd} && openocd -f board/ek-tm4c123gxl.cfg",
-                "options": {
-                    "shell": {
-                        "executable": "cmd.exe",
-                        "args": [ "/d", "/c" ]
-                    }
-                }
-            },
-            "options": {
-                "cwd": "${fileDirname}"
-            },
-            "group": "build",
-            "problemMatcher": []
-        }
     ]
 }
