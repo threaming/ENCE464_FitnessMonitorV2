@@ -1,5 +1,4 @@
 {
-    "windowsToolchainEnvCmd": "C:\\ence461\\ence461-path.bat",
     "cmake.configureOnOpen": false,
     "cmake.sourceDirectory": ["${workspaceFolder}/target", "${workspaceFolder}/tests"],
     "files.associations": {
