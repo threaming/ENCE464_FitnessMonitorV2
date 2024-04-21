@@ -53,7 +53,10 @@ For the toolchain (compiler, OpenOCD), there are three options:
    using its package manager:
 
    ```
-   pacman -S mingw-w64-x86_64-arm-none-eabi-gcc mingw-w64-x86_64-openocd
+   pacman -S \
+      mingw-w64-x86_64-arm-none-eabi-toolchain \
+      mingw-w64-x86_64-gdb-multiarch \
+      mingw-w64-x86_64-openocd
    ```
 
    Ensure that the MSYS2 package directory is added to `PATH` (the installer may
