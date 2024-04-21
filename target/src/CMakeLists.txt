@@ -11,5 +11,6 @@ add_executable(fitness-tracker
     step_counter_main.c
     switches.c
 )
+target_compile_options(fitness-tracker PRIVATE -Wall)
 target_link_libraries(fitness-tracker PRIVATE tivaware OrbitOLED m)
 add_program_target(fitness-tracker PROGRAM_TARGET program DEBUG_TARGET debug)
