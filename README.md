@@ -82,10 +82,20 @@ Open VS Code in *this top-level directory*:
 
   E.g. `code .` if you have this directory open in a terminal.
 
+### Building for microcontroller (target)
+
 To configure target toolchain, open `target/CMakeLists.txt` in the editor, and
 via the command palette (Ctrl+Shift+P), run `CMake: select a kit` and select the
 `TM4C123` kit. Then run `CMake: Configure`. To build, press F7 or run `CMake:
 Build` command.
+
+To program the main program to the microcontroller, press Ctrl+Shift+B and
+select the `Program` command. Alternatively run the `CMake: Build target`
+command from the command palette or press Shift+F7 and select the `Program`
+command (or any other desired target - see [CLI](#cli) section above for details
+on other program/debug targets).
+
+### Building and running tests on host machine
 
 To configure host tests, open `tests/CMakeLists.txt` in the editor. Run `CMake:
 select a kit` and choose a `GCC` compiler for x86 or x86_64. Then run configure
@@ -99,5 +109,3 @@ clicking the play button next to its name.
 **Note**: you only have to run the configure commands once. Subsequent builds
 can be triggered just via the build command (or pressing F7). You should only
 have to re-configure if you delete the `build` directory.
-
-*TODO*: programming and debugging instructions for VS Code.
