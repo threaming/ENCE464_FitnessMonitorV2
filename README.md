@@ -82,6 +82,9 @@ Open VS Code in *this top-level directory*:
 
   E.g. `code .` if you have this directory open in a terminal.
 
+VS Code will prompt you to install a few recommended extensions, click the
+'Install' button to install them.
+
 ### Building for microcontroller (target)
 
 To configure target toolchain, open `target/CMakeLists.txt` in the editor, and
