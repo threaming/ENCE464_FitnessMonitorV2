@@ -57,8 +57,10 @@ set(
 find_program(OPENOCD openocd ${OPENOCD_HINTS} REQUIRED)
 message(STATUS "Found OpenOCD: ${OPENOCD}")
 
-find_program(GDB arm-none-eabi-gdb ${GCC_ARM_HINTS})
-if(NOT GDB)
-    find_program(GDB gdb-multiarch ${GCC_ARM_HINTS} REQUIRED)
-endif()
+find_program(
+    GDB
+    NAMES arm-none-eabi-gdb gdb-multiarch
+    ${GCC_ARM_HINTS}
+    REQUIRED
+)
 message(STATUS "Found GDB: ${GDB}")
