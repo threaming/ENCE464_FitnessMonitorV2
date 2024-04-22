@@ -30,11 +30,11 @@ endif()
 
 find_program(CMAKE_C_COMPILER arm-none-eabi-gcc ${GCC_ARM_HINTS} REQUIRED)
 find_program(CMAKE_CXX_COMPILER arm-none-eabi-g++ ${GCC_ARM_HINTS} REQUIRED)
-find_program(AS arm-none-eabi-as ${GCC_ARM_HINTS} REQUIRED)
-find_program(AR arm-none-eabi-ar ${GCC_ARM_HINTS} REQUIRED)
-find_program(OBJCOPY arm-none-eabi-objcopy ${GCC_ARM_HINTS} REQUIRED)
-find_program(OBJDUMP arm-none-eabi-objdump ${GCC_ARM_HINTS} REQUIRED)
-find_program(SIZE arm-none-eabi-size ${GCC_ARM_HINTS} REQUIRED)
+find_program(CMAKE_AS arm-none-eabi-as ${GCC_ARM_HINTS} REQUIRED)
+find_program(CMAKE_AR arm-none-eabi-ar ${GCC_ARM_HINTS} REQUIRED)
+find_program(CMAKE_OBJCOPY arm-none-eabi-objcopy ${GCC_ARM_HINTS} REQUIRED)
+find_program(CMAKE_OBJDUMP arm-none-eabi-objdump ${GCC_ARM_HINTS} REQUIRED)
+find_program(CMAKE_SIZE arm-none-eabi-size ${GCC_ARM_HINTS} REQUIRED)
 
 set(
     CMAKE_C_FLAGS
