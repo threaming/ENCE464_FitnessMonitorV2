@@ -41,7 +41,7 @@ For the toolchain (compiler, OpenOCD), there are three options:
 2. Download the various requirements separately:
 
    * [OpenOCD](https://gnutoolchains.com/arm-eabi/openocd/)
-   * [GNU Arm Embedded Toolchain (arm-none-eabi)](https://developer.arm.com/downloads/-/gnu-rm)
+   * [GNU Arm Embedded Toolchain (arm-none-eabi)](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
    * [MSYS2](https://www.msys2.org/)
 
    Add the above installed packages to `PATH` (they may be already added by
