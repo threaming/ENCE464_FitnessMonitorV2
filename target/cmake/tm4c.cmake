@@ -20,11 +20,6 @@ if(WIN32)
             OPENOCD_HINTS
             HINTS "${ENCE_TOOLCHAIN_PATH}/OpenOCD-0.10.0/bin"
         )
-        find_program(
-            CMAKE_MAKE_PROGRAM make
-            HINTS "${ENCE_TOOLCHAIN_PATH}/msys64/usr/bin"
-            REQUIRED
-        )
     endif()
 endif()
 
