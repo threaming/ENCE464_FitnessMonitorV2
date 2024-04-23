@@ -8,7 +8,7 @@ function(_add_program_target EXECUTABLE_TARGET TARGET_NAME GDB_SCRIPT COMMENT)
         ${TARGET_NAME}
         DEPENDS ${EXE_PATH}
         COMMAND
-            ${GDB} -batch
+            ${GDB} ${ARGN}
             -x "${SCRIPTS_DIR}/openocd.gdb"
             -x "${SCRIPTS_DIR}/${GDB_SCRIPT}.gdb"
             "${EXE_PATH}"
@@ -34,6 +34,7 @@ function(add_program_target EXECUTABLE_TARGET)
         ${program_target}
         program
         "Programming target with ${EXECUTABLE_TARGET}..."
+        -batch
     )
 
     if(ARGS_DEBUG_TARGET)
