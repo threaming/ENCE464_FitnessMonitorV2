@@ -24,5 +24,14 @@
             "group": "build",
             "detail": "Clean build outputs"
         },
+        {
+            "type": "cmake",
+            "label": "Debug via CLI",
+            "command": "build",
+            "group": "build",
+            "targets": ["debug"],
+            "detail": "Program main program to microcontroller and connect via GDB CLI",
+            "isBackground": false
+        }
     ]
 }
