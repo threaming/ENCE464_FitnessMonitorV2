@@ -1,4 +1,4 @@
-add_executable(fitness-tracker
+add_tiva_executable(fitness-tracker
     accl_manager.c
     ADC_read.c
     button_manager.c

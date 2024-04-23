@@ -42,7 +42,7 @@ set(
     CACHE INTERNAL "C compiler flags"
 )
 
-set(SCRIPTS_DIR ${CMAKE_CURRENT_LIST_DIR}/../scripts)
+set(SCRIPTS_DIR ${PROJECT_SOURCE_DIR}/scripts)
 set(
     CMAKE_EXE_LINKER_FLAGS
     "-T${SCRIPTS_DIR}/link.ld"
@@ -59,3 +59,9 @@ find_program(
     REQUIRED
 )
 message(STATUS "Found GDB: ${GDB}")
+
+function(add_tiva_executable TARGET_NAME)
+    add_executable(
+        ${TARGET_NAME} ${PROJECT_SOURCE_DIR}/startup.c ${ARGN}
+    )
+endfunction()

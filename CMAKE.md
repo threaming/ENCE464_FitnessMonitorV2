@@ -31,7 +31,7 @@ an argument with quotation marks if it contains whitespace.
 Any text after a `#` character is treated as a comment:
 
 ```cmake
-add_executable(example
+add_tiva_executable(example
     source1.c
     source2.c  # this is a comment
     source3.c
@@ -62,16 +62,16 @@ throughout this repository.
 
 For example, to add a new C file to the main fitness tracker program, edit
 `target/src/CMakeLists.txt`, adding the name of the new file to the list in the
-`add_executable` command (see [Adding a new executable](#adding-a-new-executable)).
+`add_tiva_executable` command (see [Adding a new executable](#adding-a-new-executable)).
 
 ### Adding a new executable
 
 (E.g. see `target/src/CMakeLists.txt`, or `target/demo` directories.)
 
-Programs (executables) are declared with the `add_executable` command:
+Programs (executables) are declared with the `add_tiva_executable` command:
 
 ```cmake
-add_executable(program-name source1.c source2.c ...)
+add_tiva_executable(program-name source1.c source2.c ...)
 ```
 
 Executable (target) names can contain underscores and dashes.
@@ -172,7 +172,7 @@ target_include_directories(lib_example PUBLIC include_dir)
 # as an include directory when building program. If it was PRIVATE, include_dir
 # would only be made visible to lib_example when building, but not to any
 # targets that depend on it.
-add_executable(program program.c)
+add_tiva_executable(program program.c)
 target_link_libraries(
     program
     PRIVATE # use of PRIVATE/PUBLIC here doesn't matter for executables
@@ -191,7 +191,7 @@ add_unity_test(test-executable-name test-source.c)
 
 This will create an executable target called `text-executable-name`, which can
 be used with `target_include_directories`, `target_link_libraries` etc. as if it
-were a regular executable created using `add_executable`:
+were a regular executable created using `add_tiva_executable`:
 
 ```
 target_link_libraries(test-executable-name PRIVATE test-library)

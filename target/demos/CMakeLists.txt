@@ -1,4 +1,5 @@
 add_subdirectory(blinky)
+add_subdirectory(blinky-no-rtos)
 add_subdirectory(pulse-timer)
 add_subdirectory(pwm-oled)
 add_subdirectory(timer-interrupts)
