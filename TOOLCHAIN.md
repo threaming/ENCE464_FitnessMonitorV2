@@ -30,8 +30,8 @@ winget install -e --id Kitware.CMake
 
 For the toolchain (compiler, OpenOCD), there are three options:
 
-1. Use the ENCE461 toolchain directory from the lab PCs (located at
-   `C:\ENCE461`; you could transfer the folder to your PC using a flash drive).
+1. Use the ENCE464 toolchain directory from the lab PCs (located at
+   `C:\ENCE464`; you could transfer the folder to your PC using a flash drive).
    Add the following directories to `PATH`:
 
    * `C:\ence461\tool-chain\gcc-arm-none-eabi-9-2019-q4\bin`
