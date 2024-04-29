@@ -13,7 +13,6 @@
             ],
             "runToEntryPoint": "main",
             "showDevDebugOutput": "none",
-            "rtos": "auto",
             "linux": {
                 "gdbPath": "gdb-multiarch"
             }
