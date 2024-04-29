@@ -3,7 +3,7 @@ set(CMAKE_SYSTEM_PROCESSOR arm)
 
 if(WIN32)
     set(
-        ENCE_TOOLCHAIN_PATH "C:/ence461/tool-chain"
+        ENCE_TOOLCHAIN_PATH "C:/ence464/tool-chain"
         CACHE STRING "Path to ENCE toolchain directory"
     )
 
@@ -14,7 +14,7 @@ if(WIN32)
 
         set(
             GCC_ARM_HINTS
-            HINTS "${ENCE_TOOLCHAIN_PATH}/gcc-arm-none-eabi-9-2019-q4/bin"
+            HINTS "${ENCE_TOOLCHAIN_PATH}/gcc-arm-none-eabi-13.2/bin"
         )
         set(
             OPENOCD_HINTS

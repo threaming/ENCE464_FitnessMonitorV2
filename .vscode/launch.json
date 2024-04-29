@@ -9,7 +9,7 @@
             "request": "launch",
             "servertype": "openocd",
             "configFiles": [
-                "${workspaceFolder}/target/scripts/debug.gdb"
+                "board/ek-tm4c123gxl.cfg"
             ],
             "runToEntryPoint": "main",
             "showDevDebugOutput": "none",
