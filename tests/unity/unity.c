@@ -2229,36 +2229,6 @@ void UnityBegin(const char* filename)
     UNITY_OUTPUT_START();
 }
 
-/*-----------------------------------------------*/
-int UnityEnd(void)
-{
-    UNITY_PRINT_EOL();
-    UnityPrint(UnityStrBreaker);
-    UNITY_PRINT_EOL();
-    UnityPrintNumber((UNITY_INT)(Unity.NumberOfTests));
-    UnityPrint(UnityStrResultsTests);
-    UnityPrintNumber((UNITY_INT)(Unity.TestFailures));
-    UnityPrint(UnityStrResultsFailures);
-    UnityPrintNumber((UNITY_INT)(Unity.TestIgnores));
-    UnityPrint(UnityStrResultsIgnored);
-    UNITY_PRINT_EOL();
-    if (Unity.TestFailures == 0U)
-    {
-        UnityPrint(UnityStrOk);
-    }
-    else
-    {
-        UnityPrint(UnityStrFail);
-#ifdef UNITY_DIFFERENTIATE_FINAL_FAIL
-        UNITY_OUTPUT_CHAR('E'); UNITY_OUTPUT_CHAR('D');
-#endif
-    }
-    UNITY_PRINT_EOL();
-    UNITY_FLUSH_CALL();
-    UNITY_OUTPUT_COMPLETE();
-    return (int)(Unity.TestFailures);
-}
-
 /*-----------------------------------------------
  * Command Line Argument Support
  *-----------------------------------------------*/
@@ -2507,3 +2477,43 @@ int UnityTestMatches(void)
 
 #endif /* UNITY_USE_COMMAND_LINE_ARGS */
 /*-----------------------------------------------*/
+
+int UnityEnd(void)
+{
+#ifdef UNITY_USE_COMMAND_LINE_ARGS
+    if (UnityOptionRunExactNamed && Unity.NumberOfTests == 0) {
+        UnityPrint("No test with name: ");
+        UnityPrint(UnityOptionRunExactNamed);
+        UNITY_PRINT_EOL();
+        UNITY_FLUSH_CALL();
+        UNITY_OUTPUT_COMPLETE();
+        return 1;
+    }
+#endif /* UNITY_USE_COMMAND_LINE_ARGS */
+
+    UNITY_PRINT_EOL();
+    UnityPrint(UnityStrBreaker);
+    UNITY_PRINT_EOL();
+    UnityPrintNumber((UNITY_INT)(Unity.NumberOfTests));
+    UnityPrint(UnityStrResultsTests);
+    UnityPrintNumber((UNITY_INT)(Unity.TestFailures));
+    UnityPrint(UnityStrResultsFailures);
+    UnityPrintNumber((UNITY_INT)(Unity.TestIgnores));
+    UnityPrint(UnityStrResultsIgnored);
+    UNITY_PRINT_EOL();
+    if (Unity.TestFailures == 0U)
+    {
+        UnityPrint(UnityStrOk);
+    }
+    else
+    {
+        UnityPrint(UnityStrFail);
+#ifdef UNITY_DIFFERENTIATE_FINAL_FAIL
+        UNITY_OUTPUT_CHAR('E'); UNITY_OUTPUT_CHAR('D');
+#endif
+    }
+    UNITY_PRINT_EOL();
+    UNITY_FLUSH_CALL();
+    UNITY_OUTPUT_COMPLETE();
+    return (int)(Unity.TestFailures);
+}
