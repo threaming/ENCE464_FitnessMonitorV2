@@ -1,6 +1,9 @@
 {
     "cmake.configureOnOpen": false,
     "cmake.sourceDirectory": ["${workspaceFolder}/target", "${workspaceFolder}/tests"],
+    "cmake.pinnedCommands": [
+        "cmake.selectLaunchTarget"
+    ],
     "files.associations": {
         "*.h": "c"
     }
