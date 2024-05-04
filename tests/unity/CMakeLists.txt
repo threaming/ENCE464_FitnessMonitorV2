@@ -21,12 +21,6 @@ function(add_unity_test TARGET MAIN_TEST_FILE)
     set(runner_src ${CMAKE_CURRENT_BINARY_DIR}/${TARGET}.runner.c)
     set(ctest_src ${CMAKE_CURRENT_BINARY_DIR}/${TARGET}.runner.cmake)
 
-    set(UNITY_AUTO
-        ${UNITY_DIR}/auto/generate_test_runner.rb
-        ${UNITY_DIR}/auto/run_test.erb
-        ${UNITY_DIR}/auto/type_sanitizer.rb
-        ${UNITY_DIR}/auto/yaml_helper.rb
-    )
     add_custom_command(
         OUTPUT ${runner_src}
         COMMENT "Generating test runner for ${MAIN_TEST_FILE}"
@@ -34,7 +28,12 @@ function(add_unity_test TARGET MAIN_TEST_FILE)
             ${RUBY} ${UNITY_DIR}/auto/generate_test_runner.rb
             --cmdline_args=1
             ${MAIN_TEST_FILE} ${runner_src}
-        DEPENDS ${UNITY_AUTO} ${MAIN_TEST_FILE}
+        DEPENDS
+            ${MAIN_TEST_FILE}
+            ${UNITY_DIR}/auto/generate_test_runner.rb
+            ${UNITY_DIR}/auto/run_test.erb
+            ${UNITY_DIR}/auto/type_sanitizer.rb
+            ${UNITY_DIR}/auto/yaml_helper.rb
         WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
     )
     add_executable(${TARGET} ${runner_src} ${MAIN_TEST_FILE} ${ARGN})
