@@ -4,6 +4,7 @@
     "cmake.pinnedCommands": [
         "cmake.selectLaunchTarget"
     ],
+    "cmake.preferredGenerators": ["Unix Makefiles"],
     "files.associations": {
         "*.h": "c"
     }
