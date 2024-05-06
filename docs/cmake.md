@@ -119,7 +119,7 @@ and `target-name` will be re-linked with the updated libraries.
 For example, to enable all compiler warnings and treat warnings as errors
 when compiling `target-name`:
 
-```
+```cmake
 target_compile_options(target-name PRIVATE -Wall -Werror)
 ```
 
@@ -168,10 +168,10 @@ are treated:
 add_library(lib_example STATIC example.c)
 target_include_directories(lib_example PUBLIC include_dir)
 
-# Because include_dir was added as a PUBLIC include directory, it will be added
-# as an include directory when building program. If it was PRIVATE, include_dir
-# would only be made visible to lib_example when building, but not to any
-# targets that depend on it.
+# Because 'include_dir' was added as a PUBLIC include directory, it will be
+# added as an include directory when building 'program'. If it was PRIVATE,
+# 'include_dir' would only be made visible to 'lib_example' when building, but
+# not to any targets that depend on it.
 add_tiva_executable(program program.c)
 target_link_libraries(
     program
@@ -185,7 +185,7 @@ target_link_libraries(
 In `tests/CMakeLists.txt`, use `add_unity_test` to create a new test executable
 with the Unity test framework linked-in:
 
-```
+```cmake
 add_unity_test(test-executable-name test-source.c)
 ```
 
@@ -193,6 +193,6 @@ This will create an executable target called `text-executable-name`, which can
 be used with `target_include_directories`, `target_link_libraries` etc. as if it
 were a regular executable created using `add_tiva_executable`:
 
-```
+```cmake
 target_link_libraries(test-executable-name PRIVATE test-library)
 ```
