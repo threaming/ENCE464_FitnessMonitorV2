@@ -13,6 +13,7 @@
             ],
             "runToEntryPoint": "main",
             "showDevDebugOutput": "none",
+            "svdPath": "${workspaceFolder}/target/scripts/tm4c123x-vendor.xml",
             "linux": {
                 "gdbPath": "gdb-multiarch"
             }
