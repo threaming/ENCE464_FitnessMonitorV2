@@ -20,7 +20,13 @@ if(WIN32)
             OPENOCD_HINTS
             HINTS "${ENCE_TOOLCHAIN_PATH}/OpenOCD-0.10.0/bin"
         )
+        set(
+            CMAKE_SYSROOT ${ENCE_TOOLCHAIN_PATH}/gcc-arm-none-eabi-13.2
+            CACHE PATH "Path to sysroot"
+        )
     endif()
+elseif(LINUX)
+    set(CMAKE_SYSROOT /usr/lib/arm-none-eabi CACHE PATH "Path to sysroot")
 endif()
 
 find_program(CMAKE_C_COMPILER arm-none-eabi-gcc ${GCC_ARM_HINTS} REQUIRED)
