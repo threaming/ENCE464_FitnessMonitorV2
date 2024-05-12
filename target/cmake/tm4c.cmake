@@ -44,6 +44,9 @@ message(STATUS "Found GDB: ${GDB}")
 
 function(add_tiva_executable TARGET_NAME)
     add_executable(
-        ${TARGET_NAME} ${PROJECT_SOURCE_DIR}/startup.c ${ARGN}
+        ${TARGET_NAME}
+        ${PROJECT_SOURCE_DIR}/startup.c
+        ${PROJECT_SOURCE_DIR}/syscall-stubs.c
+        ${ARGN}
     )
 endfunction()
