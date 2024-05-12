@@ -13,6 +13,7 @@
 #include "inc/hw_types.h"
 #include "inc/hw_ints.h"
 #include "driverlib/gpio.h"
+#include "driverlib/i2c.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/systick.h"
 #include "driverlib/debug.h"
