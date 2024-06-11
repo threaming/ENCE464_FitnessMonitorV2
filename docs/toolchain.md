@@ -38,7 +38,9 @@ variables boxes. Then click **New** to add each path.
 ## In-circuit debugger driver
 
 You will need to download the [Stellaris ICDI Drivers](https://www.ti.com/tool/STELLARIS_ICDI_DRIVERS).
-Follow the instructions in the installation guide in the link.
+Follow the instructions in the installation guide in the link. Note that if you
+have installed Code Composer Studio (e.g. for ENCE361), then the drivers will
+already be installed.
 
 ## Embedded and host toolchains
 
