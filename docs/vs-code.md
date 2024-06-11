@@ -228,6 +228,13 @@ tests, or run a specific test by clicking the play button next to its name.
 
 ![Test explorer](screenshots/testing-sidebar.png)
 
+You can also filter specific tests by typing part of the name in the search bar;
+for example, to only run tests from `test-fff` in the below screenshot, type
+`test-fff.` into the search bar and then click the play button next to the
+`tests` line.
+
+![Filtering tests](screenshots/filtering-tests.png)
+
 Passing tests will have a green checkmark next to them. Failing tests will have
 a red cross and the reason for failure will be printed in the **Output** panel.
 For example, change the `test_1_equals_1` function in `tests/test-example.c` to:
