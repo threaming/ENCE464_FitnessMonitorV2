@@ -4,5 +4,5 @@ project(FitnessTrackerTests LANGUAGES C)
 enable_testing()
 add_subdirectory(unity)
 
-add_unity_test(test-example test-example.c)
-add_unity_test(test-fff test-fff.c)
+add_unity_test(test_example test_example.c)
+add_unity_test(test_fff test_fff.c)
