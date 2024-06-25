@@ -7,6 +7,7 @@ The repository is structured as follows.
 
 * `docs`: Instructions for building and running the project code, installing the
   development toolchain on your own computer, and additional project help.
+* `labs`: Supporting code for your labs.
 * `target`: Code that targets the LaunchPad; contains the main project code,
   libraries, and a few simple demo programs.
 * `tests`: Tests targeting the host (development) machine.
