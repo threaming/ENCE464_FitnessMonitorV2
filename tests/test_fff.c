@@ -4,51 +4,64 @@
 #include "unity.h"
 
 DEFINE_FFF_GLOBALS;
-FAKE_VOID_FUNC(mocked_function);
-FAKE_VOID_FUNC(display_string, const char *);
 
+/* Static variables */
+uint32_t dummy_var = 3;
+
+/* Mocks */
+FAKE_VOID_FUNC(mocked_void_function);
+FAKE_VOID_FUNC(mocked_arg_function, uint32_t*, uint32_t);
+FAKE_VALUE_FUNC(uint32_t, mocked_value_function);
+
+/* Unity setup/teardown*/
 void setUp(void)
 {
+    RESET_FAKE(mocked_void_function);
+    RESET_FAKE(mocked_arg_function);
+    RESET_FAKE(mocked_value_function);
+    FFF_RESET_HISTORY();
 }
 
 void tearDown(void)
 {
 }
 
-void call_mocked_function(void)
+/* Functions under test */
+void foo(void)
 {
-    mocked_function();
-    mocked_function();
+    mocked_void_function();
+    mocked_void_function();
 }
 
-void test_call_mocked_function(void)
+void bar(void)
 {
-    call_mocked_function();
-    TEST_ASSERT_EQUAL(2, mocked_function_fake.call_count);
+    mocked_arg_function(&dummy_var, dummy_var);
 }
 
-void display_number(int number)
+uint32_t baz(void)
 {
-    char str[255];
-    snprintf(str, sizeof(str), "Number = %05d", number);
-    display_string(str);
+    return mocked_value_function();
 }
 
-/**
- * We do the assertion here rather than checking test_display_number via
- * display_string_fake.arg0_val because the value that str points to is no
- * longer valid after display_number returns. It may work fine but is
- * technically undefined behaviour and a memory error.
- *
- * This could be avoided by using something like gtest/gmock.
- */
-static void display_string_fake_custom_fake(const char * str)
+/* test cases */
+void test_foo_calls_void_function_twice(void)
 {
-    TEST_ASSERT_EQUAL_STRING("Number = 00010", str);
+    foo();
+    TEST_ASSERT_EQUAL(2, mocked_void_function_fake.call_count);
 }
 
-void test_display_number(void)
+void test_bar_passes_dummy_var_as_pinter_and_value_args(void)
 {
-    display_string_fake.custom_fake = display_string_fake_custom_fake;
-    display_number(10);
+    bar();
+    TEST_ASSERT_EQUAL_PTR(&dummy_var, mocked_arg_function_fake.arg0_val);
+    TEST_ASSERT_EQUAL(dummy_var, mocked_arg_function_fake.arg1_val);
+}
+
+void test_baz_returns_the_return_value_of_mocked_value_function(void)
+{
+    mocked_value_function_fake.return_val = 1213;
+
+    uint32_t result = baz();
+    
+    TEST_ASSERT_EQUAL(1213, result);
 }
