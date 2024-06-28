@@ -38,7 +38,7 @@ int32_t * reconstructBufferWithSize(uint16_t size)
 
 /* Test cases */
 
-void test_when_buffer_is_created_then_buffer_empty(void)
+void test_new_buffer_is_empty(void)
 {
     // Arrange: given buffer is empty
 
@@ -49,7 +49,7 @@ void test_when_buffer_is_created_then_buffer_empty(void)
     TEST_ASSERT_EQUAL(0, value);
 }
 
-void test_when_single_element_written_to_buffer_then_same_value_is_read(void)
+void test_single_element_in_single_element_out(void)
 {
     // Arrange: given buffer has a single element
     writeCircBuf(&buff, 11);
