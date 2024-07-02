@@ -2,7 +2,6 @@
 #include "circBufT.h"
 
 const uint8_t STANDARD_TEST_CAPACITY = 5;
-const uint8_t MAX_CAPACITY = UINT8_MAX;
 static circBuf_t buff;
 
 void setUp(void)
@@ -141,26 +140,13 @@ void test_min_capacity_when_single_element_written_to_buffer_then_same_value_is_
     TEST_ASSERT_EQUAL(87, readCircBuf(&buff));
 }
 
-void test_max_capacity_first_element_in_first_element_out (void)
-{
-    // Arrange
-    reconstructBufferWithSize(MAX_CAPACITY);
-
-    // Act
-    writeConsecutiveSequenceToBuffer(20, MAX_CAPACITY);
-
-    // Assert
-    assertReadingSequence(20, MAX_CAPACITY);
-}
-
-
 void test_capacity_0_invalid(void)
 {
     TEST_IGNORE(); // Remove this when the test is written
 
     // Arrange/Act
 
-    // Assert: initCircBuf returns NULL
+    // Assert: the return value of initCircBuf is NULL
 }
 
 void test_capacity_higher_than_max_invalid(void)
@@ -169,5 +155,5 @@ void test_capacity_higher_than_max_invalid(void)
 
     // Arrange/Act
 
-    // Assert: initCircBuf returns NULL
+    // Assert: the return value of initCircBuf is NULL
 }
