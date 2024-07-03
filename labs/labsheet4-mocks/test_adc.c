@@ -162,7 +162,7 @@ void test_adc_init_enables_adc_interrupt(void)
 }
 
 /* Test cases - pollADC */
-void test_adc_poll_initiates_adc(void)
+void test_adc_poll_triggers_adc(void)
 {
     // Act
     

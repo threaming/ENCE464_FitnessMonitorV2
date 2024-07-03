@@ -19,7 +19,7 @@
     FUNC(ADCSequenceConfigure)          \
     FUNC(ADCSequenceEnable)             \
     FUNC(ADCIntRegister)                \
-    FUNC(ADCIntEnable)                  \
+    FUNC(ADCIntEnable)                  
 
 typedef void (*void_function_ptr_type)(void);
 
