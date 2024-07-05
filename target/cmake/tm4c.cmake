@@ -32,16 +32,6 @@ set(
     CACHE INTERNAL "Linker flags"
 )
 
-find_program(OPENOCD openocd REQUIRED)
-message(STATUS "Found OpenOCD: ${OPENOCD}")
-
-find_program(
-    GDB
-    NAMES gdb-multiarch arm-none-eabi-gdb
-    REQUIRED
-)
-message(STATUS "Found GDB: ${GDB}")
-
 function(add_tiva_executable TARGET_NAME)
     add_executable(
         ${TARGET_NAME}

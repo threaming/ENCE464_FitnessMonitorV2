@@ -1,3 +1,13 @@
+find_program(OPENOCD openocd REQUIRED)
+message(STATUS "Found OpenOCD: ${OPENOCD}")
+
+find_program(
+    GDB
+    NAMES gdb-multiarch arm-none-eabi-gdb
+    REQUIRED
+)
+message(STATUS "Found GDB: ${GDB}")
+
 function(_add_program_target EXECUTABLE_TARGET TARGET_NAME GDB_SCRIPT COMMENT)
     message(
         VERBOSE
