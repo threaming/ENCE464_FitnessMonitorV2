@@ -7,7 +7,7 @@ test:
     - ctest --test-dir build --output-on-error
 
 build:
-  image: ubuntu:24.04
+  image: harrymander/ence464-arm-toolchain:latest
   script:
     - |
       apt-get update && apt-get install -y \
