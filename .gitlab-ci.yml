@@ -10,10 +10,10 @@ build:
   script:
     - |
       cmake -B build \
-      --toolchain cmake/tm4c.cmake \
-      -DENABLE_PROGRAM_TARGETS=off \
-      -DBUILD_DEMOS=off \
-      target
+        --toolchain cmake/tm4c.cmake \
+        -DENABLE_PROGRAM_TARGETS=off \
+        -DBUILD_DEMOS=off \
+        target
     - cmake --build build --parallel --target fitness-tracker
     - mv build/src/fitness-tracker .
   artifacts:
