@@ -1,7 +1,6 @@
 test:
-  image: alpine:latest
+  image: harrymander/ence464-host-test-toolchain:latest
   script:
-    - apk update && apk add build-base cmake ruby
     - cmake -B build tests
     - cmake --build build --parallel
     - ctest --test-dir build --output-on-error
