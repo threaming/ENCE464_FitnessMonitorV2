@@ -16,6 +16,8 @@ build:
       -DBUILD_DEMOS=off \
       target
     - cmake --build build --parallel --target fitness-tracker
+    - mv build/src/fitness-tracker .
   artifacts:
+    name: fitness-tracker
     paths:
-      - build/src/fitness-tracker
+      - fitness-tracker
