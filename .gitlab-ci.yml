@@ -5,3 +5,19 @@ test:
     - cmake -B build tests
     - cmake --build build --parallel
     - ctest --test-dir build --output-on-error
+
+build:
+  image: ubuntu:24.04
+  script:
+    - |
+      apt-get update && apt-get install -y \
+        cmake \
+        gcc-arm-none-eabi \
+        gdb-multiarch \
+        libnewlib-arm-none-eabi \
+        openocd
+    - cmake -B build --toolchain cmake/tm4c.cmake target
+    - cmake --build build --parallel --target fitness-tracker
+  artifacts:
+    paths:
+      - build/src/fitness-tracker
