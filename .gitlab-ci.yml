@@ -13,10 +13,13 @@ build:
       apt-get update && apt-get install -y \
         cmake \
         gcc-arm-none-eabi \
-        gdb-multiarch \
-        libnewlib-arm-none-eabi \
-        openocd
-    - cmake -B build --toolchain cmake/tm4c.cmake target
+        libnewlib-arm-none-eabi
+    - |
+      cmake -B build \
+      --toolchain cmake/tm4c.cmake \
+      -DENABLE_PROGRAM_TARGETS=off \
+      -DBUILD_DEMOS=off \
+      target
     - cmake --build build --parallel --target fitness-tracker
   artifacts:
     paths:
