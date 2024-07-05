@@ -10,11 +10,6 @@ build:
   image: harrymander/ence464-arm-toolchain:latest
   script:
     - |
-      apt-get update && apt-get install -y \
-        cmake \
-        gcc-arm-none-eabi \
-        libnewlib-arm-none-eabi
-    - |
       cmake -B build \
       --toolchain cmake/tm4c.cmake \
       -DENABLE_PROGRAM_TARGETS=off \
