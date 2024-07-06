@@ -3,7 +3,11 @@ test:
   script:
     - cmake -B build tests
     - cmake --build build --parallel
-    - ctest --test-dir build --output-on-error
+    - ctest --test-dir build --output-on-error --output-junit results.xml
+  artifacts:
+    when: always
+    reports:
+      junit: build/results.xml
 
 build:
   image: harrymander/ence464-arm-toolchain:latest
