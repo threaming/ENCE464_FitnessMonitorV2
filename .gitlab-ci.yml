@@ -1,4 +1,9 @@
-test:
+stages:
+  - host-test
+  - target-build
+
+host-test:
+  stage: host-test
   image: harrymander/ence464-host-test-toolchain:latest
   script:
     - cmake -B build tests
@@ -9,7 +14,8 @@ test:
     reports:
       junit: build/results.xml
 
-build:
+target-build:
+  stage: target-build
   image: harrymander/ence464-arm-toolchain:latest
   script:
     - |
