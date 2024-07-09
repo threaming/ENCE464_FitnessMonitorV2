@@ -1,3 +1,14 @@
+# This file is used to define the GitLab CI/CD pipeline for your project.
+#
+# By default the pipeline is disabled. When you are ready to enable CI in your
+# project, rename this file to .gitlab-ci.yml (note the dot at the start of the
+# filename) and commit and push the change. The pipeline will then be run and
+# the results can be viewed on your repo's eng-git page from the
+# 'Build > Pipelines' menu in the sidebar.
+#
+# GitLab CI/CD documentation: https://docs.gitlab.com/ee/ci/
+# Syntax reference for this config file: https://docs.gitlab.com/ee/ci/yaml/index.html
+
 stages:
   - host-test
   - target-build
