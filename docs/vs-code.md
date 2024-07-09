@@ -264,6 +264,9 @@ And the following will be printed in the output:
 ```
 
 ## 🐞 Debugging tests
-You can also attach a debugger to the tests by following the same process as
-[Debugging on target](#🐞debugging-on-target) but selecting `Debug-tests` in
-the **Run and Debug** sidebar.
+You can attach a debugger to the tests by following the same process as 
+[Debugging on target](#-debugging-on-target) with these exceptions:
+* In the **CMake** sidebar, set the **Folder** field to `tests`.
+* In the **Run and Debug**, se;ect `Debug-tests`.
+* You will need to manually add a breakpoint in the tests you want to debug,
+since it doesn't automatically stop at `main()` like the target debugger.

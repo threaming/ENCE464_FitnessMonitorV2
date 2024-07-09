@@ -25,7 +25,7 @@
             "args": [],
             "stopAtEntry": false,
             "environment": [],
-            "externalConsole": true,
+            "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [
                 {
