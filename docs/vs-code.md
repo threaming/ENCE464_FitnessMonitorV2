@@ -139,7 +139,7 @@ LaunchPad using FreeRTOS. The code for this demo is located in
    If everything goes well, you should see the red LED on the LaunchPad flashing
    rapidly.
 
-## 🐞 Debugging
+## 🐞 Debugging on target
 
 From the CMake sidebar, click the pencil icon next to the first item listed
 under the **Debug** menu and change the debug target to `blinky`. Alternatively,
@@ -148,11 +148,11 @@ Target**.
 
 ![Set debug target](screenshots/set-debug-target.png)
 
-Pressing `F5` will upload the `blinky` program to the device and attach the
-debugger to it. Alternatively, open the **Run and Debug** sidebar
-(`Ctrl+Shift+D`) and press the green play button to start the debugger. You
-don't have to program the device separately since the debugger will do this
-before starting.
+Open the **Run and Debug** sidebar (`Ctrl+Shift+D`), select `Debug-target` from
+the drop-down menu next to the green play button and press the play button. This
+will  to upload the `blinky` program to the device and attach the debugger to it.
+Alternatively, pressing `F5` will do the same thing, provided  `Debug-target` is
+selected.
 
 ![Debug sidebar](screenshots/debug-sidebar.png)
 
@@ -262,3 +262,11 @@ And the following will be printed in the output:
 [ctest] FAIL
 ...
 ```
+
+## 🐞 Debugging tests
+You can attach a debugger to the tests by following the same process as 
+[Debugging on target](#-debugging-on-target) with these exceptions:
+* In the **CMake** sidebar, set the **Folder** field to `tests`.
+* In the **Run and Debug** sidebar, select `Debug-tests`.
+* You will need to manually add a breakpoint in the tests you want to debug,
+since it doesn't automatically stop at `main()` like the target debugger.
