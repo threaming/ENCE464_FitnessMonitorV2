@@ -1,13 +1,17 @@
-# ENCE464 Fitness Tracker Project
+# ENCE464 Fitness Monitor Project
 
-This repository contains the code and build system for the ENCE464 fitness
-tracker project, to run on the
-[Texas Instruments TM4C123G LaunchPad Evaluation Kit](https://www.ti.com/tool/EK-TM4C123GXL).
-The repository is structured as follows.
+This repository contains the code and build system for the ENCE464 Fitness
+Monitor project, to run on the
+[Texas Instruments TM4C123G LaunchPad Evaluation Kit](https://www.ti.com/tool/EK-TM4C123GXL). 
 
-* `docs`: Instructions for building and running the project code, installing the
-  development toolchain on your own computer, and additional project help.
-* `labs`: Supporting code for your labs.
+## Repository structure
+
+The repository is structured as follows:
+
+* `docs`: Instructions for building and running the project code, and installing the
+  development toolchain on your own computer. Also contains Fitness Monitor v1.0 
+  documentation and some additional project help.
+* `labs`: Supporting code for your lab sessions.
 * `target`: Code that targets the LaunchPad; contains the main project code,
   libraries, and a few simple demo programs.
 * `tests`: Tests targeting the host (development) machine.
@@ -15,23 +19,30 @@ The repository is structured as follows.
 
 ## 🚀 Getting started
 
-If you want to build the project on your personal machine, firstly read the
-toolchain installation guide for your operating system:
+The project is set up for development using Microsoft _Visual Studio Code_, the 
+_CMake_ build system, the _GCC ARM_ cross-compiler, and _OpenOCD_. 
+
+### Toolchain setup
+
+If you're working on a UC Embedded Systems Lab (ESL) computer then you should find that the 
+necessary toolchain is pre-installed. 
+
+If you want to build the project on _your personal machine_ you'll need to make sure that you 
+install all of the necessary tools. Check the toolchain installation guide for your operating system:
 
 * [Windows](docs/toolchain.md#windows)
 * [Linux](docs/toolchain.md#linux)
 * [macOS](docs/toolchain.md#macos)
 
-Otherwise, the computers in the ESL have the toolchain pre-installed.
+### Building the code 
 
-This projects is set-up to use the CMake build system. You can use the command
-line or VS Code to build the code and program your device. See the below links
-for instructions.
+Assuming that you have the [toolchain installed](#toolchain), you can use the command line or _VS Code_ to 
+build the code and program your LaunchPad. Here are instructions on building/programming using each approach:
 
 * [VS Code](docs/vs-code.md)
 * [Command line](docs/cli.md)
 
-See the [CMake guide](docs/cmake.md) for info on performing certain tasks with
+See the [CMake guide](docs/cmake.md) for additional info on performing various tasks with
 the CMake build system.
 
 For tips on debugging and fixing common issues, including some common FreeRTOS
