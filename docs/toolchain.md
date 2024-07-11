@@ -93,6 +93,10 @@ where arm-none-eabi-gcc gcc gdb-multiarch make openocd ruby
 If everything was set-up properly, the paths to each of the commands will be
 listed without any error messages.
 
+**Important:**: if you already had VS Code open during installation, you must
+close and re-open the app so that it detects the new `PATH` environment
+variable. (The same applies for any shells/command prompts you have opened.)
+
 # MacOS
 
 Use [Homebrew](https://brew.sh/) to install CMake, OpenOCD, and the embedded
