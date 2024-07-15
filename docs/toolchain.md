@@ -88,7 +88,7 @@ Open a new command prompt window (`Windows+R`, type `cmd` and press `Enter`) and
 run:
 
 ```
-where arm-none-eabi-gcc gcc gdb-multiarch make openocd ruby
+where.exe arm-none-eabi-gcc gcc gdb-multiarch make openocd ruby
 ```
 
 If everything was set-up properly, the paths to each of the commands will be
