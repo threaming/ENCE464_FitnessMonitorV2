@@ -14,7 +14,10 @@
             "runToEntryPoint": "main",
             "showDevDebugOutput": "none",
             "svdPath": "${workspaceFolder}/target/scripts/tm4c123x-vendor.xml",
-            "gdbPath": "gdb-multiarch"
+            "gdbPath": "gdb-multiarch",
+            "osx": {
+                "gdbPath": "arm-none-eabi-gdb"
+            }
         },
         {
             "name": "Debug-tests",
