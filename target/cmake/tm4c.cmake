@@ -28,7 +28,7 @@ set(
 set(SCRIPTS_DIR ${PROJECT_SOURCE_DIR}/scripts)
 set(
     CMAKE_EXE_LINKER_FLAGS
-    "-T${SCRIPTS_DIR}/link.ld"
+    "-T\"${SCRIPTS_DIR}/link.ld\""
     CACHE INTERNAL "Linker flags"
 )
 
