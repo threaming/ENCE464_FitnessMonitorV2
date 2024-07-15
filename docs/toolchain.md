@@ -48,9 +48,10 @@ For the toolchain (compiler, OpenOCD), there are two options:
 
 ### Option 1: Copy toolchain from lab PCs
 
-Use the ENCE464 toolchain directory from the lab PCs (located at `C:\ence464`;
-you could transfer the folder to your PC using a flash drive). Add the following
-directories to `PATH`:
+Using a flash drive or similar, copy the entire `C:\ence464` directory from the
+lab PCs to the same location on your machine.
+
+Add the following directories to `PATH`:
 
 * `C:\ence464\msys64\mingw64\bin`
 * `C:\ence464\msys64\usr\bin`
