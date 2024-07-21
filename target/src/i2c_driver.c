@@ -49,7 +49,7 @@ void Delay_us(void)
 **      it works.
 **
 */
-char I2CGenTransmit(char * pbData, int32_t cSize, bool fRW, char bAddr) {
+int32_t I2CGenTransmit(char * pbData, int32_t cSize, bool fRW, char bAddr) {
 
     int32_t         i;
     char *      pbTemp;
