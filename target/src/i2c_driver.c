@@ -199,7 +199,7 @@ char I2CGenTransmit(char * pbData, int32_t cSize, bool fRW, char bAddr) {
 **      Returns TRUE if the bus is not idle
 **
 */
-bool I2CGenIsNotIdle() {
+bool I2CGenIsNotIdle(void) {
 
     return !I2CMasterBusBusy(I2C0_BASE);
 
