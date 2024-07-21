@@ -22,6 +22,13 @@ void writeConsecutiveSequenceToBuffer(uint16_t start, uint16_t size)
     }
 } 
 
+void readConsecutiveSequenceFromBuffer(uint16_t size)
+{
+    for (uint16_t i = 0; i < size; i++) {
+      readCircBuf(&buff);
+    }
+} 
+
 void assertReadingSequence(uint16_t start, uint16_t size)
 {
     for (uint16_t i = 0; i < size; i++) {
@@ -97,15 +104,18 @@ void test_buffer_is_clean_after_full_buffer_cycle_completed(void)
 
 void test_buffer_is_circular(void)
 {
-    TEST_IGNORE(); // Remove this when the test is written
-
-    // Arange: given buffer is fully written to and then fully read from
+    // Arrange: given buffer is fully written to and then fully read from
+    writeConsecutiveSequenceToBuffer(5, STANDARD_TEST_CAPACITY);
+    readConsecutiveSequenceFromBuffer(STANDARD_TEST_CAPACITY);
 
     // Arrange: given a new value is written
+    writeCircBuf(&buff, 7);
 
     // Act: when buffer is read
+    int32_t value = readCircBuf(&buff);
 
     // Assert: the last written element is returned
+    TEST_ASSERT_EQUAL(7, value);
 }
 
 void test_no_values_overwritten_after_full(void)
