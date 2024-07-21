@@ -25,7 +25,7 @@
 #define WRITE           0
 
 void Delay_us(void);
-int16_t* I2CGenTransmit(char * pbData, int32_t cSize, bool fRW, char bAddr);
-bool I2CGenIsNotIdle();
+int32_t* I2CGenTransmit(char * pbData, int32_t cSize, bool fRW, char bAddr);
+bool I2CGenIsNotIdle(void);
 
 #endif /* I2C_DRIVER_H_ */
