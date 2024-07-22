@@ -28,7 +28,7 @@ initCircBuf (circBuf_t *buffer, uint32_t size)
 	buffer->nelem = 0;
 	buffer->size = size;
 	buffer->data = 
-        (int32_t *) calloc (size, sizeof(int32_t));
+        (uint32_t *) calloc (size, sizeof(int32_t));
 	return buffer->data;
 }
    // Note use of calloc() to clear contents.
