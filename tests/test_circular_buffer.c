@@ -122,13 +122,15 @@ void test_buffer_is_circular(void)
 
 void test_no_values_overwritten_after_full(void)
 {
-    TEST_IGNORE(); // Remove this when the test is written
-
     // Arrange: given buffer is filled to capacity
+    writeConsecutiveSequenceToBuffer(5, STANDARD_TEST_CAPACITY);
 
     // Given: when one more element is written to buffer
+    writeCircBuf(&buff, 100);
 
     // Assert: first element in, first element out, no overflow
+    int32_t value = readCircBuf(&buff);
+    TEST_ASSERT_EQUAL(5, value);
 }
 
 void test_min_capacity_when_buffer_is_created_then_buffer_empty(void)

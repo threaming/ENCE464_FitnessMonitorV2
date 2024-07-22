@@ -33,10 +33,13 @@ initCircBuf (circBuf_t *buffer, uint32_t size)
 
 // *******************************************************
 // writeCircBuf: insert entry at the current windex location,
-// advance windex, modulo (buffer size).
+// advance windex, modulo (buffer size). If the buffer is full
+// nothing will be changed at the entries
 void
 writeCircBuf (circBuf_t *buffer, int32_t entry)
 {
+	if (buffer->nelem == buffer->size)
+		return;
 	buffer->data[buffer->windex] = entry;
 	buffer->windex++;
 	buffer->nelem++;
