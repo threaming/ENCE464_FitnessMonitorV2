@@ -49,10 +49,10 @@ void test_new_buffer_is_empty(void)
     // Arrange: given buffer is empty
 
     // Act: when buffer is read
-    int32_t value = readCircBuf(&buff);
+    int32_t data = readCircBuf(&buff);
 
     // Assert: then 0 is returned
-    TEST_ASSERT_EQUAL(0, value);
+    TEST_ASSERT_EQUAL(NULL, data);
 }
 
 void test_single_element_in_single_element_out(void)
@@ -156,10 +156,8 @@ void test_min_capacity_when_single_element_written_to_buffer_then_same_value_is_
 
 void test_capacity_0_invalid(void)
 {
-    TEST_IGNORE(); // Remove this when the test is written
-
     // Arrange/Act
-    int32_t* abuff = reconstructBufferWithSize(0);
+    int32_t *abuff = reconstructBufferWithSize(0);
 
     // Assert: the return value of initCircBuf is NULL
     TEST_ASSERT_EQUAL(NULL, abuff);

@@ -17,10 +17,12 @@
 // initCircBuf: Initialise the circBuf instance. Reset both indices to
 // the start of the buffer.  Dynamically allocate and clear the the 
 // memory and return a pointer for the data.  Return NULL if 
-// allocation fails.
+// allocation fails. Return NULL if size is to low.
 int32_t *
 initCircBuf (circBuf_t *buffer, uint32_t size)
 {
+	if (!size)
+		return NULL;
 	buffer->windex = 0;
 	buffer->rindex = 0;
 	buffer->nelem = 0;
