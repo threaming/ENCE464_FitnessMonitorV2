@@ -12,6 +12,7 @@
 // 
 // *******************************************************
 #include <stdint.h>
+#define MAX_BUFFER_CAPACITY 65536 // 16 bits worth of address
 
 // *******************************************************
 // Buffer structure

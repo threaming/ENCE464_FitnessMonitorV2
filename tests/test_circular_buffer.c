@@ -36,7 +36,7 @@ void assertReadingSequence(uint16_t start, uint16_t size)
     }
 } 
 
-int32_t * reconstructBufferWithSize(uint16_t size)
+int32_t * reconstructBufferWithSize(uint32_t size)
 {
   freeCircBuf(&buff);
   return initCircBuf(&buff, size);
@@ -165,9 +165,18 @@ void test_capacity_0_invalid(void)
 
 void test_capacity_higher_than_max_invalid(void)
 {
-    TEST_IGNORE(); // Remove this when the test is written
-
     // Arrange/Act
+    int32_t *abuff = reconstructBufferWithSize(MAX_BUFFER_CAPACITY+1);
 
     // Assert: the return value of initCircBuf is NULL
+    TEST_ASSERT_EQUAL(NULL, abuff);
+}
+
+void test_capacity_at_limit(void)
+{
+    // Arrange/Act
+    int32_t *abuff = reconstructBufferWithSize(MAX_BUFFER_CAPACITY);
+
+    // Assert: the return value of initCircBuf is not NULL
+    TEST_ASSERT_NOT_EQUAL(NULL, abuff);
 }
