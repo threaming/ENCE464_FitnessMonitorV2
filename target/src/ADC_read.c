@@ -33,11 +33,8 @@ static circBuf_t ADC_inBuffer;		// Buffer of size BUF_SIZE integers (sample valu
 //*****************************************************************************
 void pollADC(void)
 {
-    //
     // Initiate a conversion
-    //
     ADCProcessorTrigger(ADC0_BASE, 3);
-//    g_ulSampCnt++;
 }
 
 //*****************************************************************************
@@ -51,12 +48,11 @@ void ADCIntHandler(void)
 	uint32_t ulValue;
 	
 	// Get the single sample from ADC0.  ADC_BASE is defined in
-	// inc/hw_memmap.h
 	ADCSequenceDataGet(ADC0_BASE, 3, &ulValue);
-	//
+
 	// Place it in the circular buffer (advancing write index)
 	writeCircBuf (&ADC_inBuffer, ulValue);
-	//
+
 	// Clean up, clearing the interrupt
 	ADCIntClear(ADC0_BASE, 3);                          
 }
@@ -77,7 +73,6 @@ void initADC (void)
     // conversion.
     ADCSequenceConfigure(ADC0_BASE, 3, ADC_TRIGGER_PROCESSOR, 0);
   
-    //
     // Configure step 0 on sequence 3.  Sample channel 0 (ADC_CTL_CH0) in
     // single-ended mode (default) and configure the interrupt flag
     // (ADC_CTL_IE) to be set when the sample is done.  Tell the ADC logic
