@@ -174,9 +174,12 @@ void test_capacity_higher_than_max_invalid(void)
 
 void test_capacity_at_limit(void)
 {
-    // Arrange/Act
-    int32_t *abuff = reconstructBufferWithSize(MAX_BUFFER_CAPACITY);
+    // Arrange
+    reconstructBufferWithSize(MAX_BUFFER_CAPACITY);
+
+    // Act
+    writeConsecutiveSequenceToBuffer(20, MAX_BUFFER_CAPACITY);
 
     // Assert: the return value of initCircBuf is not NULL
-    TEST_ASSERT_NOT_EQUAL(NULL, abuff);
+    assertReadingSequence(20, MAX_BUFFER_CAPACITY);
 }
