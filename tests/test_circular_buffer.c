@@ -159,8 +159,10 @@ void test_capacity_0_invalid(void)
     TEST_IGNORE(); // Remove this when the test is written
 
     // Arrange/Act
+    int32_t* abuff = reconstructBufferWithSize(0);
 
     // Assert: the return value of initCircBuf is NULL
+    TEST_ASSERT_EQUAL(NULL, abuff);
 }
 
 void test_capacity_higher_than_max_invalid(void)
