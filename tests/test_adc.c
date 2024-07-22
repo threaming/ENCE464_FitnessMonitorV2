@@ -168,6 +168,7 @@ void test_adc_poll_triggers_adc(void)
     pollADC();
 
     // Assert
+    TEST_ASSERT_EQUAL(1, ADCProcessorTrigger_fake.call_count);
     TEST_ASSERT_EQUAL(ADC0_BASE, ADCProcessorTrigger_fake.arg0_val);
     TEST_ASSERT_EQUAL(3, ADCProcessorTrigger_fake.arg1_val);
 }
