@@ -165,8 +165,11 @@ void test_adc_init_enables_adc_interrupt(void)
 void test_adc_poll_triggers_adc(void)
 {
     // Act
-    
+    pollADC();
+
     // Assert
+    TEST_ASSERT_EQUAL(ADC0_BASE, ADCProcessorTrigger_fake.arg0_val);
+    TEST_ASSERT_EQUAL(3, ADCProcessorTrigger_fake.arg1_val);
 }
 
 /* Test cases - ADCIntHandler */
