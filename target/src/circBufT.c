@@ -23,6 +23,7 @@ initCircBuf (circBuf_t *buffer, uint32_t size)
 {
 	buffer->windex = 0;
 	buffer->rindex = 0;
+	buffer->nelem = 0;
 	buffer->size = size;
 	buffer->data = 
         (int32_t *) calloc (size, sizeof(int32_t));
@@ -38,23 +39,27 @@ writeCircBuf (circBuf_t *buffer, int32_t entry)
 {
 	buffer->data[buffer->windex] = entry;
 	buffer->windex++;
+	buffer->nelem++;
 	if (buffer->windex >= buffer->size)
 	   buffer->windex = 0;
 }
 
 // *******************************************************
 // readCircBuf: return entry at the current rindex location,
-// advance rindex, modulo (buffer size). The function deos not check
-// if reading has advanced ahead of writing.
+// advance rindex, modulo (buffer size). 0 is returned if the
+// buffer is empty.
 int32_t
 readCircBuf (circBuf_t *buffer)
 {
+	if (!buffer->nelem)
+		return 0;
 	int32_t entry;
-	
 	entry = buffer->data[buffer->rindex];
 	buffer->rindex++;
+	buffer->nelem--;
 	if (buffer->rindex >= buffer->size)
 	   buffer->rindex = 0;
+
     return entry;
 }
 

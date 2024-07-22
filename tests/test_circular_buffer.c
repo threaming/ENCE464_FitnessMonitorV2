@@ -93,13 +93,15 @@ void test_write_and_read_indices_are_independent(void)
 
 void test_buffer_is_clean_after_full_buffer_cycle_completed(void)
 {
-    TEST_IGNORE(); // Remove this when the test is written
-
     // Arange: given buffer is fully written to and and then fully read from
+    writeConsecutiveSequenceToBuffer(5, STANDARD_TEST_CAPACITY);
+    readConsecutiveSequenceFromBuffer(STANDARD_TEST_CAPACITY);
 
     // Act: when buffer is read
+    int32_t value = readCircBuf(&buff);
 
     // Assert: same behaviour as when buffer was empty
+    TEST_ASSERT_EQUAL(0, value);
 }
 
 void test_buffer_is_circular(void)
