@@ -222,3 +222,63 @@ void test_isr_clears_interrupt_signal(void)
 }
 
 /* Test cases - readADC */
+void test_adc_read_from_right_buffer(void)
+{
+    // Arrange
+    circBuf_t* buff = get_circBuf_ptr_and_reset_fff();
+
+    // Act
+    readADC();
+
+    // Assert
+    TEST_ASSERT_EQUAL_PTR(buff, readCircBuf_fake.arg0_val);
+}
+
+void test_adc_read_average_over_all_elements(void)
+{
+    // Act
+    readADC();
+
+    // Assert
+    TEST_ASSERT_EQUAL(ADC_BUF_SIZE, readCircBuf_fake.call_count);
+
+}
+
+void test_adc_read_calculate_average_correctly(void)
+{
+    // Arrange
+    int32_t buffReturnVals[ADC_BUF_SIZE] = {4,10,4,10,4,10,4,10,4,10};
+    SET_RETURN_SEQ(readCircBuf, buffReturnVals, ADC_BUF_SIZE);
+
+    // Act
+    uint32_t adcAvg= readADC();
+
+    // Assert
+    TEST_ASSERT_EQUAL(7, adcAvg);
+}
+
+void test_adc_read_round_up_average_correctly(void)
+{
+    // Arrange
+    int32_t buffReturnVals[ADC_BUF_SIZE] = {5,10,5,10,5,10,5,10,5,10};
+    SET_RETURN_SEQ(readCircBuf, buffReturnVals, ADC_BUF_SIZE);
+
+    // Act
+    uint32_t adcAvg= readADC();
+
+    // Assert
+    TEST_ASSERT_EQUAL(8, adcAvg);
+}
+
+void test_adc_read_round_down_average_correctly(void)
+{
+    // Arrange
+    int32_t buffReturnVals[ADC_BUF_SIZE] = {1,2,3,4,5,6,7,8,9,9};
+    SET_RETURN_SEQ(readCircBuf, buffReturnVals, ADC_BUF_SIZE);
+
+    // Act
+    uint32_t adcAvg= readADC();
+
+    // Assert
+    TEST_ASSERT_EQUAL(5, adcAvg);
+}
