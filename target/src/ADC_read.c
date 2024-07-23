@@ -104,6 +104,6 @@ uint32_t readADC() {
       for (i = 0; i < ADC_BUF_SIZE; i++)
           sum = sum + readCircBuf (&ADC_inBuffer);
 
-      return sum/ADC_BUF_SIZE;
+      return (sum+ADC_BUF_SIZE/2)/ADC_BUF_SIZE;
 }
 
