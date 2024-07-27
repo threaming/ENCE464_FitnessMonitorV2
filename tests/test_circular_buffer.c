@@ -15,21 +15,21 @@ void tearDown(void)
 }
 
 /* Helper functions */
-void writeConsecutiveSequenceToBuffer(uint16_t start, uint16_t size)
+void writeConsecutiveSequenceToBuffer(uint32_t start, uint32_t size)
 {
     for (uint16_t i = 0; i < size; i++) {
       writeCircBuf(&buff, start + i);
     }
 } 
 
-void readConsecutiveSequenceFromBuffer(uint16_t size)
+void readConsecutiveSequenceFromBuffer(uint32_t size)
 {
     for (uint16_t i = 0; i < size; i++) {
       readCircBuf(&buff);
     }
 } 
 
-void assertReadingSequence(uint16_t start, uint16_t size)
+void assertReadingSequence(uint32_t start, uint32_t size)
 {
     for (uint16_t i = 0; i < size; i++) {
       TEST_ASSERT_EQUAL(start + i, readCircBuf(&buff));
@@ -49,7 +49,7 @@ void test_new_buffer_is_empty(void)
     // Arrange: given buffer is empty
 
     // Act: when buffer is read
-    int32_t data = readCircBuf(&buff);
+    uint32_t data = readCircBuf(&buff);
 
     // Assert: then 0 is returned
     TEST_ASSERT_EQUAL(NULL, data);
@@ -61,7 +61,7 @@ void test_single_element_in_single_element_out(void)
     writeCircBuf(&buff, 11);
 
     // Act: when buffer is read
-    int32_t value = readCircBuf(&buff);
+    uint32_t value = readCircBuf(&buff);
 
     // Assert: then the same value is returned
     TEST_ASSERT_EQUAL(11, value);
@@ -84,7 +84,7 @@ void test_write_and_read_indices_are_independent(void)
       writeCircBuf(&buff, 20 + i);
 
       // Act: when buffer is read
-      int32_t value = readCircBuf(&buff);
+      uint32_t value = readCircBuf(&buff);
 
       // Assert: the last written element is returned
       TEST_ASSERT_EQUAL(20 + i, value);
@@ -98,7 +98,7 @@ void test_buffer_is_clean_after_full_buffer_cycle_completed(void)
     readConsecutiveSequenceFromBuffer(STANDARD_TEST_CAPACITY);
 
     // Act: when buffer is read
-    int32_t value = readCircBuf(&buff);
+    uint32_t value = readCircBuf(&buff);
 
     // Assert: same behaviour as when buffer was empty
     TEST_ASSERT_EQUAL(0, value);
@@ -114,7 +114,7 @@ void test_buffer_is_circular(void)
     writeCircBuf(&buff, 7);
 
     // Act: when buffer is read
-    int32_t value = readCircBuf(&buff);
+    uint32_t value = readCircBuf(&buff);
 
     // Assert: the last written element is returned
     TEST_ASSERT_EQUAL(7, value);
@@ -129,7 +129,7 @@ void test_no_values_overwritten_after_full(void)
     writeCircBuf(&buff, 100);
 
     // Assert: first element in, first element out, no overflow
-    int32_t value = readCircBuf(&buff);
+    uint32_t value = readCircBuf(&buff);
     TEST_ASSERT_EQUAL(5, value);
 }
 

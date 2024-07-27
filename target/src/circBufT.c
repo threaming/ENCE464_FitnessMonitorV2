@@ -18,8 +18,7 @@
 // the start of the buffer.  Dynamically allocate and clear the the 
 // memory and return a pointer for the data.  Return NULL if 
 // allocation fails. Return NULL if size is to small or to big.
-uint32_t *
-initCircBuf (circBuf_t *buffer, uint32_t size)
+uint32_t *initCircBuf (circBuf_t *buffer, uint32_t size)
 {
 	if (!size || size>MAX_BUFFER_CAPACITY)
 		return NULL;
@@ -28,7 +27,7 @@ initCircBuf (circBuf_t *buffer, uint32_t size)
 	buffer->nelem = 0;
 	buffer->size = size;
 	buffer->data = 
-        (uint32_t *) calloc (size, sizeof(int32_t));
+        (uint32_t *) calloc (size, sizeof(uint32_t));
 	return buffer->data;
 }
    // Note use of calloc() to clear contents.
@@ -37,8 +36,7 @@ initCircBuf (circBuf_t *buffer, uint32_t size)
 // writeCircBuf: insert entry at the current windex location,
 // advance windex, modulo (buffer size). If the buffer is full
 // nothing will be changed at the entries
-void
-writeCircBuf (circBuf_t *buffer, int32_t entry)
+void writeCircBuf (circBuf_t *buffer, uint32_t entry)
 {
 	if (buffer->nelem == buffer->size)
 		return;
@@ -53,8 +51,7 @@ writeCircBuf (circBuf_t *buffer, int32_t entry)
 // readCircBuf: return entry at the current rindex location,
 // advance rindex, modulo (buffer size). 0 is returned if the
 // buffer is empty.
-int32_t
-readCircBuf (circBuf_t *buffer)
+uint32_t readCircBuf (circBuf_t *buffer)
 {
 	if (!buffer->nelem)
 		return 0;
@@ -72,8 +69,7 @@ readCircBuf (circBuf_t *buffer)
 // freeCircBuf: Releases the memory allocated to the buffer data,
 // sets pointer to NULL and other fields to 0. The buffer can
 // re-initialised by another call to initCircBuf().
-void
-freeCircBuf (circBuf_t * buffer)
+void freeCircBuf (circBuf_t * buffer)
 {
 	buffer->windex = 0;
 	buffer->rindex = 0;
