@@ -36,7 +36,7 @@ void assertReadingSequence(uint16_t start, uint16_t size)
     }
 } 
 
-int32_t * reconstructBufferWithSize(uint32_t size)
+uint32_t* reconstructBufferWithSize(uint32_t size)
 {
   freeCircBuf(&buff);
   return initCircBuf(&buff, size);
