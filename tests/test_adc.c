@@ -10,7 +10,7 @@ DEFINE_FFF_GLOBALS;
 #include "tiva_mocks/sysctl_mock.h"
 
 #define ADC_BUF_SIZE 10
-#define FAKE_ADC_VALUE 0xFACCEADC // No K's in hex
+#define FAKE_ADC_VALUE 0xFACCEADC
 
 /* Helper functions */      
 void reset_fff(void)
@@ -165,10 +165,120 @@ void test_adc_init_enables_adc_interrupt(void)
 void test_adc_poll_triggers_adc(void)
 {
     // Act
-    
+    pollADC();
+
     // Assert
+    TEST_ASSERT_EQUAL(1, ADCProcessorTrigger_fake.call_count);
+    TEST_ASSERT_EQUAL(ADC0_BASE, ADCProcessorTrigger_fake.arg0_val);
+    TEST_ASSERT_EQUAL(3, ADCProcessorTrigger_fake.arg1_val);
 }
 
 /* Test cases - ADCIntHandler */
+void test_isr_read_correct_adc_channel(void)
+{
+    // Act
+    ADCIntHandler();
+
+    // Assert
+    TEST_ASSERT_EQUAL(1, ADCSequenceDataGet_fake.call_count);
+    TEST_ASSERT_EQUAL(ADC0_BASE, ADCSequenceDataGet_fake.arg0_val);
+    TEST_ASSERT_EQUAL(3, ADCSequenceDataGet_fake.arg1_val);
+}
+
+void test_isr_writes_to_correct_buffer(void)
+{
+    // Arrange
+    circBuf_t* buff = get_circBuf_ptr_and_reset_fff();
+
+    // Act
+    ADCIntHandler();
+
+    // Assert
+    TEST_ASSERT_EQUAL(1, writeCircBuf_fake.call_count);
+    TEST_ASSERT_EQUAL_PTR(buff, writeCircBuf_fake.arg0_val);
+}
+
+void test_isr_writes_correct_value_to_buffer(void)
+{
+    // Arrange
+    ADCSequenceDataGet_fake.custom_fake = ADCSequenceDataGet_fake_adc_value;
+
+    // Act
+    ADCIntHandler();
+
+    // Assert
+    TEST_ASSERT_EQUAL(1, writeCircBuf_fake.call_count);
+    TEST_ASSERT_EQUAL_UINT32(FAKE_ADC_VALUE, writeCircBuf_fake.arg1_val);
+}
+
+void test_isr_clears_interrupt_signal(void)
+{
+    // Act
+    ADCIntHandler();    
+    // Assert
+    TEST_ASSERT_EQUAL(1, ADCIntClear_fake.call_count);
+    TEST_ASSERT_EQUAL(ADC0_BASE, ADCIntClear_fake.arg0_val);
+    TEST_ASSERT_EQUAL(3, ADCIntClear_fake.arg1_val);
+}
 
 /* Test cases - readADC */
+void test_adc_read_from_right_buffer(void)
+{
+    // Arrange
+    circBuf_t* buff = get_circBuf_ptr_and_reset_fff();
+
+    // Act
+    readADC();
+
+    // Assert
+    TEST_ASSERT_EQUAL_PTR(buff, readCircBuf_fake.arg0_val);
+}
+
+void test_adc_read_average_over_all_elements(void)
+{
+    // Act
+    readADC();
+
+    // Assert
+    TEST_ASSERT_EQUAL(ADC_BUF_SIZE, readCircBuf_fake.call_count);
+
+}
+
+void test_adc_read_calculate_average_correctly(void)
+{
+    // Arrange
+    int32_t buffReturnVals[ADC_BUF_SIZE] = {4,10,4,10,4,10,4,10,4,10};
+    SET_RETURN_SEQ(readCircBuf, buffReturnVals, ADC_BUF_SIZE);
+
+    // Act
+    uint32_t adcAvg= readADC();
+
+    // Assert
+    TEST_ASSERT_EQUAL(7, adcAvg);
+}
+
+void test_adc_read_round_up_average_correctly(void)
+{
+    // Arrange
+    int32_t buffReturnVals[ADC_BUF_SIZE] = {5,10,5,10,5,10,5,10,5,10};
+    SET_RETURN_SEQ(readCircBuf, buffReturnVals, ADC_BUF_SIZE);
+
+    // Act
+    uint32_t adcAvg= readADC();
+
+    // Assert
+    TEST_ASSERT_EQUAL(8, adcAvg);
+}
+
+void test_adc_read_round_down_average_correctly(void)
+{
+    // Arrange
+    int32_t buffReturnVals[ADC_BUF_SIZE] = {1,2,3,4,5,6,7,8,9,9};
+    SET_RETURN_SEQ(readCircBuf, buffReturnVals, ADC_BUF_SIZE);
+
+    // Act
+    uint32_t adcAvg= readADC();
+
+    // Assert
+    TEST_ASSERT_EQUAL(5, adcAvg);
+}
