@@ -17,21 +17,21 @@ void tearDown(void)
 /* Helper functions */
 void writeConsecutiveSequenceToBuffer(uint32_t start, uint32_t size)
 {
-    for (uint16_t i = 0; i < size; i++) {
+    for (uint32_t i = 0; i < size; i++) {
       writeCircBuf(&buff, start + i);
     }
 } 
 
 void readConsecutiveSequenceFromBuffer(uint32_t size)
 {
-    for (uint16_t i = 0; i < size; i++) {
+    for (uint32_t i = 0; i < size; i++) {
       readCircBuf(&buff);
     }
 } 
 
 void assertReadingSequence(uint32_t start, uint32_t size)
 {
-    for (uint16_t i = 0; i < size; i++) {
+    for (uint32_t i = 0; i < size; i++) {
       TEST_ASSERT_EQUAL(start + i, readCircBuf(&buff));
     }
 } 
