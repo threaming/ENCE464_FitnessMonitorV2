@@ -33,6 +33,9 @@
 #include "circBufV.h"
 #include "ADC_read.h"
 
+#include "FreeRTOS.h"
+#include "task.h"
+
 #ifdef SERIAL_PLOTTING_ENABLED
 #include "serial_sender.h"
 #endif //SERIAL_PLOTTING_ENABLED
@@ -68,52 +71,26 @@
 /*******************************************
  *      Local prototypes
  *******************************************/
-void SysTickIntHandler (void);
 void initClock (void);
-void initSysTick (void);
 void initDisplay (void);
 void initAccl (void);
 vector3_t getAcclData (void);
+void vAssertCalled( const char * pcFile, unsigned long ulLine );
 
 
 /*******************************************
  *      Globals
  *******************************************/
-unsigned long ticksElapsed = 0; // Incremented once every system tick. Must be read with SysTickIntHandler(), or you can get garbled data!
-
 deviceStateInfo_t deviceState; // Stored as one global so it can be accessed by other helper libs within this main module
 
 /***********************************************************
  * Initialisation functions
  ***********************************************************/
-void SysTickIntHandler (void)
-{
-    ticksElapsed++;
-}
-
-
-
 void initClock (void)
 {
     // Set the clock rate to 20 MHz
-    SysCtlClockSet (SYSCTL_SYSDIV_10 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |
+    SysCtlClockSet (SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |
                    SYSCTL_XTAL_16MHZ);
-}
-
-
-
-void initSysTick (void)
-{
-    // Set up the period for the SysTick timer.  The SysTick timer period is
-    // set as a function of the system clock.
-    SysTickPeriodSet (SysCtlClockGet () / RATE_SYSTICK_HZ);
-    //
-    // Register the interrupt handler
-    SysTickIntRegister (SysTickIntHandler);
-    //
-    // Enable interrupt and device
-    SysTickIntEnable ();
-    SysTickEnable ();
 }
 
 
@@ -124,11 +101,7 @@ void initSysTick (void)
 // Read the current systick value, without mangling the data
 unsigned long readCurrentTick(void)
 {
-    unsigned long currentTick;
-    SysTickIntDisable();
-    currentTick = ticksElapsed;
-    SysTickIntEnable();
-    return currentTick;
+    return xTaskGetTickCount();
 }
 
 
@@ -148,57 +121,29 @@ void flashMessage(char* toShow)
     deviceState.flashMessage[i] = '\0';
 }
 
+void vAssertCalled( const char * pcFile, unsigned long ulLine ) {
+ (void)pcFile; // unused
+ (void)ulLine; // unused
+ while (true);
+}
 
-/***********************************************************
- * Main Loop
- ***********************************************************/
-
-int main(void)
-{
+void superloop(void* args) {
+ // Variable declarations
     unsigned long lastIoProcess= 0;
     unsigned long lastAcclProcess = 0;
     unsigned long lastDisplayProcess = 0;
 
-    #ifdef SERIAL_PLOTTING_ENABLED
-    unsigned long lastSerialProcess = 0;
-    #endif // SERIAL_PLOTTING_ENABLED
-
     uint8_t stepHigh = false;
     vector3_t mean;
 
-    // Device state
-    // Omnibus struct that holds loads of info about the device's current state, so it can be updated from any function
-    deviceState.displayMode = DISPLAY_STEPS;
-    deviceState.stepsTaken = 0;
-    deviceState.currentGoal = TARGET_DISTANCE_DEFAULT;
-    deviceState.debugMode = false;
-    deviceState.displayUnits= UNITS_SI;
-    deviceState.workoutStartTick = 0;
-    deviceState.flashTicksLeft = 0;
-    deviceState.flashMessage = calloc(MAX_STR_LEN + 1, sizeof(char));
-
-    // Init libs
-    initClock();
-    displayInit();
-    btnInit();
-    initSysTick();
-    acclInit();
-    initADC();
-
-    #ifdef SERIAL_PLOTTING_ENABLED
-    SerialInit ();
-    #endif // SERIAL_PLOTTING_ENABLED
-
-
-    while(1)
-    {
+ while(1) {
         unsigned long currentTick = readCurrentTick();
 
         // Poll the buttons and potentiometer
         if (lastIoProcess + RATE_SYSTICK_HZ/RATE_IO_HZ < currentTick) {
             lastIoProcess = currentTick;
 
-//            updateSwitch();
+        // updateSwitch();
             btnUpdateState(&deviceState);
             pollADC();
 
@@ -282,7 +227,47 @@ int main(void)
             lastSerialProcess = 0;
         }
         #endif // SERIAL_PLOTTING_ENABLED
-    }
+ }
+}
+
+
+/***********************************************************
+ * Main Loop
+ ***********************************************************/
+
+int main(void)
+{
+    
+
+    #ifdef SERIAL_PLOTTING_ENABLED
+    unsigned long lastSerialProcess = 0;
+    #endif // SERIAL_PLOTTING_ENABLED
+
+    // Device state
+    // Omnibus struct that holds loads of info about the device's current state, so it can be updated from any function
+    deviceState.displayMode = DISPLAY_STEPS;
+    deviceState.stepsTaken = 0;
+    deviceState.currentGoal = TARGET_DISTANCE_DEFAULT;
+    deviceState.debugMode = false;
+    deviceState.displayUnits= UNITS_SI;
+    deviceState.workoutStartTick = 0;
+    deviceState.flashTicksLeft = 0;
+    deviceState.flashMessage = calloc(MAX_STR_LEN + 1, sizeof(char));
+
+    // Init libs
+    initClock();
+    displayInit();
+    btnInit();
+    acclInit();
+    initADC();
+
+    #ifdef SERIAL_PLOTTING_ENABLED
+    SerialInit ();
+    #endif // SERIAL_PLOTTING_ENABLED
+
+    xTaskCreate(&superloop, "superloop", 512, NULL, 1, NULL);
+    vTaskStartScheduler();
+    return 0; // Should never reach here
 
 }
 
