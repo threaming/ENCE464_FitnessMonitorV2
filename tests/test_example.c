@@ -10,6 +10,7 @@ void tearDown(void)
 {
 }
 
+// Test cases
 void test_1_equals_1(void)
 {
     TEST_ASSERT_EQUAL(1, 1);

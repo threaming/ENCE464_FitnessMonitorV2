@@ -15,21 +15,28 @@ void tearDown(void)
 }
 
 /* Helper functions */
-void writeConsecutiveSequenceToBuffer(uint16_t start, uint16_t size)
+void writeConsecutiveSequenceToBuffer(uint32_t start, uint32_t size)
 {
-    for (uint16_t i = 0; i < size; i++) {
+    for (uint32_t i = 0; i < size; i++) {
       writeCircBuf(&buff, start + i);
     }
 } 
 
-void assertReadingSequence(uint16_t start, uint16_t size)
+void readConsecutiveSequenceFromBuffer(uint32_t size)
 {
-    for (uint16_t i = 0; i < size; i++) {
+    for (uint32_t i = 0; i < size; i++) {
+      readCircBuf(&buff);
+    }
+} 
+
+void assertReadingSequence(uint32_t start, uint32_t size)
+{
+    for (uint32_t i = 0; i < size; i++) {
       TEST_ASSERT_EQUAL(start + i, readCircBuf(&buff));
     }
 } 
 
-int32_t * reconstructBufferWithSize(uint16_t size)
+uint32_t* reconstructBufferWithSize(uint32_t size)
 {
   freeCircBuf(&buff);
   return initCircBuf(&buff, size);
@@ -42,10 +49,10 @@ void test_new_buffer_is_empty(void)
     // Arrange: given buffer is empty
 
     // Act: when buffer is read
-    int32_t value = readCircBuf(&buff);
+    uint32_t data = readCircBuf(&buff);
 
     // Assert: then 0 is returned
-    TEST_ASSERT_EQUAL(0, value);
+    TEST_ASSERT_EQUAL(NULL, data);
 }
 
 void test_single_element_in_single_element_out(void)
@@ -54,7 +61,7 @@ void test_single_element_in_single_element_out(void)
     writeCircBuf(&buff, 11);
 
     // Act: when buffer is read
-    int32_t value = readCircBuf(&buff);
+    uint32_t value = readCircBuf(&buff);
 
     // Assert: then the same value is returned
     TEST_ASSERT_EQUAL(11, value);
@@ -77,7 +84,7 @@ void test_write_and_read_indices_are_independent(void)
       writeCircBuf(&buff, 20 + i);
 
       // Act: when buffer is read
-      int32_t value = readCircBuf(&buff);
+      uint32_t value = readCircBuf(&buff);
 
       // Assert: the last written element is returned
       TEST_ASSERT_EQUAL(20 + i, value);
@@ -86,37 +93,44 @@ void test_write_and_read_indices_are_independent(void)
 
 void test_buffer_is_clean_after_full_buffer_cycle_completed(void)
 {
-    TEST_IGNORE(); // Remove this when the test is written
-
     // Arange: given buffer is fully written to and and then fully read from
+    writeConsecutiveSequenceToBuffer(5, STANDARD_TEST_CAPACITY);
+    readConsecutiveSequenceFromBuffer(STANDARD_TEST_CAPACITY);
 
     // Act: when buffer is read
+    uint32_t value = readCircBuf(&buff);
 
     // Assert: same behaviour as when buffer was empty
+    TEST_ASSERT_EQUAL(0, value);
 }
 
 void test_buffer_is_circular(void)
 {
-    TEST_IGNORE(); // Remove this when the test is written
-
-    // Arange: given buffer is fully written to and then fully read from
+    // Arrange: given buffer is fully written to and then fully read from
+    writeConsecutiveSequenceToBuffer(5, STANDARD_TEST_CAPACITY);
+    readConsecutiveSequenceFromBuffer(STANDARD_TEST_CAPACITY);
 
     // Arrange: given a new value is written
+    writeCircBuf(&buff, 7);
 
     // Act: when buffer is read
+    uint32_t value = readCircBuf(&buff);
 
     // Assert: the last written element is returned
+    TEST_ASSERT_EQUAL(7, value);
 }
 
 void test_no_values_overwritten_after_full(void)
 {
-    TEST_IGNORE(); // Remove this when the test is written
-
     // Arrange: given buffer is filled to capacity
+    writeConsecutiveSequenceToBuffer(5, STANDARD_TEST_CAPACITY);
 
     // Given: when one more element is written to buffer
+    writeCircBuf(&buff, 100);
 
     // Assert: first element in, first element out, no overflow
+    uint32_t value = readCircBuf(&buff);
+    TEST_ASSERT_EQUAL(5, value);
 }
 
 void test_min_capacity_when_buffer_is_created_then_buffer_empty(void)
@@ -142,18 +156,30 @@ void test_min_capacity_when_single_element_written_to_buffer_then_same_value_is_
 
 void test_capacity_0_invalid(void)
 {
-    TEST_IGNORE(); // Remove this when the test is written
-
     // Arrange/Act
+    int32_t *abuff = reconstructBufferWithSize(0);
 
     // Assert: the return value of initCircBuf is NULL
+    TEST_ASSERT_EQUAL(NULL, abuff);
 }
 
 void test_capacity_higher_than_max_invalid(void)
 {
-    TEST_IGNORE(); // Remove this when the test is written
-
     // Arrange/Act
+    int32_t *abuff = reconstructBufferWithSize(MAX_BUFFER_CAPACITY+1);
 
     // Assert: the return value of initCircBuf is NULL
+    TEST_ASSERT_EQUAL(NULL, abuff);
+}
+
+void test_capacity_at_limit(void)
+{
+    // Arrange
+    reconstructBufferWithSize(MAX_BUFFER_CAPACITY);
+
+    // Act
+    writeConsecutiveSequenceToBuffer(20, MAX_BUFFER_CAPACITY);
+
+    // Assert: the return value of initCircBuf is not NULL
+    assertReadingSequence(20, MAX_BUFFER_CAPACITY);
 }
