@@ -56,6 +56,11 @@ int32_t ADCSequenceDataGet_fake_adc_value(uint32_t arg0, uint32_t arg1,
     return 0;
 }
 
+bool SysCtlPeripheralReady_fake_is_ready(uint32_t arg0){
+    return 1;
+}
+
+
 /* Unity setup and teardown */
 void setUp(void)
 {
@@ -70,6 +75,9 @@ void tearDown(void)
 /* Test cases - initADC */
 void test_adc_init_initialises_buffer(void)
 {   
+    // Arrange
+    SysCtlPeripheralReady_fake.custom_fake = SysCtlPeripheralReady_fake_is_ready;
+
     // Act
     initADC();
 
@@ -80,6 +88,9 @@ void test_adc_init_initialises_buffer(void)
 
 void test_adc_init_enables_adc(void)
 {
+    // Arrange
+    SysCtlPeripheralReady_fake.custom_fake = SysCtlPeripheralReady_fake_is_ready;
+
     // Act
     initADC();
 
@@ -90,6 +101,9 @@ void test_adc_init_enables_adc(void)
 
 void test_adc_init_initialises_adc_sequence(void)
 {
+    // Arrange
+    SysCtlPeripheralReady_fake.custom_fake = SysCtlPeripheralReady_fake_is_ready;
+
     // Act
     initADC();
 
@@ -103,6 +117,9 @@ void test_adc_init_initialises_adc_sequence(void)
 
 void test_adc_init_initialises_adc_sequence_step(void)
 {
+    // Arrange
+    SysCtlPeripheralReady_fake.custom_fake = SysCtlPeripheralReady_fake_is_ready;
+
     // Act
     initADC();
 
@@ -116,6 +133,9 @@ void test_adc_init_initialises_adc_sequence_step(void)
 
 void test_adc_init_enables_adc_sequence(void)
 {
+    // Arrange
+    SysCtlPeripheralReady_fake.custom_fake = SysCtlPeripheralReady_fake_is_ready;
+
     // Act
     initADC();
 
@@ -127,6 +147,9 @@ void test_adc_init_enables_adc_sequence(void)
 
 void test_adc_init_registers_adc_interrupt(void)
 {
+    // Arrange
+    SysCtlPeripheralReady_fake.custom_fake = SysCtlPeripheralReady_fake_is_ready;
+
     // Act
     initADC();
 
@@ -139,6 +162,9 @@ void test_adc_init_registers_adc_interrupt(void)
 
 void test_adc_init_enables_adc_before_other_adc_operations(void)
 {
+    // Arrange
+    SysCtlPeripheralReady_fake.custom_fake = SysCtlPeripheralReady_fake_is_ready;
+
     // Act
     initADC();
 
@@ -152,6 +178,9 @@ void test_adc_init_enables_adc_before_other_adc_operations(void)
 
 void test_adc_init_enables_adc_interrupt(void)
 {
+    // Arrange
+    SysCtlPeripheralReady_fake.custom_fake = SysCtlPeripheralReady_fake_is_ready;
+    
     // Act
     initADC();
     
@@ -188,6 +217,7 @@ void test_isr_read_correct_adc_channel(void)
 void test_isr_writes_to_correct_buffer(void)
 {
     // Arrange
+    SysCtlPeripheralReady_fake.custom_fake = SysCtlPeripheralReady_fake_is_ready;
     circBuf_t* buff = get_circBuf_ptr_and_reset_fff();
 
     // Act
@@ -225,6 +255,7 @@ void test_isr_clears_interrupt_signal(void)
 void test_adc_read_from_right_buffer(void)
 {
     // Arrange
+    SysCtlPeripheralReady_fake.custom_fake = SysCtlPeripheralReady_fake_is_ready;
     circBuf_t* buff = get_circBuf_ptr_and_reset_fff();
 
     // Act

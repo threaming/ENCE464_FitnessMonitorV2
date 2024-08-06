@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include "driverlib/adc.h"
 #include "inc/hw_memmap.h"
+#include "driverlib/sysctl.h"
 
 #ifdef FFF_MOCK_IMPL
     #define VOID_FUNC FAKE_VOID_FUNC
@@ -19,7 +20,8 @@
     FUNC(ADCSequenceConfigure)          \
     FUNC(ADCSequenceEnable)             \
     FUNC(ADCIntRegister)                \
-    FUNC(ADCIntEnable)                  
+    FUNC(ADCIntEnable)                  \
+    FUNC(SysCtlPeripheralReady)                  
 
 typedef void (*void_function_ptr_type)(void);
 
@@ -31,3 +33,4 @@ VOID_FUNC(ADCSequenceConfigure, uint32_t, uint32_t, uint32_t, uint32_t);
 VOID_FUNC(ADCSequenceEnable, uint32_t, uint32_t);
 VOID_FUNC(ADCIntRegister, uint32_t, uint32_t, void_function_ptr_type);
 VOID_FUNC(ADCIntEnable, uint32_t, uint32_t);
+VALUE_FUNC(bool, SysCtlPeripheralReady, uint32_t);
