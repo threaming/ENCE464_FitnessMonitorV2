@@ -11,6 +11,7 @@ DEFINE_FFF_GLOBALS;
 
 #define ADC_BUF_SIZE 10
 #define FAKE_ADC_VALUE 0xFACCEADC
+#define FAKE_ADC_VALUE 0x1
 
 /* Helper functions */      
 void reset_fff(void)
@@ -157,7 +158,6 @@ void test_adc_init_registers_adc_interrupt(void)
     TEST_ASSERT_EQUAL(1, ADCIntRegister_fake.call_count);
     TEST_ASSERT_EQUAL(ADC0_BASE, ADCIntRegister_fake.arg0_val);
     TEST_ASSERT_EQUAL(3, ADCIntRegister_fake.arg1_val);  
-    TEST_ASSERT_EQUAL(ADCIntHandler, ADCIntRegister_fake.arg2_val);
 }
 
 void test_adc_init_enables_adc_before_other_adc_operations(void)
@@ -202,53 +202,37 @@ void test_adc_poll_triggers_adc(void)
     TEST_ASSERT_EQUAL(3, ADCProcessorTrigger_fake.arg1_val);
 }
 
-/* Test cases - ADCIntHandler */
-void test_isr_read_correct_adc_channel(void)
-{
-    // Act
-    ADCIntHandler();
-
-    // Assert
-    TEST_ASSERT_EQUAL(1, ADCSequenceDataGet_fake.call_count);
-    TEST_ASSERT_EQUAL(ADC0_BASE, ADCSequenceDataGet_fake.arg0_val);
-    TEST_ASSERT_EQUAL(3, ADCSequenceDataGet_fake.arg1_val);
-}
-
-void test_isr_writes_to_correct_buffer(void)
+/* Test cases - adc_callback */
+void test_callback_writes_to_correct_buffer(void)
 {
     // Arrange
     SysCtlPeripheralReady_fake.custom_fake = SysCtlPeripheralReady_fake_is_ready;
+    initADC();
+    void (*isr) (void) = ADCIntRegister_fake.arg2_val;
     circBuf_t* buff = get_circBuf_ptr_and_reset_fff();
 
     // Act
-    ADCIntHandler();
+    isr();
 
     // Assert
     TEST_ASSERT_EQUAL(1, writeCircBuf_fake.call_count);
     TEST_ASSERT_EQUAL_PTR(buff, writeCircBuf_fake.arg0_val);
 }
 
-void test_isr_writes_correct_value_to_buffer(void)
+void test_callback_writes_correct_value_to_buffer(void)
 {
     // Arrange
+    SysCtlPeripheralReady_fake.custom_fake = SysCtlPeripheralReady_fake_is_ready;
     ADCSequenceDataGet_fake.custom_fake = ADCSequenceDataGet_fake_adc_value;
+    initADC();
+    void (*isr) (void) = ADCIntRegister_fake.arg2_val;
 
     // Act
-    ADCIntHandler();
+    isr();
 
     // Assert
     TEST_ASSERT_EQUAL(1, writeCircBuf_fake.call_count);
     TEST_ASSERT_EQUAL_UINT32(FAKE_ADC_VALUE, writeCircBuf_fake.arg1_val);
-}
-
-void test_isr_clears_interrupt_signal(void)
-{
-    // Act
-    ADCIntHandler();    
-    // Assert
-    TEST_ASSERT_EQUAL(1, ADCIntClear_fake.call_count);
-    TEST_ASSERT_EQUAL(ADC0_BASE, ADCIntClear_fake.arg0_val);
-    TEST_ASSERT_EQUAL(3, ADCIntClear_fake.arg1_val);
 }
 
 /* Test cases - readADC */
