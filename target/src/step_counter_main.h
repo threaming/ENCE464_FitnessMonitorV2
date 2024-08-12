@@ -10,6 +10,8 @@
 #ifndef STEP_COUNTER_MAIN_H_
 #define STEP_COUNTER_MAIN_H_
 
+#include <stdbool.h>
+
 #define M_PER_STEP 9/10
 #define MAX_STR_LEN 16
 
