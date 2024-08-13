@@ -46,6 +46,8 @@
 
 #include "step_counter_main.h"
 
+#include "device_state.h"
+
 /**********************************************************
  * Constants and types
  **********************************************************/
@@ -81,7 +83,9 @@ void vAssertCalled( const char * pcFile, unsigned long ulLine );
 /*******************************************
  *      Globals
  *******************************************/
-deviceStateInfo_t deviceState; // Stored as one global so it can be accessed by other helper libs within this main module
+
+
+
 
 /***********************************************************
  * Initialisation functions
@@ -106,28 +110,30 @@ unsigned long readCurrentTick(void)
 
 void pollADCandCalculateGoal(void)
 {    
+    deviceStateInfo_t* deviceState = get_modifiable_device_state();
+
     pollADC();
 
-    deviceState.newGoal = readADC() * POT_SCALE_COEFF; // Set the new goal value, scaling to give the desired range
-    deviceState.newGoal = (deviceState.newGoal / STEP_GOAL_ROUNDING) * STEP_GOAL_ROUNDING; // Round to the nearest 100 steps
-    if (deviceState.newGoal == 0) { // Prevent a goal of zero, instead setting to the minimum goal (this also makes it easier to test the goal-reaching code on a small but non-zero target)
-        deviceState.newGoal = STEP_GOAL_ROUNDING;
+    deviceState->newGoal = readADC() * POT_SCALE_COEFF; // Set the new goal value, scaling to give the desired range
+    deviceState->newGoal = (deviceState->newGoal / STEP_GOAL_ROUNDING) * STEP_GOAL_ROUNDING; // Round to the nearest 100 steps
+    if (deviceState->newGoal == 0) { // Prevent a goal of zero, instead setting to the minimum goal (this also makes it easier to test the goal-reaching code on a small but non-zero target)
+        deviceState->newGoal = STEP_GOAL_ROUNDING;
     }
 }
 
 // Flash a message onto the screen, overriding everything else
-void flashMessage(char* toShow)
+void flashMessage(char* toShow, deviceStateInfo_t* deviceState)
 {
-    deviceState.flashTicksLeft = RATE_DISPLAY_UPDATE_HZ * FLASH_MESSAGE_TIME;
+    deviceState->flashTicksLeft = RATE_DISPLAY_UPDATE_HZ * FLASH_MESSAGE_TIME;
 
     uint8_t i = 0;
     while (toShow[i] != '\0' && i < MAX_STR_LEN) {
-        (deviceState.flashMessage)[i] = toShow[i];
+        (deviceState->flashMessage)[i] = toShow[i];
 
         i++;
     }
 
-    deviceState.flashMessage[i] = '\0';
+    deviceState->flashMessage[i] = '\0';
 }
 
 void vAssertCalled( const char * pcFile, unsigned long ulLine ) {
@@ -137,7 +143,10 @@ void vAssertCalled( const char * pcFile, unsigned long ulLine ) {
 }
 
 void superloop(void* args) {
- // Variable declarations
+    
+    deviceStateInfo_t* deviceState = get_modifiable_device_state();
+
+    // Variable declarations
     unsigned long lastIoProcess= 0;
     unsigned long lastAcclProcess = 0;
     unsigned long lastDisplayProcess = 0;
@@ -145,7 +154,7 @@ void superloop(void* args) {
     uint8_t stepHigh = false;
     vector3_t mean;
 
- while(1) {
+    while(1) {
         unsigned long currentTick = readCurrentTick();
 
         // Poll the buttons and potentiometer
@@ -153,7 +162,7 @@ void superloop(void* args) {
             lastIoProcess = currentTick;
 
         // updateSwitch();
-            btnUpdateState(&deviceState);
+            btnUpdateState();
             pollADCandCalculateGoal();
         }
 
@@ -169,11 +178,11 @@ void superloop(void* args) {
 
             if (combined >= STEP_THRESHOLD_HIGH && stepHigh == false) {
                 stepHigh = true;
-                deviceState.stepsTaken++;
+                deviceState->stepsTaken++;
 
                 // flash a message if the user has reached their goal
-                if (deviceState.stepsTaken == deviceState.currentGoal && deviceState.flashTicksLeft == 0) {
-                    flashMessage("Goal reached!");
+                if (deviceState->stepsTaken == deviceState->currentGoal && deviceState->flashTicksLeft == 0) {
+                    flashMessage("Goal reached!", deviceState);
                 }
 
             } else if (combined <= STEP_THRESHOLD_LOW) {
@@ -181,8 +190,8 @@ void superloop(void* args) {
             }
 
             // Don't start the workout until the user begins walking
-            if (deviceState.stepsTaken == 0) {
-                deviceState.workoutStartTick = currentTick;
+            if (deviceState->stepsTaken == 0) {
+                deviceState->workoutStartTick = currentTick;
             }
         }
 
@@ -190,12 +199,12 @@ void superloop(void* args) {
         if (lastDisplayProcess + RATE_SYSTICK_HZ/RATE_DISPLAY_UPDATE_HZ < currentTick) {
             lastDisplayProcess = currentTick;
 
-            if (deviceState.flashTicksLeft > 0) {
-                deviceState.flashTicksLeft--;
+            if (deviceState->flashTicksLeft > 0) {
+                deviceState->flashTicksLeft--;
             }
 
-            uint16_t secondsElapsed = (currentTick - deviceState.workoutStartTick)/RATE_SYSTICK_HZ;
-            displayUpdate(deviceState, secondsElapsed);
+            uint16_t secondsElapsed = (currentTick - deviceState->workoutStartTick)/RATE_SYSTICK_HZ;
+            displayUpdate(secondsElapsed);
         }
 
         // Send to USB via serial
@@ -241,6 +250,7 @@ void superloop(void* args) {
 int main(void)
 {
     
+    deviceStateInfo_t* deviceState = get_modifiable_device_state();
 
     #ifdef SERIAL_PLOTTING_ENABLED
     unsigned long lastSerialProcess = 0;
@@ -248,14 +258,14 @@ int main(void)
 
     // Device state
     // Omnibus struct that holds loads of info about the device's current state, so it can be updated from any function
-    deviceState.displayMode = DISPLAY_STEPS;
-    deviceState.stepsTaken = 0;
-    deviceState.currentGoal = TARGET_DISTANCE_DEFAULT;
-    deviceState.debugMode = false;
-    deviceState.displayUnits= UNITS_SI;
-    deviceState.workoutStartTick = 0;
-    deviceState.flashTicksLeft = 0;
-    deviceState.flashMessage = calloc(MAX_STR_LEN + 1, sizeof(char));
+    deviceState->displayMode = DISPLAY_STEPS;
+    deviceState->stepsTaken = 0;
+    deviceState->currentGoal = TARGET_DISTANCE_DEFAULT;
+    deviceState->debugMode = false;
+    deviceState->displayUnits= UNITS_SI;
+    deviceState->workoutStartTick = 0;
+    deviceState->flashTicksLeft = 0;
+    deviceState->flashMessage = calloc(MAX_STR_LEN + 1, sizeof(char));
 
     // Init libs
     initClock();
