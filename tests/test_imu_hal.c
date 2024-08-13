@@ -46,13 +46,14 @@ void i2c_hal_receive_fake_values(I2c_Id_t arg0, char* arg1,
 }
 
 int i = 0;
-char fromAccl[7][2];
+char transmitted[7][2];
 void i2c_hal_transmit_fake_values(I2c_Id_t arg0, char* arg1,
                                   uint32_t arg2, bool arg3, char arg4)
 {
-    fromAccl[i][0] = arg1[0];
-    fromAccl[i][1] = arg1[1];
+    transmitted[i][0] = arg1[0];
+    transmitted[i][1] = arg1[1];
     i++;
+    if(i==7) i=0;
 }
 
 /* Test Functions ----- init imu chip ----- */
@@ -86,8 +87,8 @@ void test_imu_init_set_format(void) {
     // Assert
     TEST_ASSERT_EQUAL(7, i2c_hal_transmit_fake.call_count);
     TEST_ASSERT_EQUAL(I2C_ID_1, i2c_hal_transmit_fake.arg0_val);
-    TEST_ASSERT_EQUAL(0x31, fromAccl[0][0]);
-    TEST_ASSERT_EQUAL(0x03|0x08, fromAccl[0][1]);
+    TEST_ASSERT_EQUAL(0x31, transmitted[0][0]);
+    TEST_ASSERT_EQUAL(0x03|0x08, transmitted[0][1]);
     TEST_ASSERT_EQUAL(1, i2c_hal_transmit_fake.arg2_val);
     TEST_ASSERT_EQUAL(I2C_WRITE, i2c_hal_transmit_fake.arg3_val);
     TEST_ASSERT_EQUAL(0x1D, i2c_hal_transmit_fake.arg4_val);
@@ -103,8 +104,8 @@ void test_imu_init_set_power(void) {
     // Assert
     TEST_ASSERT_EQUAL(7, i2c_hal_transmit_fake.call_count);
     TEST_ASSERT_EQUAL(I2C_ID_1, i2c_hal_transmit_fake.arg0_val);
-    TEST_ASSERT_EQUAL(0x2D, fromAccl[1][0]);
-    TEST_ASSERT_EQUAL(0x08, fromAccl[1][1]);
+    TEST_ASSERT_EQUAL(0x2D, transmitted[1][0]);
+    TEST_ASSERT_EQUAL(0x08, transmitted[1][1]);
     TEST_ASSERT_EQUAL(1, i2c_hal_transmit_fake.arg2_val);
     TEST_ASSERT_EQUAL(I2C_WRITE, i2c_hal_transmit_fake.arg3_val);
     TEST_ASSERT_EQUAL(0x1D, i2c_hal_transmit_fake.arg4_val);
@@ -120,8 +121,8 @@ void test_imu_init_set_bw(void) {
     // Assert
     TEST_ASSERT_EQUAL(7, i2c_hal_transmit_fake.call_count);
     TEST_ASSERT_EQUAL(I2C_ID_1, i2c_hal_transmit_fake.arg0_val);
-    TEST_ASSERT_EQUAL(0x2C, fromAccl[2][0]);
-    TEST_ASSERT_EQUAL(0x0A, fromAccl[2][1]);
+    TEST_ASSERT_EQUAL(0x2C, transmitted[2][0]);
+    TEST_ASSERT_EQUAL(0x0A, transmitted[2][1]);
     TEST_ASSERT_EQUAL(1, i2c_hal_transmit_fake.arg2_val);
     TEST_ASSERT_EQUAL(I2C_WRITE, i2c_hal_transmit_fake.arg3_val);
     TEST_ASSERT_EQUAL(0x1D, i2c_hal_transmit_fake.arg4_val);
@@ -137,8 +138,8 @@ void test_imu_init_disable_interrupt(void) {
     // Assert
     TEST_ASSERT_EQUAL(7, i2c_hal_transmit_fake.call_count);
     TEST_ASSERT_EQUAL(I2C_ID_1, i2c_hal_transmit_fake.arg0_val);
-    TEST_ASSERT_EQUAL(0x2E, fromAccl[3][0]);
-    TEST_ASSERT_EQUAL(0x00, fromAccl[3][1]);
+    TEST_ASSERT_EQUAL(0x2E, transmitted[3][0]);
+    TEST_ASSERT_EQUAL(0x00, transmitted[3][1]);
     TEST_ASSERT_EQUAL(1, i2c_hal_transmit_fake.arg2_val);
     TEST_ASSERT_EQUAL(I2C_WRITE, i2c_hal_transmit_fake.arg3_val);
     TEST_ASSERT_EQUAL(0x1D, i2c_hal_transmit_fake.arg4_val);
@@ -154,8 +155,8 @@ void test_imu_init_set_xoffset(void) {
     // Assert
     TEST_ASSERT_EQUAL(7, i2c_hal_transmit_fake.call_count);
     TEST_ASSERT_EQUAL(I2C_ID_1, i2c_hal_transmit_fake.arg0_val);
-    TEST_ASSERT_EQUAL(0x1E, fromAccl[4][0]);
-    TEST_ASSERT_EQUAL(0x00, fromAccl[4][1]);
+    TEST_ASSERT_EQUAL(0x1E, transmitted[4][0]);
+    TEST_ASSERT_EQUAL(0x00, transmitted[4][1]);
     TEST_ASSERT_EQUAL(1, i2c_hal_transmit_fake.arg2_val);
     TEST_ASSERT_EQUAL(I2C_WRITE, i2c_hal_transmit_fake.arg3_val);
     TEST_ASSERT_EQUAL(0x1D, i2c_hal_transmit_fake.arg4_val);
@@ -171,8 +172,8 @@ void test_imu_init_set_yoffset(void) {
     // Assert
     TEST_ASSERT_EQUAL(7, i2c_hal_transmit_fake.call_count);
     TEST_ASSERT_EQUAL(I2C_ID_1, i2c_hal_transmit_fake.arg0_val);
-    TEST_ASSERT_EQUAL(0x1F, fromAccl[5][0]);
-    TEST_ASSERT_EQUAL(0x00, fromAccl[5][1]);
+    TEST_ASSERT_EQUAL(0x1F, transmitted[5][0]);
+    TEST_ASSERT_EQUAL(0x00, transmitted[5][1]);
     TEST_ASSERT_EQUAL(1, i2c_hal_transmit_fake.arg2_val);
     TEST_ASSERT_EQUAL(I2C_WRITE, i2c_hal_transmit_fake.arg3_val);
     TEST_ASSERT_EQUAL(0x1D, i2c_hal_transmit_fake.arg4_val);
@@ -188,8 +189,8 @@ void test_imu_init_set_zoffset(void) {
     // Assert
     TEST_ASSERT_EQUAL(7, i2c_hal_transmit_fake.call_count);
     TEST_ASSERT_EQUAL(I2C_ID_1, i2c_hal_transmit_fake.arg0_val);
-    TEST_ASSERT_EQUAL(0x20, fromAccl[6][0]);
-    TEST_ASSERT_EQUAL(0x00, fromAccl[6][1]);
+    TEST_ASSERT_EQUAL(0x20, transmitted[6][0]);
+    TEST_ASSERT_EQUAL(0x00, transmitted[6][1]);
     TEST_ASSERT_EQUAL(1, i2c_hal_transmit_fake.arg2_val);
     TEST_ASSERT_EQUAL(I2C_WRITE, i2c_hal_transmit_fake.arg3_val);
     TEST_ASSERT_EQUAL(0x1D, i2c_hal_transmit_fake.arg4_val);
@@ -216,13 +217,14 @@ void test_imu_read_from_correct_data(void) {
     int16_t xAccel;
     int16_t yAccel;
     int16_t zAccel;
+    i2c_hal_transmit_fake.custom_fake = i2c_hal_transmit_fake_values;
 
     // Act
     imu_hal_get_data(&xAccel, &yAccel, &zAccel);
     
     // Assert
     TEST_ASSERT_EQUAL(1, i2c_hal_transmit_fake.call_count);
-    TEST_ASSERT_EQUAL(0x32, i2c_hal_transmit_fake.arg1_val[0]);
+    TEST_ASSERT_EQUAL(0x32, transmitted[0][0]);
     TEST_ASSERT_EQUAL(6, i2c_hal_transmit_fake.arg2_val);
 }
 
