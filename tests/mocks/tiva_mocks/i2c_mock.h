@@ -12,9 +12,6 @@
     #define VALUE_FUNC DECLARE_FAKE_VALUE_FUNC
 #endif
 
-#define GPIO_PB2_I2C0SCL 0x00010803
-#define GPIO_PB3_I2C0SDA 0x00010C03
-
 #define FFF_I2C_FAKES_LIST(FUNC)    \
     FUNC(I2CMasterSlaveAddrSet)     \
     FUNC(I2CMasterDataPut)          \
