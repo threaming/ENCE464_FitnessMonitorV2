@@ -34,15 +34,25 @@ void tearDown(void) {
 }
 
 /* Fake Functions */
-void i2c_hal_transmit_fake_values(I2c_Id_t arg0, char* arg1,
+void i2c_hal_receive_fake_values(I2c_Id_t arg0, char* arg1,
                                   uint32_t arg2, bool arg3, char arg4)
 {
     arg1[1] = 0x11;
     arg1[2] = 0x22;
-    arg1[3] = 0x33;
     arg1[4] = 0x44;
+    arg1[3] = 0x33;
     arg1[5] = 0x55;
     arg1[6] = 0x66;
+}
+
+int i = 0;
+char fromAccl[7][2];
+void i2c_hal_transmit_fake_values(I2c_Id_t arg0, char* arg1,
+                                  uint32_t arg2, bool arg3, char arg4)
+{
+    fromAccl[i][0] = arg1[0];
+    fromAccl[i][1] = arg1[1];
+    i++;
 }
 
 /* Test Functions ----- init imu chip ----- */
@@ -67,98 +77,119 @@ void test_imu_init_set_gpio_int(void) {
 }
 
 void test_imu_init_set_format(void) {
+    // Arrange
+    i2c_hal_transmit_fake.custom_fake = i2c_hal_transmit_fake_values;
+
     // Act
     imu_hal_init();
 
     // Assert
     TEST_ASSERT_EQUAL(7, i2c_hal_transmit_fake.call_count);
     TEST_ASSERT_EQUAL(I2C_ID_1, i2c_hal_transmit_fake.arg0_val);
-    TEST_ASSERT_EQUAL(0x31, i2c_hal_transmit_fake.arg1_history[0][0]);
-    TEST_ASSERT_EQUAL(0x03|0x08, i2c_hal_transmit_fake.arg1_history[0][1]);
+    TEST_ASSERT_EQUAL(0x31, fromAccl[0][0]);
+    TEST_ASSERT_EQUAL(0x03|0x08, fromAccl[0][1]);
     TEST_ASSERT_EQUAL(1, i2c_hal_transmit_fake.arg2_val);
     TEST_ASSERT_EQUAL(I2C_WRITE, i2c_hal_transmit_fake.arg3_val);
     TEST_ASSERT_EQUAL(0x1D, i2c_hal_transmit_fake.arg4_val);
 }
 
 void test_imu_init_set_power(void) {
+    // Arrange
+    i2c_hal_transmit_fake.custom_fake = i2c_hal_transmit_fake_values;
+
     // Act
     imu_hal_init();
 
     // Assert
     TEST_ASSERT_EQUAL(7, i2c_hal_transmit_fake.call_count);
     TEST_ASSERT_EQUAL(I2C_ID_1, i2c_hal_transmit_fake.arg0_val);
-    TEST_ASSERT_EQUAL(0x2D, i2c_hal_transmit_fake.arg1_history[1][0]);
-    TEST_ASSERT_EQUAL(0x08, i2c_hal_transmit_fake.arg1_history[1][1]);
+    TEST_ASSERT_EQUAL(0x2D, fromAccl[1][0]);
+    TEST_ASSERT_EQUAL(0x08, fromAccl[1][1]);
     TEST_ASSERT_EQUAL(1, i2c_hal_transmit_fake.arg2_val);
     TEST_ASSERT_EQUAL(I2C_WRITE, i2c_hal_transmit_fake.arg3_val);
     TEST_ASSERT_EQUAL(0x1D, i2c_hal_transmit_fake.arg4_val);
 }
 
 void test_imu_init_set_bw(void) {
+    // Arrange
+    i2c_hal_transmit_fake.custom_fake = i2c_hal_transmit_fake_values;
+
     // Act
     imu_hal_init();
 
     // Assert
     TEST_ASSERT_EQUAL(7, i2c_hal_transmit_fake.call_count);
     TEST_ASSERT_EQUAL(I2C_ID_1, i2c_hal_transmit_fake.arg0_val);
-    TEST_ASSERT_EQUAL(0x2C, i2c_hal_transmit_fake.arg1_history[2][0]);
-    TEST_ASSERT_EQUAL(0x0A, i2c_hal_transmit_fake.arg1_history[2][1]);
+    TEST_ASSERT_EQUAL(0x2C, fromAccl[2][0]);
+    TEST_ASSERT_EQUAL(0x0A, fromAccl[2][1]);
     TEST_ASSERT_EQUAL(1, i2c_hal_transmit_fake.arg2_val);
     TEST_ASSERT_EQUAL(I2C_WRITE, i2c_hal_transmit_fake.arg3_val);
     TEST_ASSERT_EQUAL(0x1D, i2c_hal_transmit_fake.arg4_val);
 }
 
 void test_imu_init_disable_interrupt(void) {
+    // Arrange
+    i2c_hal_transmit_fake.custom_fake = i2c_hal_transmit_fake_values;
+
     // Act
     imu_hal_init();
 
     // Assert
     TEST_ASSERT_EQUAL(7, i2c_hal_transmit_fake.call_count);
     TEST_ASSERT_EQUAL(I2C_ID_1, i2c_hal_transmit_fake.arg0_val);
-    TEST_ASSERT_EQUAL(0x2E, i2c_hal_transmit_fake.arg1_history[3][0]);
-    TEST_ASSERT_EQUAL(0x00, i2c_hal_transmit_fake.arg1_history[3][1]);
+    TEST_ASSERT_EQUAL(0x2E, fromAccl[3][0]);
+    TEST_ASSERT_EQUAL(0x00, fromAccl[3][1]);
     TEST_ASSERT_EQUAL(1, i2c_hal_transmit_fake.arg2_val);
     TEST_ASSERT_EQUAL(I2C_WRITE, i2c_hal_transmit_fake.arg3_val);
     TEST_ASSERT_EQUAL(0x1D, i2c_hal_transmit_fake.arg4_val);
 }
 
 void test_imu_init_set_xoffset(void) {
+    // Arrange
+    i2c_hal_transmit_fake.custom_fake = i2c_hal_transmit_fake_values;
+
     // Act
     imu_hal_init();
 
     // Assert
     TEST_ASSERT_EQUAL(7, i2c_hal_transmit_fake.call_count);
     TEST_ASSERT_EQUAL(I2C_ID_1, i2c_hal_transmit_fake.arg0_val);
-    TEST_ASSERT_EQUAL(0x1E, i2c_hal_transmit_fake.arg1_history[4][0]);
-    TEST_ASSERT_EQUAL(0x00, i2c_hal_transmit_fake.arg1_history[4][1]);
+    TEST_ASSERT_EQUAL(0x1E, fromAccl[4][0]);
+    TEST_ASSERT_EQUAL(0x00, fromAccl[4][1]);
     TEST_ASSERT_EQUAL(1, i2c_hal_transmit_fake.arg2_val);
     TEST_ASSERT_EQUAL(I2C_WRITE, i2c_hal_transmit_fake.arg3_val);
     TEST_ASSERT_EQUAL(0x1D, i2c_hal_transmit_fake.arg4_val);
 }
 
 void test_imu_init_set_yoffset(void) {
+    // Arrange
+    i2c_hal_transmit_fake.custom_fake = i2c_hal_transmit_fake_values;
+
     // Act
     imu_hal_init();
 
     // Assert
     TEST_ASSERT_EQUAL(7, i2c_hal_transmit_fake.call_count);
     TEST_ASSERT_EQUAL(I2C_ID_1, i2c_hal_transmit_fake.arg0_val);
-    TEST_ASSERT_EQUAL(0x1F, i2c_hal_transmit_fake.arg1_history[5][0]);
-    TEST_ASSERT_EQUAL(0x00, i2c_hal_transmit_fake.arg1_history[5][1]);
+    TEST_ASSERT_EQUAL(0x1F, fromAccl[5][0]);
+    TEST_ASSERT_EQUAL(0x00, fromAccl[5][1]);
     TEST_ASSERT_EQUAL(1, i2c_hal_transmit_fake.arg2_val);
     TEST_ASSERT_EQUAL(I2C_WRITE, i2c_hal_transmit_fake.arg3_val);
     TEST_ASSERT_EQUAL(0x1D, i2c_hal_transmit_fake.arg4_val);
 }
 
 void test_imu_init_set_zoffset(void) {
+    // Arrange
+    i2c_hal_transmit_fake.custom_fake = i2c_hal_transmit_fake_values;
+
     // Act
     imu_hal_init();
 
     // Assert
     TEST_ASSERT_EQUAL(7, i2c_hal_transmit_fake.call_count);
     TEST_ASSERT_EQUAL(I2C_ID_1, i2c_hal_transmit_fake.arg0_val);
-    TEST_ASSERT_EQUAL(0x20, i2c_hal_transmit_fake.arg1_history[6][0]);
-    TEST_ASSERT_EQUAL(0x00, i2c_hal_transmit_fake.arg1_history[6][1]);
+    TEST_ASSERT_EQUAL(0x20, fromAccl[6][0]);
+    TEST_ASSERT_EQUAL(0x00, fromAccl[6][1]);
     TEST_ASSERT_EQUAL(1, i2c_hal_transmit_fake.arg2_val);
     TEST_ASSERT_EQUAL(I2C_WRITE, i2c_hal_transmit_fake.arg3_val);
     TEST_ASSERT_EQUAL(0x1D, i2c_hal_transmit_fake.arg4_val);
@@ -200,7 +231,7 @@ void test_imu_read_correct_data(void) {
     int16_t xAccel;
     int16_t yAccel;
     int16_t zAccel;
-    i2c_hal_transmit_fake.custom_fake = i2c_hal_transmit_fake_values;
+    i2c_hal_transmit_fake.custom_fake = i2c_hal_receive_fake_values;
 
     // Act
     imu_hal_get_data(&xAccel, &yAccel, &zAccel);

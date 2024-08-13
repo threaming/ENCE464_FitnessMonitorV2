@@ -67,27 +67,35 @@ bool imu_hal_init(void) {
     if(!i2cInit) return false; // error, i2c not initialised
     GPIOPinTypeGPIOInput(ACCL_INT2Port, ACCL_INT2);
 
+    char toAccl[] = {0, 0};
     /* Configure IMU */
-    char toAccl1[] = {ACCL_DATA_FORMAT, ACCL_RANGE_16G | ACCL_FULL_RES};
-    i2c_hal_transmit(I2C_ID_1, toAccl1, 1, I2C_WRITE, ACCL_ADDR);
+    toAccl[0] = ACCL_DATA_FORMAT;
+    toAccl[1] = ACCL_RANGE_16G | ACCL_FULL_RES;
+    i2c_hal_transmit(I2C_ID_1, toAccl, 1, I2C_WRITE, ACCL_ADDR);
 
-    char toAccl2[] = {ACCL_PWR_CTL, ACCL_MEASURE};
-    i2c_hal_transmit(I2C_ID_1, toAccl2, 1, I2C_WRITE, ACCL_ADDR);
+    toAccl[0] = ACCL_PWR_CTL;
+    toAccl[1] = ACCL_MEASURE;
+    i2c_hal_transmit(I2C_ID_1, toAccl, 1, I2C_WRITE, ACCL_ADDR);
 
-    char toAccl3[] = {ACCL_BW_RATE, ACCL_RATE_100HZ};
-    i2c_hal_transmit(I2C_ID_1, toAccl3, 1, I2C_WRITE, ACCL_ADDR);
+    toAccl[0] = ACCL_BW_RATE;
+    toAccl[1] = ACCL_RATE_100HZ;
+    i2c_hal_transmit(I2C_ID_1, toAccl, 1, I2C_WRITE, ACCL_ADDR);
 
-    char toAccl4[] = {ACCL_INT, 0x00}; // Disable interrupts from accelerometer.
-    i2c_hal_transmit(I2C_ID_1, toAccl4, 1, I2C_WRITE, ACCL_ADDR);
+    toAccl[0] = ACCL_INT; 
+    toAccl[1] = 0x00; // Disable interrupts from accelerometer.
+    i2c_hal_transmit(I2C_ID_1, toAccl, 1, I2C_WRITE, ACCL_ADDR);
 
-    char toAccl5[] = {ACCL_OFFSET_X, 0x00};
-    i2c_hal_transmit(I2C_ID_1, toAccl5, 1, I2C_WRITE, ACCL_ADDR);
+    toAccl[0] = ACCL_OFFSET_X; 
+    toAccl[1] = 0x00;
+    i2c_hal_transmit(I2C_ID_1, toAccl, 1, I2C_WRITE, ACCL_ADDR);
 
-    char toAccl6[] = {ACCL_OFFSET_Y, 0x00};
-    i2c_hal_transmit(I2C_ID_1, toAccl6, 1, I2C_WRITE, ACCL_ADDR);
+    toAccl[0] = ACCL_OFFSET_Y; 
+    toAccl[1] = 0x00;
+    i2c_hal_transmit(I2C_ID_1, toAccl, 1, I2C_WRITE, ACCL_ADDR);
 
-    char toAccl7[] = {ACCL_OFFSET_Z, 0x00};
-    i2c_hal_transmit(I2C_ID_1, toAccl7, 1, I2C_WRITE, ACCL_ADDR);
+    toAccl[0] = ACCL_OFFSET_Z; 
+    toAccl[1] = 0x00;
+    i2c_hal_transmit(I2C_ID_1, toAccl, 1, I2C_WRITE, ACCL_ADDR);
 
     return true;
 }
