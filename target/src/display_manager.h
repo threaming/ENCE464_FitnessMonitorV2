@@ -31,6 +31,9 @@ typedef struct {
 
 void displayInit(void); // Initalize the display
 void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed); // Update the display, given the device's state and the length of the current workout
+void displayLine(char* inStr, uint8_t row, textAlignment_t alignment); // For testing purposes (even though should never be called outside of this file)
+void displayValue(char* prefix, char* suffix, int32_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting); // For testing purposes (even though should never be called outside of this file)
+void displayTime(char* prefix, uint16_t time, uint8_t row, textAlignment_t alignment); // For testing purposes (even though should never be called outside of this file)
 
 #define DISPLAY_WIDTH 16
 

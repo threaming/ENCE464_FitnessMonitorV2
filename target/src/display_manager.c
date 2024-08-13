@@ -43,9 +43,9 @@
 /*******************************************
  *      Local prototypes
  *******************************************/
-static void displayLine(char* inStr, uint8_t row, textAlignment_t alignment);
-static void displayValue(char* prefix, char* suffix, int32_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting);
-static void displayTime(char* prefix, uint16_t time, uint8_t row, textAlignment_t alignment);
+// static void displayLine(char* inStr, uint8_t row, textAlignment_t alignment);
+// static void displayValue(char* prefix, char* suffix, int32_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting);
+// static void displayTime(char* prefix, uint16_t time, uint8_t row, textAlignment_t alignment);
 
 
 /*******************************************
@@ -63,6 +63,7 @@ void displayInit(void)
 void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed)
 {
     // Check for flash message override
+    
     if (deviceState.flashTicksLeft != 0) {
         char* emptyLine = "                ";
         OLEDStringDraw (emptyLine, 0, 0);
@@ -135,7 +136,7 @@ void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed)
  *      Local Functions
  *******************************************/
 // Draw a line to the OLED screen, with the specified alignment
-static void displayLine(char* inStr, uint8_t row, textAlignment_t alignment)
+void displayLine(char* inStr, uint8_t row, textAlignment_t alignment)
 {
     // Get the length of the string, but prevent it from being more than 16 chars long
     uint8_t inStrLength = 0;
@@ -169,7 +170,7 @@ static void displayLine(char* inStr, uint8_t row, textAlignment_t alignment)
     for (i = 0; i < inStrLength; i++) {
         toDraw[i + startPos] = inStr[i];
     }
-
+    printf("Sending to OLED: '%s'\n", toDraw);  // Debug print to verify string
     OLEDStringDraw (toDraw, 0, row);
 }
 
@@ -177,7 +178,7 @@ static void displayLine(char* inStr, uint8_t row, textAlignment_t alignment)
 
 // Display a value, with a prefix and suffix
 // Can optionally divide the value by 1000, to mimic floats without actually having to use them
-static void displayValue(char* prefix, char* suffix, int32_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting)
+void displayValue(char* prefix, char* suffix, int32_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting)
 {
     char toDraw[DISPLAY_WIDTH+1]; // Must be one character longer to account for EOFs
 
@@ -195,7 +196,7 @@ static void displayValue(char* prefix, char* suffix, int32_t value, uint8_t row,
 
 
 // Display a given number of seconds, formatted as mm:ss or hh:mm:ss
-static void displayTime(char* prefix, uint16_t time, uint8_t row, textAlignment_t alignment)
+void displayTime(char* prefix, uint16_t time, uint8_t row, textAlignment_t alignment)
 {
     char toDraw[DISPLAY_WIDTH+1]; // Must be one character longer to account for EOFs
     uint16_t minutes = (time / TIME_UNIT_SCALE) % TIME_UNIT_SCALE;
