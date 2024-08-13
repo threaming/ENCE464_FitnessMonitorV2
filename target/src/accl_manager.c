@@ -55,9 +55,9 @@ vector3_t acclMean(void)
     }
 
     vector3_t result = {0};
-    result.x = result_x / BUF_SIZE;
-    result.y = result_y / BUF_SIZE;
-    result.z = result_z / BUF_SIZE;
+    result.x = (result_x+BUF_SIZE/2) / BUF_SIZE;
+    result.y = (result_y+BUF_SIZE/2) / BUF_SIZE;
+    result.z = (result_z+BUF_SIZE/2) / BUF_SIZE;
 
     return result;
 }
