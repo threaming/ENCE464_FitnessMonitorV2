@@ -13,8 +13,10 @@
 #define FFF_GPIO_FAKES_LIST(FUNC)   \
     FUNC(GPIOPinTypeI2C)            \
     FUNC(GPIOPinTypeI2CSCL)         \
-    FUNC(GPIOPinConfigure)   
+    FUNC(GPIOPinConfigure)          \
+    FUNC(GPIOPinTypeGPIOInput)  
 
 VOID_FUNC(GPIOPinTypeI2C, uint32_t, uint8_t);
 VOID_FUNC(GPIOPinTypeI2CSCL, uint32_t, uint8_t);
 VOID_FUNC(GPIOPinConfigure, uint32_t);
+VOID_FUNC(GPIOPinTypeGPIOInput, uint32_t, uint8_t);

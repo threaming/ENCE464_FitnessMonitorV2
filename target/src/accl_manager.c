@@ -8,15 +8,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "inc/hw_memmap.h"
-#include "inc/hw_types.h"
-#include "driverlib/gpio.h"
-#include "driverlib/i2c.h"
-#include "driverlib/sysctl.h"
-#include "driverlib/debug.h"
-#include "driverlib/pin_map.h"
-#include "acc.h"
-#include "hal/i2c_hal.h"
+#include "hal/imu_hal.h"
 #include "circBufV.h"
 #include "accl_manager.h"
 
@@ -28,36 +20,23 @@
 static circBufVec_t acclBuffer;
 
 
-
-/*******************************************
- *      Local prototypes
- *******************************************/
-void initAcclChip(void);
-vector3_t getAcclData(void);
-
-
-
 /*******************************************
  *      Global functions
  *******************************************/
 // Init the library
 void acclInit(void)
 {
-    initAcclChip(); // Init the chip over I2C
-
+    imu_hal_init(); // Init the chip over I2C
     initVecCircBuf(&acclBuffer, BUF_SIZE);
 }
-
-
 
 // Run periodically to store acceleration to the circular buffer
 void acclProcess(void)
 {
-    vector3_t acceleration = getAcclData();
+    vector3_t acceleration;
+    imu_hal_get_data(&acceleration.x, &acceleration.y, &acceleration.z);
     writeVecCircBuf(&acclBuffer, acceleration);
 }
-
-
 
 // Return the mean acceleration stored within the circular buffers
 vector3_t acclMean(void)
@@ -82,70 +61,3 @@ vector3_t acclMean(void)
 
     return result;
 }
-
-
-
-/*******************************************
- *      Local Functions
- *******************************************/
-// Init the accl chip via I2C
-void initAcclChip(void)
-{
-    char    toAccl[] = {0, 0};  // parameter, value
-
-    i2c_hal_register(I2C_ID_1);
-
-    GPIOPinTypeGPIOInput(ACCL_INT2Port, ACCL_INT2);
-
-    //Initialize ADXL345 Acceleromter
-
-    // set +-16g, 13 bit resolution, active low interrupts
-    toAccl[0] = ACCL_DATA_FORMAT;
-    toAccl[1] = (ACCL_RANGE_16G | ACCL_FULL_RES);
-    i2c_hal_transmit(I2C_ID_1, toAccl, 1, I2C_WRITE, ACCL_ADDR);
-
-    toAccl[0] = ACCL_PWR_CTL;
-    toAccl[1] = ACCL_MEASURE;
-    i2c_hal_transmit(I2C_ID_1, toAccl, 1, I2C_WRITE, ACCL_ADDR);
-
-    toAccl[0] = ACCL_BW_RATE;
-    toAccl[1] = ACCL_RATE_100HZ;
-    i2c_hal_transmit(I2C_ID_1, toAccl, 1, I2C_WRITE, ACCL_ADDR);
-
-    toAccl[0] = ACCL_INT;
-    toAccl[1] = 0x00;       // Disable interrupts from accelerometer.
-    i2c_hal_transmit(I2C_ID_1, toAccl, 1, I2C_WRITE, ACCL_ADDR);
-
-    toAccl[0] = ACCL_OFFSET_X;
-    toAccl[1] = 0x00;
-    i2c_hal_transmit(I2C_ID_1, toAccl, 1, I2C_WRITE, ACCL_ADDR);
-
-    toAccl[0] = ACCL_OFFSET_Y;
-    toAccl[1] = 0x00;
-    i2c_hal_transmit(I2C_ID_1, toAccl, 1, I2C_WRITE, ACCL_ADDR);
-
-    toAccl[0] = ACCL_OFFSET_Z;
-    toAccl[1] = 0x00;
-    i2c_hal_transmit(I2C_ID_1, toAccl, 1, I2C_WRITE, ACCL_ADDR);
-}
-
-
-
-// Read the accl chip
-vector3_t getAcclData(void)
-{
-    char    fromAccl[] = {0, 0, 0, 0, 0, 0, 0}; // starting address, placeholders for data to be read.
-    vector3_t acceleration;
-    uint8_t bytesToRead = 6;
-
-    fromAccl[0] = ACCL_DATA_X0;
-    i2c_hal_transmit(I2C_ID_1, fromAccl, bytesToRead, I2C_READ, ACCL_ADDR);
-
-    acceleration.x = (fromAccl[2] << 8) | fromAccl[1]; // Return 16-bit acceleration readings.
-    acceleration.y = (fromAccl[4] << 8) | fromAccl[3];
-    acceleration.z = (fromAccl[6] << 8) | fromAccl[5];
-
-    return acceleration;
-}
-
-
