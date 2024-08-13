@@ -1,5 +1,5 @@
 #include "unity.h"
-#include "i2c_driver.h"
+#include "hal/i2c_hal.h"
 
 #include "fff.h"
 DEFINE_FFF_GLOBALS;
@@ -7,13 +7,18 @@ DEFINE_FFF_GLOBALS;
 
 #include <stdbool.h>
 #include "tiva_mocks/i2c_mock.h"
+#include "tiva_mocks/sysctl_mock.h"
+#include "tiva_mocks/gpio_mock.h"
 
 #define TEST_ADDRESS 0x1D
 #define TEST_CMD_ADDRESS 0x31
+#define FAKE_CLK 16000000
 
 /* Helper functions */
 void reset_fff(void) {
     FFF_I2C_FAKES_LIST(RESET_FAKE);
+    FFF_SYSCTL_FAKES_LIST(RESET_FAKE);
+    FFF_GPIO_FAKES_LIST(RESET_FAKE);
     FFF_RESET_HISTORY();
 }
 
@@ -35,13 +40,85 @@ void tearDown(void) {
     
 }
 
+/* Test Cases ----------- i2c init ----------- */
+void test_i2c_hal_register_ignores_wrong_id(void) {
+    // Act
+    bool success = i2c_hal_register(7);
+
+    // Assert
+    TEST_ASSERT_EQUAL(false, success);
+}
+
+void test_i2c_hal_register_ignores_right_id(void) {
+    // Act
+    bool success = i2c_hal_register(I2C_ID_1);
+
+    // Assert
+    TEST_ASSERT_EQUAL(true, success);
+}
+
+void test_i2c_hal_register_enable_peripherals(void) {
+    // Act
+    i2c_hal_register(I2C_ID_1);
+
+    // Assert
+    TEST_ASSERT_EQUAL(3, SysCtlPeripheralEnable_fake.call_count);
+    TEST_ASSERT_EQUAL(SYSCTL_PERIPH_GPIOB, SysCtlPeripheralEnable_fake.arg0_history[0]);
+    TEST_ASSERT_EQUAL(SYSCTL_PERIPH_GPIOE, SysCtlPeripheralEnable_fake.arg0_history[1]);
+    TEST_ASSERT_EQUAL(SYSCTL_PERIPH_I2C0, SysCtlPeripheralEnable_fake.arg0_history[2]);
+    TEST_ASSERT_EQUAL(1, SysCtlPeripheralReset_fake.call_count);
+    TEST_ASSERT_EQUAL(SYSCTL_PERIPH_I2C0, SysCtlPeripheralReset_fake.arg0_val);
+}
+
+void test_i2c_hal_register_set_gpio_pins(void) {
+    // Act
+    i2c_hal_register(I2C_ID_1);
+
+    // Assert
+    TEST_ASSERT_EQUAL(1, GPIOPinTypeI2C_fake.call_count);
+    TEST_ASSERT_EQUAL(I2CSDAPort, GPIOPinTypeI2C_fake.arg0_val);
+    TEST_ASSERT_EQUAL(I2CSDA_PIN, GPIOPinTypeI2C_fake.arg1_val);
+    TEST_ASSERT_EQUAL(1, GPIOPinTypeI2CSCL_fake.call_count);
+    TEST_ASSERT_EQUAL(I2CSCLPort, GPIOPinTypeI2CSCL_fake.arg0_val);
+    TEST_ASSERT_EQUAL(I2CSCL_PIN, GPIOPinTypeI2CSCL_fake.arg1_val);
+    TEST_ASSERT_EQUAL(2, GPIOPinConfigure_fake.call_count);
+    TEST_ASSERT_EQUAL(0x00000003, GPIOPinConfigure_fake.arg0_history[0]);
+    TEST_ASSERT_EQUAL(0x00000003, GPIOPinConfigure_fake.arg0_history[1]);
+}
+
+void test_i2c_hal_register_setup_i2c(void) {
+    // Arrange
+    SysCtlClockGet_fake.return_val = FAKE_CLK;
+
+    // Act
+    i2c_hal_register(I2C_ID_1);
+
+    // 
+    TEST_ASSERT_EQUAL(1, SysCtlClockGet_fake.call_count);
+    TEST_ASSERT_EQUAL(1, I2CMasterInitExpClk_fake.call_count);
+    TEST_ASSERT_EQUAL(I2C0_BASE, I2CMasterInitExpClk_fake.arg0_val);
+    TEST_ASSERT_EQUAL(FAKE_CLK, I2CMasterInitExpClk_fake.arg1_val);
+    TEST_ASSERT_EQUAL(true, I2CMasterInitExpClk_fake.arg2_val);
+}
+
 /* Test Cases ----------- i2c transmit ----------- */
+void test_i2c_hal_ignores_wrong_id(void) {
+    // Arrange
+    char data[] = {0, 0};
+
+    // Act
+    i2c_hal_transmit(7 ,data, 1, WRITE, TEST_ADDRESS);
+
+    // Assert
+    TEST_ASSERT_EQUAL(0, I2CMasterSlaveAddrSet_fake.call_count);
+}
+
 void test_i2c_hal_sets_correct_address(void) {
     // Arrange
     char data[] = {0, 0};
 
     // Act
-    I2CGenTransmit(data, 1, WRITE, TEST_ADDRESS);
+    i2c_hal_transmit(I2C_ID_1 ,data, 1, WRITE, TEST_ADDRESS);
 
     // Assert
     TEST_ASSERT_EQUAL(1, I2CMasterSlaveAddrSet_fake.call_count);
@@ -53,7 +130,7 @@ void test_i2c_hal_uses_correct_base_address(void) {
     char data[] = {0, 0};
 
     // Act
-    I2CGenTransmit(data, 1, WRITE, TEST_ADDRESS);
+    i2c_hal_transmit(I2C_ID_1 ,data, 1, WRITE, TEST_ADDRESS);
 
     // Assert
     TEST_ASSERT_EQUAL(I2C0_BASE, I2CMasterSlaveAddrSet_fake.arg0_val);
@@ -73,7 +150,7 @@ void test_i2c_hal_initiates_read(void) {
     char data[] = {0, 0};
 
     // Act
-    I2CGenTransmit(data, 1, READ, TEST_ADDRESS);
+    i2c_hal_transmit(I2C_ID_1 ,data, 1, READ, TEST_ADDRESS);
 
     // Assert
     TEST_ASSERT_EQUAL(WRITE, I2CMasterSlaveAddrSet_fake.arg2_history[0]);
@@ -86,7 +163,7 @@ void test_i2c_hal_initiates_write(void) {
     char data[] = {0, 0};
 
     // Act
-    I2CGenTransmit(data, 1, WRITE, TEST_ADDRESS);
+    i2c_hal_transmit(I2C_ID_1 ,data, 1, WRITE, TEST_ADDRESS);
 
     // Assert
     TEST_ASSERT_EQUAL(WRITE, I2CMasterSlaveAddrSet_fake.arg2_history[0]);
@@ -102,7 +179,7 @@ void test_i2c_hal_single_receive(void) {
     I2CMasterDataGet_fake.return_val = 0x55;
 
     // Act
-    I2CGenTransmit(data, 1, READ, TEST_ADDRESS);
+    i2c_hal_transmit(I2C_ID_1 ,data, 1, READ, TEST_ADDRESS);
 
     // Assert
     TEST_ASSERT_EQUAL(TEST_CMD_ADDRESS, I2CMasterDataPut_fake.arg1_history[0]);
@@ -118,7 +195,7 @@ void test_i2c_hall_burst_receive_initiated(void) {
                    0,0,0,0};
 
     // Act
-    I2CGenTransmit(data, 4, READ, TEST_ADDRESS);
+    i2c_hal_transmit(I2C_ID_1 ,data, 4, READ, TEST_ADDRESS);
 
     // Assert
     TEST_ASSERT_EQUAL(TEST_CMD_ADDRESS, I2CMasterDataPut_fake.arg1_history[0]);
@@ -132,7 +209,7 @@ void test_i2c_hall_burst_receive_continued(void) {
                    0,0,0,0};
 
     // Act
-    I2CGenTransmit(data, 4, READ, TEST_ADDRESS);
+    i2c_hal_transmit(I2C_ID_1 ,data, 4, READ, TEST_ADDRESS);
 
     // Assert
     TEST_ASSERT_EQUAL(5, I2CMasterControl_fake.call_count);
@@ -147,7 +224,7 @@ void test_i2c_hall_burst_receive_stoped(void) {
     SET_RETURN_SEQ(I2CMasterDataGet, testData, 4);
 
     // Act
-    I2CGenTransmit(data, 4, READ, TEST_ADDRESS);
+    i2c_hal_transmit(I2C_ID_1 ,data, 4, READ, TEST_ADDRESS);
 
     // Assert
     TEST_ASSERT_EQUAL(5, I2CMasterControl_fake.call_count);
@@ -164,7 +241,7 @@ void test_i2c_hal_single_send(void) {
                    0x55};
 
     // Act
-    I2CGenTransmit(testData, 1, WRITE, TEST_ADDRESS);
+    i2c_hal_transmit(I2C_ID_1 ,testData, 1, WRITE, TEST_ADDRESS);
 
     // Assert
     TEST_ASSERT_EQUAL(TEST_CMD_ADDRESS, I2CMasterDataPut_fake.arg1_history[0]);
@@ -180,7 +257,7 @@ void test_i2c_hall_burst_send_continued(void) {
                    0x55,0x66,0x77,0x88};
 
     // Act
-    I2CGenTransmit(testData, 4, WRITE, TEST_ADDRESS);
+    i2c_hal_transmit(I2C_ID_1 ,testData, 4, WRITE, TEST_ADDRESS);
 
     // Assert
     TEST_ASSERT_EQUAL(TEST_CMD_ADDRESS, I2CMasterDataPut_fake.arg1_history[0]);
@@ -195,7 +272,7 @@ void test_i2c_hall_burst_send_stoped(void) {
     SET_RETURN_SEQ(I2CMasterDataGet, (uint32_t*)testData, 4);
 
     // Act
-    I2CGenTransmit(testData, 4, WRITE, TEST_ADDRESS);
+    i2c_hal_transmit(I2C_ID_1 ,testData, 4, WRITE, TEST_ADDRESS);
 
     // Assert
     TEST_ASSERT_EQUAL(TEST_CMD_ADDRESS, I2CMasterDataPut_fake.arg1_history[0]);
