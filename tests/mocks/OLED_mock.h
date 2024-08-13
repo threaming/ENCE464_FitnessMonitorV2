@@ -20,9 +20,4 @@ VOID_FUNC(OLEDInitialise);
 VOID_FUNC(OLEDStringDraw, const char *, uint32_t, uint32_t);
 
 
-// Override the OLEDStringDraw mock to store a deep copy of the string as this const char * value kept getting lost --> MAY NEED TO FREE MEMORY IN TEARDOWN later on
-// void OLEDStringDraw(const char *str, uint32_t column, uint32_t row) {
-//     OLEDStringDraw_fake.arg0_val = strdup(str);
-//     OLEDStringDraw_fake.arg1_val = column;
-//     OLEDStringDraw_fake.arg2_val = row;
-// }
+// Override the OLEDStringDraw mock to store a deep copy of the string as this constchar

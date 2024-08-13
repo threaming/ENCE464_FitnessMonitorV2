@@ -170,7 +170,7 @@ void displayLine(char* inStr, uint8_t row, textAlignment_t alignment)
     for (i = 0; i < inStrLength; i++) {
         toDraw[i + startPos] = inStr[i];
     }
-    printf("Sending to OLED: '%s'\n", toDraw);  // Debug print to verify string
+    printf("Sending to OLED: '%s'\n at row: '%d\n", toDraw, row);  // Debug print to verify string
     OLEDStringDraw (toDraw, 0, row);
 }
 
