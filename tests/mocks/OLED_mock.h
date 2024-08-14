@@ -1,6 +1,7 @@
 #include "fff.h"
 #include <stdint.h>
 #include "display_manager.h"
+#include "hal/display_hal.h"
 
 
 #ifdef FFF_MOCK_IMPL
@@ -13,11 +14,12 @@
 
 #define FFF_DISPLAY_MANAGER_FAKES_LIST(FUNC) \
     FUNC(OLEDInitialise)                     \
-    FUNC(OLEDStringDraw)                         
+    FUNC(OLEDStringDraw)                     \
+    FUNC(display_hal_init)                   \
+    FUNC(display_hal_draw_string)
 
 
 VOID_FUNC(OLEDInitialise);
 VOID_FUNC(OLEDStringDraw, const char *, uint32_t, uint32_t);
-
-
-// Override the OLEDStringDraw mock to store a deep copy of the string as this constchar
+VOID_FUNC(display_hal_init);
+VOID_FUNC(display_hal_draw_string, const char *, uint32_t, uint32_t);
