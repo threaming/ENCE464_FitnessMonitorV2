@@ -38,7 +38,7 @@
 #define KM_TO_MILES 62/100 // Multiply by 0.6215 to convert, this should be good enough
 #define MS_TO_KMH 36/10
 #define TIME_UNIT_SCALE 60
-#define M_PER_STEP 9/10
+
 
 
 /*******************************************

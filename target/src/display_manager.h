@@ -14,7 +14,7 @@
 
 #include "device_state.h"
 
-
+#define M_PER_STEP 9/10
 
 typedef enum {
     ALIGN_LEFT = 0,

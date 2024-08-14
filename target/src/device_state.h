@@ -33,8 +33,6 @@ typedef struct {
     unsigned long flashTicksLeft;
 } deviceStateInfo_t;
 
-void flashMessage(char* toShow, deviceStateInfo_t* deviceState);
-
 deviceStateInfo_t* get_modifiable_device_state(void);
 
 #endif /* DEVICE_STATE_H_ */
