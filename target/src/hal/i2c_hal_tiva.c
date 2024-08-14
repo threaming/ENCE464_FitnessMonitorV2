@@ -32,13 +32,9 @@
 #define I2CSDA_PIN      GPIO_PIN_3
 #define I2CSCL_PIN      GPIO_PIN_2
 
-#ifdef GPIO_PB2_I2C0SCL // not defined in testing
 #define I2CSCL          GPIO_PB2_I2C0SCL
 #define I2CSDA          GPIO_PB3_I2C0SDA
-#else
-#define I2CSCL          0x00000003
-#define I2CSDA          0x00000003
-#endif
+
 
 /* Helper Functions */
 void Delay_us_(void)

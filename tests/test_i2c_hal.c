@@ -6,6 +6,7 @@ DEFINE_FFF_GLOBALS;
 #define FFF_MOCK_IMPL // Includes mock implementations
 
 #include <stdbool.h>
+#include "driverlib/pin_map.h"
 #include "tiva_mocks/i2c_mock.h"
 #include "tiva_mocks/sysctl_mock.h"
 #include "tiva_mocks/gpio_mock.h"
@@ -82,8 +83,8 @@ void test_i2c_hal_register_set_gpio_pins(void) {
     TEST_ASSERT_EQUAL(GPIO_PORTB_BASE, GPIOPinTypeI2CSCL_fake.arg0_val);
     TEST_ASSERT_EQUAL(GPIO_PIN_2, GPIOPinTypeI2CSCL_fake.arg1_val);
     TEST_ASSERT_EQUAL(2, GPIOPinConfigure_fake.call_count);
-    TEST_ASSERT_EQUAL(0x00000003, GPIOPinConfigure_fake.arg0_history[0]);
-    TEST_ASSERT_EQUAL(0x00000003, GPIOPinConfigure_fake.arg0_history[1]);
+    TEST_ASSERT_EQUAL(GPIO_PB2_I2C0SCL, GPIOPinConfigure_fake.arg0_history[0]);
+    TEST_ASSERT_EQUAL(GPIO_PB3_I2C0SDA, GPIOPinConfigure_fake.arg0_history[1]);
 }
 
 void test_i2c_hal_register_setup_i2c(void) {

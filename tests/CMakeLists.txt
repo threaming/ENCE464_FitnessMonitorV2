@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 project(FitnessTrackerTests LANGUAGES C)
-
+set(TIVAWARE_MCU TM4C123GH6PM CACHE STRING "MCU part number")
 enable_testing()
 add_subdirectory(unity)
 
@@ -26,6 +26,7 @@ target_include_directories(test_adc_hal PRIVATE ${MOCK_DIR})
 target_include_directories(test_i2c_hal PRIVATE ${SRC_DIR})
 target_include_directories(test_i2c_hal PRIVATE ${TIVAWARE_DIR})
 target_include_directories(test_i2c_hal PRIVATE ${MOCK_DIR})
+target_compile_definitions(test_i2c_hal PUBLIC "PART_${TIVAWARE_MCU}")
 target_include_directories(test_imu_hal PRIVATE ${SRC_DIR})
 target_include_directories(test_imu_hal PRIVATE ${TIVAWARE_DIR})
 target_include_directories(test_imu_hal PRIVATE ${MOCK_DIR})
