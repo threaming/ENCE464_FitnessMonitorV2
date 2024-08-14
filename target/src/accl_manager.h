@@ -11,6 +11,7 @@
 #define ACCL_MANAGER_H_
 
 #include <stdint.h> // needed to init the vector type
+#include "circBufV.h"
 
 
 void acclInit(void);        // set up library
