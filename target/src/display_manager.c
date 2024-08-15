@@ -24,11 +24,11 @@
     #include "utils/ustdlib.h"
     #include "stdio.h"
     #include "stdlib.h"
-    #include "hal/display_hal.h"
     #include "utils/ustdlib.h"
 
     #include "serial_sender.h"
     #include "display_manager.h"
+    #include "hal/display_hal.h"
 
 
     //********************************************************
@@ -170,7 +170,7 @@
         for (i = 0; i < inStrLength; i++) {
             toDraw[i + startPos] = inStr[i];
         }
-        display_hal_draw_string (toDraw, 0, row);
+        display_hal_draw_string(toDraw, 0, row);
     }
 
 
