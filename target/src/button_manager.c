@@ -21,7 +21,7 @@
 #include "display_manager.h"
 #include "button_manager.h"
 #include "switches.h"
-
+#include "step_counter_main.h"
 #include "device_state.h"
 
 #define DEBUG_STEP_INCREMENT 100

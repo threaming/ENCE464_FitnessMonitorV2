@@ -13,6 +13,9 @@
 #include <stdbool.h>
 #include "circBufT.h"
 #include "hal/adc_hal.h"
+#include "ADC_read.h"
+
+#include "device_state.h"
 
 //*****************************************************************************
 // Constants
@@ -66,3 +69,15 @@ uint32_t readADC() {
       return (sum+ADC_BUF_SIZE/2)/ADC_BUF_SIZE;
 }
 
+void setNewGoal(void)
+{    
+    deviceStateInfo_t* deviceState = get_modifiable_device_state();
+
+    pollADC();
+
+    deviceState->newGoal = readADC() * POT_SCALE_COEFF; // Set the new goal value, scaling to give the desired range
+    deviceState->newGoal = (deviceState->newGoal / STEP_GOAL_ROUNDING) * STEP_GOAL_ROUNDING; // Round to the nearest 100 steps
+    if (deviceState->newGoal == 0) { // Prevent a goal of zero, instead setting to the minimum goal (this also makes it easier to test the goal-reaching code on a small but non-zero target)
+        deviceState->newGoal = STEP_GOAL_ROUNDING;
+    }
+}
