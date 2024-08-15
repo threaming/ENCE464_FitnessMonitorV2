@@ -15,11 +15,7 @@
 #define FFF_DISPLAY_MANAGER_FAKES_LIST(FUNC) \
     FUNC(OLEDInitialise)                     \
     FUNC(OLEDStringDraw)                     \
-    FUNC(display_hal_init)                   \
-    FUNC(display_hal_draw_string)
 
 
 VOID_FUNC(OLEDInitialise);
-VOID_FUNC(OLEDStringDraw, const char *, uint32_t, uint32_t);
-VOID_FUNC(display_hal_init);
-VOID_FUNC(display_hal_draw_string, const char *, uint32_t, uint32_t);
+VOID_FUNC(OLEDStringDraw, char *, uint32_t, uint32_t);

@@ -19,7 +19,7 @@ void display_hal_init(void) {
     }
 }
 
-void display_hal_draw_string(const char* str, uint32_t row, uint32_t col) {
+void display_hal_draw_string(char* str, uint32_t col, uint32_t row) {
     switch (CURRENT_BOARD) {
         case TIVA_BOARD:
             OLEDStringDraw(str, col, row);

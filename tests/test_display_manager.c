@@ -1,34 +1,33 @@
 #include "unity.h"
 #include "display_manager.h"
+#include "display_helpers.h"
 #include "hal/display_hal.h"
 
 #include "fff.h"
 DEFINE_FFF_GLOBALS;
 #define FFF_MOCK_IMPL // Includes mock implementations
 
-#include "OLED_mock.h"
+#include "orbit_mocks/OLED_mock.h"
+#include "display_hal_mock.h"
 
 #define MAX_CALL_HISTORY 100
 #define MAX_STRING_SIZE  200
 
 // Global variables to store call history
-static char arg0_history[MAX_CALL_HISTORY][MAX_STRING_SIZE];
-static uint32_t arg1_history[MAX_CALL_HISTORY];
-static uint32_t arg2_history[MAX_CALL_HISTORY];
+static char custom_arg0_history_list[MAX_CALL_HISTORY][MAX_STRING_SIZE];
+static uint32_t custom_arg1_history_list[MAX_CALL_HISTORY];
+static uint32_t custom_arg2_history_list[MAX_CALL_HISTORY];
 
 // Helper functions      
 void reset_fff(void)
 {
-    RESET_FAKE(OLEDInitialise);
-    RESET_FAKE(OLEDStringDraw);
-    RESET_FAKE(display_hal_init);
-    RESET_FAKE(display_hal_draw_string);
+    FFF_DISPLAY_MANAGER_FAKES_LIST(RESET_FAKE);
     FFF_RESET_HISTORY();
     
     // Clear the history buffers
-    memset(arg0_history, 0, sizeof(arg0_history));
-    memset(arg1_history, 0, sizeof(arg1_history));
-    memset(arg2_history, 0, sizeof(arg2_history));
+    memset(custom_arg0_history_list, 0, sizeof(custom_arg0_history_list));
+    memset(custom_arg1_history_list, 0, sizeof(custom_arg1_history_list));
+    memset(custom_arg2_history_list, 0, sizeof(custom_arg2_history_list));
 }
 
 /* Unity setup and teardown */
@@ -43,7 +42,7 @@ void tearDown(void)
 }
 
 /* Fake Functions */
-void display_hal_draw_string_fake_values(const char* str, uint32_t row, uint32_t col) {
+void display_hal_draw_string_fake_values(char* str, uint32_t col, uint32_t row) {
     size_t str_len = strlen(str);
     printf("display_hal_draw_string_fake_values called with str: '%s' (length: %zu), row: %u, col: %u\n", str, str_len, row, col);
 
@@ -51,15 +50,15 @@ void display_hal_draw_string_fake_values(const char* str, uint32_t row, uint32_t
     if (display_hal_draw_string_fake.call_count < MAX_CALL_HISTORY) {
         printf("Copying string to history...\n");
         if (str_len > 0) {
-            strncpy(arg0_history[display_hal_draw_string_fake.call_count], str, MAX_STRING_SIZE - 1);
-            arg0_history[display_hal_draw_string_fake.call_count][MAX_STRING_SIZE - 1] = '\0';  // Ensure null termination
+            strncpy(custom_arg0_history_list[display_hal_draw_string_fake.call_count], str, MAX_STRING_SIZE - 1);
+            custom_arg0_history_list[display_hal_draw_string_fake.call_count][MAX_STRING_SIZE - 1] = '\0';  // Ensure null termination
         } else {
-            strcpy(arg0_history[display_hal_draw_string_fake.call_count], "EMPTY_STRING");  // For debugging
+            strcpy(custom_arg0_history_list[display_hal_draw_string_fake.call_count], "EMPTY_STRING");  // For debugging
         }
         
-        printf("Copied string: '%s' to history\n", arg0_history[display_hal_draw_string_fake.call_count]);
-        arg1_history[display_hal_draw_string_fake.call_count] = row;
-        arg2_history[display_hal_draw_string_fake.call_count] = col;
+        printf("Copied string: '%s' to history\n", custom_arg0_history_list[display_hal_draw_string_fake.call_count]);
+        custom_arg1_history_list[display_hal_draw_string_fake.call_count] = row;
+        custom_arg2_history_list[display_hal_draw_string_fake.call_count] = col;
     }
 
     // Increment the call count
@@ -69,9 +68,9 @@ void display_hal_draw_string_fake_values(const char* str, uint32_t row, uint32_t
 void print_display_hal_draw_string_fake_details(void)
 {
     for (int i = 0; i < display_hal_draw_string_fake.call_count; i++) {
-        printf("Call %d: arg0_history[%d] = '%s'\n", i+1, i, arg0_history[i]);
-        printf("Call %d: arg1_history[%d] = %u\n", i+1, i, arg1_history[i]);
-        printf("Call %d: arg2_history[%d] = %u\n\n", i+1, i, arg2_history[i]);
+        printf("Call %d: custom_arg0_history_list[%d] = '%s'\n", i+1, i, custom_arg0_history_list[i]);
+        printf("Call %d: custom_arg1_history_list[%d] = %u\n", i+1, i, custom_arg1_history_list[i]);
+        printf("Call %d: custom_arg2_history_list[%d] = %u\n\n", i+1, i, custom_arg2_history_list[i]);
     }
 }
 
@@ -101,12 +100,12 @@ void test_display_update_should_display_flash_message_when_active(void)
     print_display_hal_draw_string_fake_details();
 
     // Assert
-    printf("String lengths: expected=%zu, actual=%zu\n", strlen("                "), strlen(arg0_history[0]));
+    printf("String lengths: expected=%zu, actual=%zu\n", strlen("                "), strlen(custom_arg0_history_list[0]));
     TEST_ASSERT_EQUAL(8, display_hal_draw_string_fake.call_count);
-    TEST_ASSERT_EQUAL_STRING("                ", arg0_history[1]);
-    TEST_ASSERT_EQUAL_STRING("     FLASH!     ", arg0_history[3]);
-    TEST_ASSERT_EQUAL_STRING("                ", arg0_history[5]);
-    TEST_ASSERT_EQUAL_STRING("                ", arg0_history[7]);
+    TEST_ASSERT_EQUAL_STRING("                ", custom_arg0_history_list[1]);
+    TEST_ASSERT_EQUAL_STRING("     FLASH!     ", custom_arg0_history_list[3]);
+    TEST_ASSERT_EQUAL_STRING("                ", custom_arg0_history_list[5]);
+    TEST_ASSERT_EQUAL_STRING("                ", custom_arg0_history_list[7]);
     printf("test_display_update_should_display_flash_message_when_active completed\n");
 }
 
@@ -126,9 +125,9 @@ void test_display_update_should_display_steps_in_si_units(void)
 
     // Assert
     TEST_ASSERT_EQUAL(6, display_hal_draw_string_fake.call_count);
-    TEST_ASSERT_EQUAL_STRING("                ", arg0_history[1]);
-    TEST_ASSERT_EQUAL_STRING("    500 steps   ", arg0_history[3]);
-    TEST_ASSERT_EQUAL_STRING("   Time: 1:40   ", arg0_history[5]);
+    TEST_ASSERT_EQUAL_STRING("                ", custom_arg0_history_list[1]);
+    TEST_ASSERT_EQUAL_STRING("    500 steps   ", custom_arg0_history_list[3]);
+    TEST_ASSERT_EQUAL_STRING("   Time: 1:40   ", custom_arg0_history_list[5]);
 }
 
 /* Test cases - displayLine */
@@ -143,7 +142,7 @@ void test_display_line_should_display_line_left_aligned(void)
 
     // Assert
     TEST_ASSERT_EQUAL(2, display_hal_draw_string_fake.call_count);
-    TEST_ASSERT_EQUAL_STRING("Test Line       ", arg0_history[1]);
+    TEST_ASSERT_EQUAL_STRING("Test Line       ", custom_arg0_history_list[1]);
 }
 
 void test_display_line_should_display_line_center_aligned(void)
@@ -157,7 +156,7 @@ void test_display_line_should_display_line_center_aligned(void)
 
     // Assert
     TEST_ASSERT_EQUAL(2, display_hal_draw_string_fake.call_count);
-    TEST_ASSERT_EQUAL_STRING("     Center     ", arg0_history[1]);
+    TEST_ASSERT_EQUAL_STRING("     Center     ", custom_arg0_history_list[1]);
 }
 
 void test_display_line_should_display_line_right_aligned(void)
@@ -171,7 +170,7 @@ void test_display_line_should_display_line_right_aligned(void)
 
     // Assert
     TEST_ASSERT_EQUAL(2, display_hal_draw_string_fake.call_count);
-    TEST_ASSERT_EQUAL_STRING("           Right", arg0_history[1]);
+    TEST_ASSERT_EQUAL_STRING("           Right", custom_arg0_history_list[1]);
 }
 
 /* Test cases - displayValue */
@@ -188,7 +187,7 @@ void test_display_value_should_display_value_without_thousands_formatting(void)
 
     // Assert
     TEST_ASSERT_EQUAL(2, display_hal_draw_string_fake.call_count);
-    TEST_ASSERT_EQUAL_STRING("Val: 12345 units", arg0_history[1]);
+    TEST_ASSERT_EQUAL_STRING("Val: 12345 units", custom_arg0_history_list[1]);
 }
 
 /* Test cases - displayTime */
@@ -204,7 +203,7 @@ void test_display_time_should_display_time_as_minutes_and_seconds(void)
 
     // Assert
     TEST_ASSERT_EQUAL(2, display_hal_draw_string_fake.call_count);
-    TEST_ASSERT_EQUAL_STRING("   Time: 2:05   ", arg0_history[1]);
+    TEST_ASSERT_EQUAL_STRING("   Time: 2:05   ", custom_arg0_history_list[1]);
 }
 
 void test_display_time_should_display_time_as_hours_minutes_and_seconds(void)
@@ -219,5 +218,5 @@ void test_display_time_should_display_time_as_hours_minutes_and_seconds(void)
 
     // Assert
     TEST_ASSERT_EQUAL(2, display_hal_draw_string_fake.call_count);
-    TEST_ASSERT_EQUAL_STRING(" Time: 1:01:05  ", arg0_history[1]);
+    TEST_ASSERT_EQUAL_STRING(" Time: 1:01:05  ", custom_arg0_history_list[1]);
 }
