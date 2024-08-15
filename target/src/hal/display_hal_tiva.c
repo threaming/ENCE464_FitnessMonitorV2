@@ -1,7 +1,7 @@
 #include "display_hal.h"
 #include <stdio.h>
 #include <stdint.h>
-#include "OrbitOLED/OrbitOLEDInterface.h"
+#include "../../target/libs/OrbitOLED/OrbitOLEDInterface.h"
 
 // Define board types
 #define TIVA_BOARD 1
