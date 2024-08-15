@@ -7,9 +7,12 @@ add_subdirectory(unity)
 set(SRC_DIR ../target/src)
 set(HAL_DIR ../target/src/hal)
 set(TIVAWARE_DIR ../target/libs/tivaware)
+set(TIVAWARE_SOURCES
+    ${TIVAWARE_DIR}/utils/ustdlib.c
+)
 set(MOCK_DIR mocks)
-#add_unity_test(test_example test_example.c)
-#add_unity_test(test_fff test_fff.c)
+
+# Adding Unity tests
 add_unity_test(test_circular_buffer test_circular_buffer.c ${SRC_DIR}/circBufT.c)
 add_unity_test(test_adc test_adc.c ${SRC_DIR}/ADC_read.c)
 add_unity_test(test_adc_hal test_adc_hal.c ${HAL_DIR}/adc_hal_tiva.c)

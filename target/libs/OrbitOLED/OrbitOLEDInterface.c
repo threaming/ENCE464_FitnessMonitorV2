@@ -58,7 +58,7 @@
 //
 //*****************************************************************************
 void
-OLEDStringDraw(char *pcStr, uint32_t ulColumn, uint32_t ulRow)
+OLEDStringDraw(const char *pcStr, uint32_t ulColumn, uint32_t ulRow)
 {
     //-------Use the Orbit Functions:---------
 
