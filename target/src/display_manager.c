@@ -1,51 +1,24 @@
 /*
- * display_manager.c
- *
- * Handles drawing to the device's screen, given its current state
- *
- *  Created on: 23/03/2022
- *      Author: Matthew Suter
- *
- *  FitnessThur9-1
- */
+* display_manager.c
+*
+* Handles drawing to the device's screen, given its current state
+*
+*  Created on: 23/03/2022
+*      Author: Matthew Suter
+*
+*  FitnessThur9-1
+*/
 
 
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include "inc/hw_memmap.h"
-#include "inc/hw_types.h"
-#include "inc/hw_ints.h"
-#include "driverlib/gpio.h"
-#include "driverlib/sysctl.h"
-#include "driverlib/systick.h"
-#include "driverlib/debug.h"
-#include "driverlib/pin_map.h"
-#include "utils/ustdlib.h"
-#include "stdio.h"
-#include "stdlib.h"
-#include "OrbitOLED/OrbitOLEDInterface.h"
 #include "utils/ustdlib.h"
 
 #include "serial_sender.h"
 #include "display_manager.h"
-
-
-//********************************************************
-// Constants and static vars
-//********************************************************
-
-#define KM_TO_MILES 62/100 // Multiply by 0.6215 to convert, this should be good enough
-#define MS_TO_KMH 36/10
-#define TIME_UNIT_SCALE 60
-
-
-/*******************************************
- *      Local prototypes
- *******************************************/
-static void displayLine(char* inStr, uint8_t row, textAlignment_t alignment);
-static void displayValue(char* prefix, char* suffix, int32_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting);
-static void displayTime(char* prefix, uint16_t time, uint8_t row, textAlignment_t alignment);
+#include "display_helpers.h"
+#include "hal/display_hal.h"
 
 
 /*******************************************
@@ -54,7 +27,7 @@ static void displayTime(char* prefix, uint16_t time, uint8_t row, textAlignment_
 // Init the screen library
 void displayInit(void)
 {
-    OLEDInitialise();
+    display_hal_init();
 }
 
 
@@ -63,12 +36,13 @@ void displayInit(void)
 void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed)
 {
     // Check for flash message override
+    
     if (deviceState.flashTicksLeft != 0) {
         char* emptyLine = "                ";
-        OLEDStringDraw (emptyLine, 0, 0);
+        display_hal_draw_string(emptyLine, 0, 0);
         displayLine(deviceState.flashMessage, 1, ALIGN_CENTRE);
-        OLEDStringDraw (emptyLine, 0, 2);
-        OLEDStringDraw (emptyLine, 0, 3);
+        display_hal_draw_string (emptyLine, 0, 2);
+        display_hal_draw_string (emptyLine, 0, 3);
         return;
     }
 
@@ -127,87 +101,10 @@ void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed)
         displayLine(toDraw, 1, ALIGN_CENTRE);
 
         break;
-    }
-}
-
-
-/*******************************************
- *      Local Functions
- *******************************************/
-// Draw a line to the OLED screen, with the specified alignment
-static void displayLine(char* inStr, uint8_t row, textAlignment_t alignment)
-{
-    // Get the length of the string, but prevent it from being more than 16 chars long
-    uint8_t inStrLength = 0;
-    while (inStr[inStrLength] != '\0' && inStrLength < DISPLAY_WIDTH) {
-        inStrLength++;
-    }
-
-    // Create a 16-char long array to write to
-    uint8_t i = 0;
-    char toDraw[DISPLAY_WIDTH+1]; // Must be one character longer to account for EOFs
-    for (i = 0; i < DISPLAY_WIDTH; i++) {
-        toDraw[i] = ' ';
-    }
-    toDraw[DISPLAY_WIDTH] = '\0'; // Set the last character to EOF
-
-    // Set the starting position based on the alignment specified
-    uint8_t startPos = 0;
-    switch (alignment) {
-    case ALIGN_LEFT:
-        startPos = 0;
+    
+    default:
         break;
-    case ALIGN_CENTRE:
-        startPos = (DISPLAY_WIDTH - inStrLength) /  2;
-        break;
-    case ALIGN_RIGHT:
-        startPos = (DISPLAY_WIDTH - inStrLength);
-        break;
-    }
 
-    // Copy the string we were given onto the 16-char row
-    for (i = 0; i < inStrLength; i++) {
-        toDraw[i + startPos] = inStr[i];
-    }
 
-    OLEDStringDraw (toDraw, 0, row);
+    }
 }
-
-
-
-// Display a value, with a prefix and suffix
-// Can optionally divide the value by 1000, to mimic floats without actually having to use them
-static void displayValue(char* prefix, char* suffix, int32_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting)
-{
-    char toDraw[DISPLAY_WIDTH+1]; // Must be one character longer to account for EOFs
-
-    if (thousandsFormatting) {
-        // Print a number/1000 to 3dp, with decimal point and sign
-        // Use a mega cool ternary operator to decide whether to use a minus sign
-        usnprintf(toDraw, DISPLAY_WIDTH + 1, "%s%c%d.%03d %s", prefix, value<0? '-':' ', abs(value / 1000), abs(value) % 1000, suffix);
-    } else {
-        usnprintf(toDraw, DISPLAY_WIDTH + 1, "%s %d %s", prefix, value, suffix); // Can use %4d if we want uniform spacing
-    }
-
-    displayLine(toDraw, row, alignment);
-}
-
-
-
-// Display a given number of seconds, formatted as mm:ss or hh:mm:ss
-static void displayTime(char* prefix, uint16_t time, uint8_t row, textAlignment_t alignment)
-{
-    char toDraw[DISPLAY_WIDTH+1]; // Must be one character longer to account for EOFs
-    uint16_t minutes = (time / TIME_UNIT_SCALE) % TIME_UNIT_SCALE;
-    uint16_t seconds = time % TIME_UNIT_SCALE;
-    uint16_t hours =   time / (TIME_UNIT_SCALE * TIME_UNIT_SCALE);
-
-    if (hours == 0) {
-        usnprintf(toDraw, DISPLAY_WIDTH + 1, "%s %01d:%02d", prefix, minutes, seconds);
-    } else {
-        usnprintf(toDraw, DISPLAY_WIDTH + 1, "%s %01d:%02d:%02d", prefix, hours, minutes, seconds);
-    }
-
-    displayLine(toDraw, row, alignment);
-}
-
