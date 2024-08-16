@@ -12,7 +12,7 @@
     #define VALUE_FUNC DECLARE_FAKE_VALUE_FUNC
 #endif
 
-#define FFF_DISPLAY_MANAGER_FAKES_LIST(FUNC) \
+#define FFF_OLED_FAKES_LIST(FUNC) \
     FUNC(OLEDInitialise)                     \
     FUNC(OLEDStringDraw)                     \
 

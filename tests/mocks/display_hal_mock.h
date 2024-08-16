@@ -10,7 +10,7 @@
     #define VALUE_FUNC DECLARE_FAKE_VALUE_FUNC
 #endif
 
-#define FFF_I2C_HAL_FAKES_LIST(FUNC)    \
+#define FFF_DISPLAY_HAL_FAKES_LIST(FUNC)    \
     FUNC(display_hal_init)              \
     FUNC(display_hal_draw_string)
 

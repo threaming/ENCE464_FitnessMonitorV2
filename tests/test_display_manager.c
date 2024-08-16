@@ -21,7 +21,7 @@ static uint32_t custom_arg2_history_list[MAX_CALL_HISTORY];
 // Helper functions      
 void reset_fff(void)
 {
-    FFF_DISPLAY_MANAGER_FAKES_LIST(RESET_FAKE);
+    FFF_DISPLAY_HAL_FAKES_LIST(RESET_FAKE);
     FFF_RESET_HISTORY();
     
     // Clear the history buffers

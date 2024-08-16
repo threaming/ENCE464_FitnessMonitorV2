@@ -9,8 +9,7 @@ DEFINE_FFF_GLOBALS;
 
 /* Helper functions */
 void reset_fff(void) {
-    RESET_FAKE(OLEDInitialise);
-    RESET_FAKE(OLEDStringDraw);
+    FFF_OLED_FAKES_LIST(RESET_FAKE);
     FFF_RESET_HISTORY();
 }
 
