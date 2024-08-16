@@ -7,15 +7,23 @@ add_subdirectory(unity)
 set(SRC_DIR ../target/src)
 set(HAL_DIR ../target/src/hal)
 set(TIVAWARE_DIR ../target/libs/tivaware)
+set(TIVAWARE_SOURCES
+    ${TIVAWARE_DIR}/utils/ustdlib.c
+)
 set(MOCK_DIR mocks)
-#add_unity_test(test_example test_example.c)
-#add_unity_test(test_fff test_fff.c)
+
+# Adding Unity tests
 add_unity_test(test_circular_buffer test_circular_buffer.c ${SRC_DIR}/circBufT.c)
 add_unity_test(test_adc test_adc.c ${SRC_DIR}/ADC_read.c)
 add_unity_test(test_adc_hal test_adc_hal.c ${HAL_DIR}/adc_hal_tiva.c)
 add_unity_test(test_i2c_hal test_i2c_hal.c ${HAL_DIR}/i2c_hal_tiva.c)
 add_unity_test(test_imu_hal test_imu_hal.c ${HAL_DIR}/imu_hal_tiva.c)
+add_unity_test(test_display_manager test_display_manager.c ${SRC_DIR}/display_manager.c ${SRC_DIR}/display_helpers.c ${TIVAWARE_SOURCES})
 add_unity_test(test_accl_manager test_accl_manager.c ${SRC_DIR}/accl_manager.c)
+add_unity_test(test_display_hal test_display_hal.c ${HAL_DIR}/display_hal_tiva.c ${SRC_DIR}/display_helpers.c ${TIVAWARE_SOURCES})
+
+
+# Include directories
 target_include_directories(test_circular_buffer PRIVATE ${SRC_DIR})
 target_include_directories(test_adc PRIVATE ${SRC_DIR})
 target_include_directories(test_adc PRIVATE ${TIVAWARE_DIR})
@@ -23,14 +31,27 @@ target_include_directories(test_adc PRIVATE ${MOCK_DIR})
 target_include_directories(test_adc_hal PRIVATE ${SRC_DIR})
 target_include_directories(test_adc_hal PRIVATE ${TIVAWARE_DIR})
 target_include_directories(test_adc_hal PRIVATE ${MOCK_DIR})
+
 target_include_directories(test_i2c_hal PRIVATE ${SRC_DIR})
 target_include_directories(test_i2c_hal PRIVATE ${TIVAWARE_DIR})
 target_include_directories(test_i2c_hal PRIVATE ${MOCK_DIR})
 target_compile_definitions(test_i2c_hal PUBLIC "PART_${TIVAWARE_MCU}")
+
 target_include_directories(test_imu_hal PRIVATE ${SRC_DIR})
 target_include_directories(test_imu_hal PRIVATE ${TIVAWARE_DIR})
 target_include_directories(test_imu_hal PRIVATE ${MOCK_DIR})
 target_include_directories(test_imu_hal PRIVATE ${HAL_DIR})
+
+target_include_directories(test_display_manager PRIVATE ${SRC_DIR})
+target_include_directories(test_display_manager PRIVATE ${TIVAWARE_DIR})
+target_include_directories(test_display_manager PRIVATE ${HAL_DIR})
+target_include_directories(test_display_manager PRIVATE ${MOCK_DIR})
+
 target_include_directories(test_accl_manager PRIVATE ${SRC_DIR})
 target_include_directories(test_accl_manager PRIVATE ${MOCK_DIR})
 target_include_directories(test_accl_manager PRIVATE ${HAL_DIR})
+
+target_include_directories(test_display_hal PRIVATE ${SRC_DIR})
+target_include_directories(test_display_hal PRIVATE ${TIVAWARE_DIR})
+target_include_directories(test_display_hal PRIVATE ${MOCK_DIR})
+target_include_directories(test_display_hal PRIVATE ${HAL_DIR})

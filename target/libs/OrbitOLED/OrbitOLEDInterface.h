@@ -26,7 +26,7 @@
  * 			  Row and column 0,0 is at the top left of the display
  *
  */
-void OLEDStringDraw(const char *pcStr, uint32_t ulColumn, uint32_t ulRow);
+void OLEDStringDraw(char *pcStr, uint32_t ulColumn, uint32_t ulRow);
 
 /*
  * OLEDInitialise
