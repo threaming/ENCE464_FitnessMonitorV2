@@ -73,7 +73,7 @@ void setNewGoalValue(void)
 {    
     deviceStateInfo_t* deviceState = get_modifiable_device_state();
 
-    readNewGoalValue();
+    pollNewGoalReader();
 
     deviceState->newGoal = readNewGoalValue() * POT_SCALE_COEFF; // Set the new goal value, scaling to give the desired range
     deviceState->newGoal = (deviceState->newGoal / STEP_GOAL_ROUNDING) * STEP_GOAL_ROUNDING; // Round to the nearest 100 steps
