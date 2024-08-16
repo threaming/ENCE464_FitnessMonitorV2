@@ -31,7 +31,7 @@
 #include "acc.h"
 #include "math.h"
 #include "circBufV.h"
-#include "ADC_read.h"
+#include "new_goal_reader.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -149,7 +149,7 @@ void superloop(void* args) {
 
         // updateSwitch();
             btnUpdateState();
-            setNewGoal();
+            setNewGoalValue();
         }
 
         // Read and process the accelerometer
@@ -258,7 +258,7 @@ int main(void)
     displayInit();
     btnInit();
     acclInit();
-    initADC();
+    initNewGoalReader();
 
     #ifdef SERIAL_PLOTTING_ENABLED
     SerialInit ();
