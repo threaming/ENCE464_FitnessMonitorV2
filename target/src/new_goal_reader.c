@@ -13,9 +13,9 @@
 #include <stdbool.h>
 #include "circBufT.h"
 #include "hal/adc_hal.h"
-#include "new_goal_reader.h"
-
 #include "device_state.h"
+
+#include "new_goal_reader.h"
 
 //*****************************************************************************
 // Constants
