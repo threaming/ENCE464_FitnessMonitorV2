@@ -40,7 +40,7 @@ void displayUpdate(uint16_t secondsElapsed)
     deviceStateInfo_t* deviceState = get_modifiable_device_state();
 
     uint32_t newGoal = getNewGoal();
-    deviceState->temperature = tempGetTemp();
+    float temp = tempGetTemp();
 
     // Check for flash message override
     if (deviceState->flashTicksLeft != 0) {
@@ -64,7 +64,7 @@ void displayUpdate(uint16_t secondsElapsed)
             displayValue("", "% of goal", deviceState->stepsTaken * 100 / deviceState->currentGoal, 1, ALIGN_CENTRE, false);
         }
         displayTime("Time:", secondsElapsed, 2, ALIGN_CENTRE);
-        displayValue("Temp:","C", (int32_t)(deviceState->temperature*1000), 3, ALIGN_CENTRE, true);
+        displayValue("Temp:","C", (int32_t)(temp*1000), 3, ALIGN_CENTRE, true);
         break;
     case DISPLAY_DISTANCE:
         displayTime("Time:", secondsElapsed, 1, ALIGN_CENTRE);

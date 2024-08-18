@@ -22,7 +22,6 @@ typedef enum {
 typedef struct {
     uint32_t stepsTaken;
     uint32_t currentGoal;       // Goal the user is aiming for
-    float temperature;
     bool debugMode;             // Is enable/disable debug functionality
     displayMode_t displayMode;
     displayUnits_t displayUnits;
