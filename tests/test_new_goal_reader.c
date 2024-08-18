@@ -1,5 +1,6 @@
 #include "unity.h"
-#include "ADC_read.h"
+#include "new_goal_reader.h"
+
 
 #include "fff.h"
 DEFINE_FFF_GLOBALS;
@@ -21,7 +22,7 @@ void reset_fff(void)
 
 circBuf_t* get_circBuf_ptr_and_reset_fff(void)
 {
-    initADC();
+    initNewGoalReader();
     circBuf_t* buffer_ptr = initCircBuf_fake.arg0_val;
     reset_fff();
     return buffer_ptr;
@@ -38,11 +39,11 @@ void tearDown(void)
     
 }
 
-/* Test cases - initADC */
+/* Test cases - initNewGoalReader */
 void test_adc_init_initialises_buffer(void)
 {   
     // Act
-    initADC();
+    initNewGoalReader();
 
     // Assert
     TEST_ASSERT_EQUAL(1, initCircBuf_fake.call_count);
@@ -52,29 +53,29 @@ void test_adc_init_initialises_buffer(void)
 void test_adc_init_registers_adc(void)
 {
     // Act
-    initADC();
+    initNewGoalReader();
 
     // Assert
     TEST_ASSERT_EQUAL(1, adc_hal_register_fake.call_count);
     TEST_ASSERT_EQUAL(ADC_ID_1, adc_hal_register_fake.arg0_val);
 }
 
-/* Test cases - pollADC */
+/* Test cases - pollNewGoalReader */
 void test_adc_poll_triggers_adc(void)
 {
     // Act
-    pollADC();
+    pollNewGoalReader();
 
     // Assert
     TEST_ASSERT_EQUAL(1, adc_hal_start_conversion_fake.call_count);
     TEST_ASSERT_EQUAL(ADC_ID_1, adc_hal_start_conversion_fake.arg0_val);
 }
 
-/* Test cases - adc_callback */
+/* Test cases - newGoal_callback */
 void test_callback_writes_to_correct_buffer(void)
 {
     // Arrange
-    initADC();
+    initNewGoalReader();
     void (*isr) (void) = adc_hal_register_fake.arg1_val;
     circBuf_t* buff = get_circBuf_ptr_and_reset_fff();
 
@@ -89,7 +90,7 @@ void test_callback_writes_to_correct_buffer(void)
 void test_callback_writes_correct_value_to_buffer(void)
 {
     // Arrange
-    initADC();
+    initNewGoalReader();
     void (*isr) (uint32_t) = adc_hal_register_fake.arg1_val;
 
     // Act
@@ -100,14 +101,14 @@ void test_callback_writes_correct_value_to_buffer(void)
     TEST_ASSERT_EQUAL_UINT32(FAKE_ADC_VALUE, writeCircBuf_fake.arg1_val);
 }
 
-/* Test cases - readADC */
+/* Test cases - readNewGoalValue */
 void test_adc_read_from_right_buffer(void)
 {
     // Arrange
     circBuf_t* buff = get_circBuf_ptr_and_reset_fff();
 
     // Act
-    readADC();
+    readNewGoalValue();
 
     // Assert
     TEST_ASSERT_EQUAL_PTR(buff, readCircBuf_fake.arg0_val);
@@ -116,7 +117,7 @@ void test_adc_read_from_right_buffer(void)
 void test_adc_read_average_over_all_elements(void)
 {
     // Act
-    readADC();
+    readNewGoalValue();
 
     // Assert
     TEST_ASSERT_EQUAL(ADC_BUF_SIZE, readCircBuf_fake.call_count);
@@ -129,7 +130,7 @@ void test_adc_read_calculate_average_correctly(void)
     SET_RETURN_SEQ(readCircBuf, buffReturnVals, ADC_BUF_SIZE);
 
     // Act
-    uint32_t adcAvg= readADC();
+    uint32_t adcAvg= readNewGoalValue();
 
     // Assert
     TEST_ASSERT_EQUAL(7, adcAvg);
@@ -142,7 +143,7 @@ void test_adc_read_round_up_average_correctly(void)
     SET_RETURN_SEQ(readCircBuf, buffReturnVals, ADC_BUF_SIZE);
 
     // Act
-    uint32_t adcAvg= readADC();
+    uint32_t adcAvg= readNewGoalValue();
 
     // Assert
     TEST_ASSERT_EQUAL(8, adcAvg);
@@ -155,7 +156,7 @@ void test_adc_read_round_down_average_correctly(void)
     SET_RETURN_SEQ(readCircBuf, buffReturnVals, ADC_BUF_SIZE);
 
     // Act
-    uint32_t adcAvg= readADC();
+    uint32_t adcAvg= readNewGoalValue();
 
     // Assert
     TEST_ASSERT_EQUAL(5, adcAvg);

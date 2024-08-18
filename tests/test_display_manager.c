@@ -2,6 +2,8 @@
 #include "display_manager.h"
 #include "display_helpers.h"
 #include "hal/display_hal.h"
+#include "new_goal_reader.h"
+#include "device_state.h"
 
 #include "fff.h"
 DEFINE_FFF_GLOBALS;
@@ -9,6 +11,8 @@ DEFINE_FFF_GLOBALS;
 
 #include "orbit_mocks/OLED_mock.h"
 #include "display_hal_mock.h"
+#include "adc_hal_mock.h"
+#include "circBufT_mock.h"
 
 #define MAX_CALL_HISTORY 100
 #define MAX_STRING_SIZE  200
@@ -91,11 +95,15 @@ void test_display_update_should_display_flash_message_when_active(void)
     // Arrange
     display_hal_draw_string_fake.custom_fake = display_hal_draw_string_fake_values;
     
-    deviceStateInfo_t deviceState = { .flashTicksLeft = 10, .flashMessage = "FLASH!" };
+    deviceStateInfo_t *deviceState = get_modifiable_device_state();
+    
+    deviceState -> flashTicksLeft = 10;
+    deviceState -> flashMessage = "FLASH!";
+
     uint16_t secondsElapsed = 0;
 
     // Act
-    displayUpdate(deviceState, secondsElapsed);
+    displayUpdate(secondsElapsed);
 
     print_display_hal_draw_string_fake_details();
 
@@ -115,11 +123,17 @@ void test_display_update_should_display_steps_in_si_units(void)
 {
     // Arrange
     display_hal_draw_string_fake.custom_fake = display_hal_draw_string_fake_values;
-    deviceStateInfo_t deviceState = { .displayMode = DISPLAY_STEPS, .displayUnits = UNITS_SI, .stepsTaken = 500 };
+    
+    deviceStateInfo_t *deviceState = get_modifiable_device_state();
+    
+    deviceState -> displayMode = DISPLAY_STEPS;
+    deviceState -> displayUnits = UNITS_SI;
+    deviceState -> stepsTaken = 500;
+
     uint16_t secondsElapsed = 100;
 
     // Act
-    displayUpdate(deviceState, secondsElapsed);
+    displayUpdate(secondsElapsed);
 
     print_display_hal_draw_string_fake_details();
 
