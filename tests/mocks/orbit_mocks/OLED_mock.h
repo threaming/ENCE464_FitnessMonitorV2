@@ -14,7 +14,7 @@
 
 #define FFF_OLED_FAKES_LIST(FUNC) \
     FUNC(OLEDInitialise)                     \
-    FUNC(OLEDStringDraw)                     \
+    FUNC(OLEDStringDraw)                     
 
 
 VOID_FUNC(OLEDInitialise);
