@@ -9,13 +9,13 @@
 
 #ifndef BUTTON_MANAGER_H_
 #define BUTTON_MANAGER_H_
-#include "step_counter_main.h"
+
 
 
 // Init this library
 void btnInit(void);
 
 // Run at a fixed rate, modifies the device state according to the user's button and switch inputs
-void btnUpdateState(deviceStateInfo_t* deviceStateInfo);
+void btnUpdateState(void);
 
 #endif /* BUTTON_MANAGER_H_ */
