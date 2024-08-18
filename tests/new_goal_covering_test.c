@@ -17,6 +17,7 @@ DEFINE_FFF_GLOBALS;
 #include "step_counter_main_mock.h"
 #include "ustdlib_mock.h"
 #include "display_hal_mock.h"
+#include "temp_manager_mock.h"
 
 
 /* Helper functions */      
@@ -30,6 +31,7 @@ void reset_fff(void)
     FFF_STEP_COUNTER_MAIN_FAKES_LIST(RESET_FAKE);
     FFF_USTDLIB_FAKES_LIST(RESET_FAKE);
     FFF_DISPLAY_HAL_FAKES_LIST(RESET_FAKE);
+    FFF_TEMP_MANAGER_FAKES_LIST(RESET_FAKE);
     FFF_RESET_HISTORY();
 }
 

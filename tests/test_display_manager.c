@@ -143,8 +143,8 @@ void test_display_update_should_display_steps_in_si_units(void)
     print_display_hal_draw_string_fake_details();
 
     // Assert
-    TEST_ASSERT_EQUAL(6, display_hal_draw_string_fake.call_count);
-    TEST_ASSERT_EQUAL_STRING("                ", custom_arg0_history_list[1]);
+    TEST_ASSERT_EQUAL(8, display_hal_draw_string_fake.call_count);
+    TEST_ASSERT_EQUAL_STRING("  FitMon V2.0   ", custom_arg0_history_list[1]);
     TEST_ASSERT_EQUAL_STRING("    500 steps   ", custom_arg0_history_list[3]);
     TEST_ASSERT_EQUAL_STRING("   Time: 1:40   ", custom_arg0_history_list[5]);
 }
