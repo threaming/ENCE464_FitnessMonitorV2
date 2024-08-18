@@ -21,6 +21,7 @@ add_unity_test(test_imu_hal test_imu_hal.c ${HAL_DIR}/imu_hal_tiva.c)
 add_unity_test(test_display_manager test_display_manager.c ${SRC_DIR}/display_manager.c ${SRC_DIR}/display_helpers.c ${TIVAWARE_SOURCES})
 add_unity_test(test_accl_manager test_accl_manager.c ${SRC_DIR}/accl_manager.c)
 add_unity_test(test_display_hal test_display_hal.c ${HAL_DIR}/display_hal_tiva.c ${SRC_DIR}/display_helpers.c ${TIVAWARE_SOURCES})
+add_unity_test(test_temp_hal test_temp_hal.c ${HAL_DIR}/temp_hal_tiva.c)
 
 
 # Include directories
@@ -55,3 +56,8 @@ target_include_directories(test_display_hal PRIVATE ${SRC_DIR})
 target_include_directories(test_display_hal PRIVATE ${TIVAWARE_DIR})
 target_include_directories(test_display_hal PRIVATE ${MOCK_DIR})
 target_include_directories(test_display_hal PRIVATE ${HAL_DIR})
+
+target_include_directories(test_temp_hal PRIVATE ${SRC_DIR})
+target_include_directories(test_temp_hal PRIVATE ${TIVAWARE_DIR})
+target_include_directories(test_temp_hal PRIVATE ${MOCK_DIR})
+target_include_directories(test_temp_hal PRIVATE ${HAL_DIR})
