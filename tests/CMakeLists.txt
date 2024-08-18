@@ -16,11 +16,11 @@ set(MOCK_DIR mocks)
 # Adding Unity tests
 add_unity_test(test_circular_buffer test_circular_buffer.c ${SRC_DIR}/circBufT.c)
 add_unity_test(test_new_goal_reader test_new_goal_reader.c ${SRC_DIR}/new_goal_reader.c ${SRC_DIR}/device_state.c)
-add_unity_test(new_goal_covering_test new_goal_covering_test.c ${SRC_DIR}/new_goal_reader.c ${SRC_DIR}/button_manager.c ${SRC_DIR}/display_manager.c ${SRC_DIR}/device_state.c)
+add_unity_test(new_goal_covering_test new_goal_covering_test.c ${SRC_DIR}/new_goal_reader.c ${SRC_DIR}/button_manager.c ${SRC_DIR}/display_manager.c ${SRC_DIR}/device_state.c ${SRC_DIR}/display_helpers.c)
 add_unity_test(test_adc_hal test_adc_hal.c ${HAL_DIR}/adc_hal_tiva.c)
 add_unity_test(test_i2c_hal test_i2c_hal.c ${HAL_DIR}/i2c_hal_tiva.c)
 add_unity_test(test_imu_hal test_imu_hal.c ${HAL_DIR}/imu_hal_tiva.c)
-add_unity_test(test_display_manager test_display_manager.c ${SRC_DIR}/display_manager.c ${SRC_DIR}/display_helpers.c ${TIVAWARE_SOURCES})
+add_unity_test(test_display_manager test_display_manager.c ${SRC_DIR}/display_manager.c ${SRC_DIR}/display_helpers.c ${TIVAWARE_SOURCES} ${SRC_DIR}/new_goal_reader.c  ${SRC_DIR}/device_state.c)
 add_unity_test(test_accl_manager test_accl_manager.c ${SRC_DIR}/accl_manager.c)
 add_unity_test(test_display_hal test_display_hal.c ${HAL_DIR}/display_hal_tiva.c ${SRC_DIR}/display_helpers.c ${TIVAWARE_SOURCES})
 

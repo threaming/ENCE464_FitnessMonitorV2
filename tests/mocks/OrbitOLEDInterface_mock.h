@@ -14,7 +14,6 @@
     FUNC(OLEDStringDraw)            \
     FUNC(OLEDInitialise)   
 
-VOID_FUNC(OLEDStringDraw, const char *, uint32_t, uint32_t);
+VOID_FUNC(OLEDStringDraw, char *, uint32_t, uint32_t);
 VOID_FUNC(OLEDInitialise);
-
 

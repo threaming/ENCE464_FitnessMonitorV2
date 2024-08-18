@@ -2,6 +2,7 @@
 #include "new_goal_reader.h"
 #include "button_manager.h"
 // #include "display_manager.h"
+#include "display_helpers.h"
 #include "device_state.h"
 
 #include "fff.h"
@@ -15,6 +16,7 @@ DEFINE_FFF_GLOBALS;
 #include "OrbitOLEDInterface_mock.h"
 #include "step_counter_main_mock.h"
 #include "ustdlib_mock.h"
+#include "display_hal_mock.h"
 
 
 /* Helper functions */      
@@ -27,6 +29,7 @@ void reset_fff(void)
     FFF_ORBITOLED_FAKES_LIST(RESET_FAKE);
     FFF_STEP_COUNTER_MAIN_FAKES_LIST(RESET_FAKE);
     FFF_USTDLIB_FAKES_LIST(RESET_FAKE);
+    FFF_DISPLAY_HAL_FAKES_LIST(RESET_FAKE);
     FFF_RESET_HISTORY();
 }
 
