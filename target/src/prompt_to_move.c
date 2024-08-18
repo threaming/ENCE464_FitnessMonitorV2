@@ -8,7 +8,7 @@
 // Handler function to be called when the prompt to move is detected
 void act_on_prompt_to_move(void)
 {
-    flashMessage("Move!"); //TODO: Need to change once main has been refactored
+    // flashMessage("Move!"); //TODO: Need to change once main has been refactored
 }
 
 void init_prompt_to_move(void)
@@ -21,10 +21,10 @@ void init_prompt_to_move(void)
 
 void reset_timer_if_steps_taken(void)
 {
-    // Reset the timer if steps have been taken
-    if (stepsChanged> 0) //TODO: Need to change once main has been refactored
-    {
-        timer_hal_reset(30);
-    }
+    // // Reset the timer if steps have been taken
+    // if (stepsChanged> 0) //TODO: Need to change once main has been refactored
+    // {
+    //     timer_hal_reset(30);
+    // }
 }
 

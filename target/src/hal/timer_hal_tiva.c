@@ -1,4 +1,4 @@
-#include "hal/timer_hal.h"
+#include "timer_hal.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
@@ -7,9 +7,8 @@
 #include "driverlib/interrupt.h"
 #include "inc/tm4c123gh6pm.h"
 #include "inc/hw_memmap.h"
-#include "prompt_to_move.h"
-#include "mocks/rtos_mocks/rtos_wrapper.h"
-#include "mocks/prompt_to_move_mock.h"
+#include "src/prompt_to_move.h"
+#include "rtos_wrapper.h"
 
 #include <stdio.h>
 

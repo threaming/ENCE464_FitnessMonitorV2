@@ -16,6 +16,7 @@ add_tiva_executable(fitness-tracker
     hal/display_hal_tiva.c
     hal/timer_hal_tiva.c
     prompt_to_move.c
+    rtos_wrapper.c
 )
 
 target_compile_options(fitness-tracker PRIVATE -Wall)
