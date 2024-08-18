@@ -12,4 +12,4 @@
 #define FFF_STEP_COUNTER_MAIN_FAKES_LIST(FUNC)         \
     FUNC(flashMessage)   
 
-VOID_FUNC(flashMessage, char*, deviceStateInfo_t*);
+VOID_FUNC(flashMessage, char*, deviceStateInfo_t*, int8_t);
