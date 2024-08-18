@@ -27,9 +27,10 @@ static void timer_interrupt(void)
     //TODO: This function is not currently calling the vTask correctly, therefore I have temporarily added the flashMessage logic here
     if (deviceState->stepsTaken == previousStepsTaken)
     {
+        flashMessage("Keep Moving!", get_modifiable_device_state(), 5);
         if (deviceState->stepsTaken == 0)
         {
-            flashMessage("Start Moving!", get_modifiable_device_state(), 5);
+            flashMessage("Get Moving!", get_modifiable_device_state(), 1);
         } else {
             flashMessage("Keep Moving!", get_modifiable_device_state(), 5);
         }

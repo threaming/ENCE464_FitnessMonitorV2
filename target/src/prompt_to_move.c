@@ -4,19 +4,32 @@
 #include "display_manager.h"
 #include "step_counter_main.h" 
 #include "stdio.h"
-// CYCLIC DEPENDENCY (NOT GOOD AT ALL)
+#include "device_state.h"
 
+
+static uint32_t previousStepsTaken = 0;
 
 // Handler function to be called when the prompt to move is detected
 void act_on_prompt_to_move(void)
 {
-    flashMessage("Start Moving!", get_modifiable_device_state(), 5);
+    deviceStateInfo_t* deviceState = get_modifiable_device_state();
+
+    if (deviceState->stepsTaken == previousStepsTaken)
+    {
+        if (deviceState->stepsTaken == 0)
+        {
+            flashMessage("Get Moving!", deviceState, 1);
+        } else {
+            flashMessage("Keep Moving!", deviceState, 5);
+        }
+    }
+
 }
 
 void init_prompt_to_move(void)
 {
     // Initialize the timer
-    timer_hal_init(10);
+    timer_hal_init(20);
     // Start the timer task
     timer_hal_start_task();
 }
