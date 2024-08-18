@@ -12,7 +12,9 @@
 #ifndef DISPLAY_MANAGER_H_
 #define DISPLAY_MANAGER_H_
 
-#include "step_counter_main.h"
+#include "device_state.h"
+
+#define M_PER_STEP 9/10
 
 typedef struct {
     uint32_t stepsTaken;
@@ -24,6 +26,6 @@ typedef struct {
 
 
 void displayInit(void); // Initalize the display
-void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed); // Update the display, given the device's state and the length of the current workout
+void displayUpdate(uint16_t secondsElapsed); // Update the display, given the device's state and the length of the current workout
 
 #endif /* DISPLAY_MANAGER_H_ */
