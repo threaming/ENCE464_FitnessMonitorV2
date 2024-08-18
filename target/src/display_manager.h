@@ -26,6 +26,7 @@ typedef struct {
 
 
 void displayInit(void); // Initalize the display
+char* checkForWalkingOrRunning(uint16_t);
 void displayUpdate(uint16_t secondsElapsed); // Update the display, given the device's state and the length of the current workout
 
 #endif /* DISPLAY_MANAGER_H_ */

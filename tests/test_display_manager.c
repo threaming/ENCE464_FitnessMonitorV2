@@ -239,3 +239,39 @@ void test_display_time_should_display_time_as_hours_minutes_and_seconds(void)
     TEST_ASSERT_EQUAL(2, display_hal_draw_string_fake.call_count);
     TEST_ASSERT_EQUAL_STRING(" Time: 1:01:05  ", custom_arg0_history_list[1]);
 }
+
+void test_check_for_walking_or_running_less_than_10(void)
+{
+    //Arrange
+    uint16_t speed = 5;
+
+    // Act
+    char* string = checkForWalkingOrRunning(speed);
+
+    // Assert
+    TEST_ASSERT_EQUAL_STRING("Walking.", string);
+}
+
+void test_check_for_walking_or_running_is_10(void)
+{
+    //Arrange
+    uint16_t speed = 10;
+
+    // Act
+    char* string = checkForWalkingOrRunning(speed);
+
+    // Assert
+    TEST_ASSERT_EQUAL_STRING("Running!", string);
+}
+
+void test_check_for_walking_or_running_greater_than_10(void)
+{
+    //Arrange
+    uint16_t speed = 15;
+
+    // Act
+    char* string = checkForWalkingOrRunning(speed);
+
+    // Assert
+    TEST_ASSERT_EQUAL_STRING("Running!", string);
+}
