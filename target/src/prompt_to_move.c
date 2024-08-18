@@ -2,19 +2,21 @@
 #include "prompt_to_move.h"
 #include "hal/timer_hal.h"
 #include "display_manager.h"
-
+#include "step_counter_main.h" 
+#include "stdio.h"
+// CYCLIC DEPENDENCY (NOT GOOD AT ALL)
 
 
 // Handler function to be called when the prompt to move is detected
 void act_on_prompt_to_move(void)
 {
-    // flashMessage("Move!"); //TODO: Need to change once main has been refactored
+    flashMessage("Start Moving!", get_modifiable_device_state(), 5);
 }
 
 void init_prompt_to_move(void)
 {
     // Initialize the timer
-    timer_hal_init(30);
+    timer_hal_init(10);
     // Start the timer task
     timer_hal_start_task();
 }

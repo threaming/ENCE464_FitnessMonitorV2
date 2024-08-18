@@ -14,6 +14,6 @@
 
 #include "device_state.h"
 
-void flashMessage(char* toShow, deviceStateInfo_t* deviceState);
+void flashMessage(char* toShow, deviceStateInfo_t* deviceState, int8_t flashMessageTime);
 
 #endif /* STEP_COUNTER_MAIN_H_ */

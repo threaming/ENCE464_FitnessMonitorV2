@@ -9,15 +9,31 @@
 #include "inc/hw_memmap.h"
 #include "src/prompt_to_move.h"
 #include "src/rtos_wrapper.h"
+#include "../step_counter_main.h"
 
 #include <stdio.h>
 
 // Task handle for the task that will be notified by the timer interrupt
 static TaskHandle_t xTaskHandle = NULL;
 
+static uint32_t previousStepsTaken = 0;
+
 // Interrupt handler for Timer0A
 static void timer_interrupt(void)
 {
+    deviceStateInfo_t* deviceState = get_modifiable_device_state();
+
+    //TODO: This function is not currently calling the vTask correctly, therefore I have temporarily added the flashMessage logic here
+    if (deviceState->stepsTaken == previousStepsTaken)
+    {
+        if (deviceState->stepsTaken == 0)
+        {
+            flashMessage("Start Moving!", get_modifiable_device_state(), 5);
+        } else {
+            flashMessage("Keep Moving!", get_modifiable_device_state(), 5);
+        }
+    }
+    previousStepsTaken = deviceState->stepsTaken;
     // Clear the timer interrupt
     TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
 

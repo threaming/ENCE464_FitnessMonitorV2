@@ -31,6 +31,7 @@
 #include "math.h"
 #include "circBufV.h"
 #include "new_goal_reader.h"
+#include "prompt_to_move.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -107,9 +108,9 @@ unsigned long readCurrentTick(void)
 }
 
 // Flash a message onto the screen, overriding everything else
-void flashMessage(char* toShow, deviceStateInfo_t* deviceState)
+void flashMessage(char* toShow, deviceStateInfo_t* deviceState, int8_t flashMessageTime)
 {
-    deviceState->flashTicksLeft = RATE_DISPLAY_UPDATE_HZ * FLASH_MESSAGE_TIME;
+    deviceState->flashTicksLeft = RATE_DISPLAY_UPDATE_HZ * flashMessageTime;
 
     uint8_t i = 0;
     while (toShow[i] != '\0' && i < MAX_STR_LEN) {
@@ -167,7 +168,7 @@ void superloop(void* args) {
 
                 // flash a message if the user has reached their goal
                 if (deviceState->stepsTaken == deviceState->currentGoal && deviceState->flashTicksLeft == 0) {
-                    flashMessage("Goal reached!", deviceState);
+                    flashMessage("Goal reached!", deviceState, FLASH_MESSAGE_TIME);
                 }
 
             } else if (combined <= STEP_THRESHOLD_LOW) {
@@ -258,6 +259,7 @@ int main(void)
     btnInit();
     acclInit();
     initNewGoalReader();
+    init_prompt_to_move();
 
     #ifdef SERIAL_PLOTTING_ENABLED
     SerialInit ();

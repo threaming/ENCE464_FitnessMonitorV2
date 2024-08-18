@@ -109,7 +109,7 @@ void btnUpdateState()
             longPressCount++;
             if (longPressCount >= LONG_PRESS_CYCLES) {
                 deviceState -> stepsTaken = 0;
-                flashMessage("Reset!", deviceState);
+                flashMessage("Reset!", deviceState, 1);
             }
         } else {
             if ((currentDisplayMode == DISPLAY_SET_GOAL) && checkButton(DOWN) == PUSHED) {

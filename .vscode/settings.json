@@ -18,5 +18,6 @@
         "new": "c",
         "__verbose_abort": "c",
         "cstdio": "c"
-    }
+    },
+    "FSharp.suggestGitignore": false
 }
