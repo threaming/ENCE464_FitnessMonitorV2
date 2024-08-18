@@ -1,5 +1,5 @@
 #include "fff.h"
-#include "step_counter_main.h"
+#include "device_state.h"
 
 #ifdef FFF_MOCK_IMPL
     #define VOID_FUNC FAKE_VOID_FUNC
@@ -9,7 +9,7 @@
     #define VALUE_FUNC DECLARE_FAKE_VALUE_FUNC
 #endif
 
-#define FFF_STEP_COUNTER_MAIN_FAKES_LIST(FUNC)         \
-    FUNC(flashMessage)   
+#define FFF_DEVICE_STATE_FAKES_LIST(FUNC)         \
+    FUNC(get_modifiable_device_state)   
 
-VOID_FUNC(flashMessage, char*, deviceStateInfo_t*, int8_t);
+VALUE_FUNC(deviceStateInfo_t*, get_modifiable_device_state);
