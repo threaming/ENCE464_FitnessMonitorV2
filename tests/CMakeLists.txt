@@ -15,6 +15,11 @@ set(TIVAWARE_SOURCES
 )
 set(MOCK_DIR mocks)
 
+set(LIBS_DIR ../target/libs)  # Add this line to define LIBS_DIR
+set(FREERTOS_INCLUDE_DIR ${LIBS_DIR}/freertos/include)
+# set(ARCH_DIR ${LIBS_DIR}/freertos/portable/GCC/ARM_CM4F)
+set(FREERTOS_CONFIG_DIR ../target)
+
 # Adding Unity tests
 add_unity_test(test_circular_buffer test_circular_buffer.c ${SRC_DIR}/circBufT.c)
 add_unity_test(test_new_goal_reader test_new_goal_reader.c ${SRC_DIR}/new_goal_reader.c ${SRC_DIR}/device_state.c)
@@ -25,6 +30,7 @@ add_unity_test(test_imu_hal test_imu_hal.c ${HAL_DIR}/imu_hal_tiva.c)
 add_unity_test(test_display_manager test_display_manager.c ${SRC_DIR}/display_manager.c ${SRC_DIR}/display_helpers.c ${TIVAWARE_SOURCES} ${SRC_DIR}/new_goal_reader.c  ${SRC_DIR}/device_state.c)
 add_unity_test(test_accl_manager test_accl_manager.c ${SRC_DIR}/accl_manager.c)
 add_unity_test(test_display_hal test_display_hal.c ${HAL_DIR}/display_hal_tiva.c ${SRC_DIR}/display_helpers.c ${TIVAWARE_SOURCES})
+add_unity_test(test_timer_hal test_timer_hal.c ${HAL_DIR}/timer_hal_tiva.c)
 add_unity_test(test_temp_hal test_temp_hal.c ${HAL_DIR}/temp_hal_tiva.c)
 add_unity_test(test_temp_manager test_temp_manager.c ${SRC_DIR}/temp_manager.c)
 
@@ -84,3 +90,10 @@ target_include_directories(test_temp_manager PRIVATE ${RTOS_DIR})
 target_include_directories(test_temp_manager PRIVATE ../target/libs/freertos/portable/GCC/ARM_CM4F)
 target_include_directories(test_temp_manager PRIVATE ${MOCK_DIR})
 target_include_directories(test_temp_manager PRIVATE ${HAL_DIR})
+target_include_directories(test_timer_hal PRIVATE ${SRC_DIR})
+target_include_directories(test_timer_hal PRIVATE ${TIVAWARE_DIR})
+target_include_directories(test_timer_hal PRIVATE ${MOCK_DIR})
+target_include_directories(test_timer_hal PRIVATE ${HAL_DIR})
+target_include_directories(test_timer_hal PRIVATE ${FREERTOS_INCLUDE_DIR})
+# target_include_directories(test_timer_hal PRIVATE ${ARCH_DIR})
+target_include_directories(test_timer_hal PRIVATE ${FREERTOS_CONFIG_DIR})
