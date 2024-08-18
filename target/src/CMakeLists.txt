@@ -6,11 +6,14 @@ add_tiva_executable(fitness-tracker
     circBufT.c
     circBufV.c
     display_manager.c
-    i2c_driver.c
+    display_helpers.c
     serial_sender.c
     step_counter_main.c
     switches.c
     hal/adc_hal_tiva.c
+    hal/i2c_hal_tiva.c
+    hal/imu_hal_tiva.c
+    hal/display_hal_tiva.c
     device_state.c
 )
 target_compile_options(fitness-tracker PRIVATE -Wall)

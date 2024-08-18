@@ -16,12 +16,6 @@
 
 #define M_PER_STEP 9/10
 
-typedef enum {
-    ALIGN_LEFT = 0,
-    ALIGN_CENTRE,
-    ALIGN_RIGHT,
-} textAlignment_t;
-
 typedef struct {
     uint32_t stepsTaken;
     uint32_t currentGoal;
@@ -33,7 +27,5 @@ typedef struct {
 
 void displayInit(void); // Initalize the display
 void displayUpdate(uint16_t secondsElapsed); // Update the display, given the device's state and the length of the current workout
-
-#define DISPLAY_WIDTH 16
 
 #endif /* DISPLAY_MANAGER_H_ */

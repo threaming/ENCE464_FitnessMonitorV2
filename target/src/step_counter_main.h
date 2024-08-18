@@ -10,6 +10,8 @@
 #ifndef STEP_COUNTER_MAIN_H_
 #define STEP_COUNTER_MAIN_H_
 
+#include <stdbool.h>
+
 #include "device_state.h"
 
 void flashMessage(char* toShow, deviceStateInfo_t* deviceState);

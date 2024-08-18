@@ -28,7 +28,6 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "utils/ustdlib.h"
-#include "acc.h"
 #include "math.h"
 #include "circBufV.h"
 #include "new_goal_reader.h"

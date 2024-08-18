@@ -126,7 +126,7 @@ void test_adc_read_average_over_all_elements(void)
 void test_adc_read_calculate_average_correctly(void)
 {
     // Arrange
-    int32_t buffReturnVals[ADC_BUF_SIZE] = {4,10,4,10,4,10,4,10,4,10};
+    uint32_t buffReturnVals[ADC_BUF_SIZE] = {4,10,4,10,4,10,4,10,4,10};
     SET_RETURN_SEQ(readCircBuf, buffReturnVals, ADC_BUF_SIZE);
 
     // Act
@@ -139,7 +139,7 @@ void test_adc_read_calculate_average_correctly(void)
 void test_adc_read_round_up_average_correctly(void)
 {
     // Arrange
-    int32_t buffReturnVals[ADC_BUF_SIZE] = {5,10,5,10,5,10,5,10,5,10};
+    uint32_t buffReturnVals[ADC_BUF_SIZE] = {5,10,5,10,5,10,5,10,5,10};
     SET_RETURN_SEQ(readCircBuf, buffReturnVals, ADC_BUF_SIZE);
 
     // Act
@@ -152,7 +152,7 @@ void test_adc_read_round_up_average_correctly(void)
 void test_adc_read_round_down_average_correctly(void)
 {
     // Arrange
-    int32_t buffReturnVals[ADC_BUF_SIZE] = {1,2,3,4,5,6,7,8,9,9};
+    uint32_t buffReturnVals[ADC_BUF_SIZE] = {1,2,3,4,5,6,7,8,9,9};
     SET_RETURN_SEQ(readCircBuf, buffReturnVals, ADC_BUF_SIZE);
 
     // Act
