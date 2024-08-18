@@ -11,6 +11,7 @@
 #define STEP_COUNTER_MAIN_H_
 
 #include <stdbool.h>
+#include <stdbool.h>
 
 #include "device_state.h"
 
