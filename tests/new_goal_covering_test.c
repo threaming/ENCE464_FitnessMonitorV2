@@ -54,18 +54,19 @@ void tearDown(void)
 /* Test cases - set currentGoal  with newGoal value using btnUpdateState */
 void test_set_current_goal_to_new_goal(void)
 {   
-    // Arrange: need currentDisplayMode = DISPLAY_SET_GOAL & checkButton(DOWN) = PUSHED & switch = down & isDown(DOWN) != true & isSwitchUp() = false
+    // Arrange
 
     uint32_t value = 1;
+
+    deviceStateInfo_t* deviceState = get_modifiable_device_state();
+    deviceState -> displayMode = DISPLAY_SET_GOAL;
+    uint32_t newGoal = value;
 
     checkButton_fake.custom_fake = checkButton_down_is_pushed_fake;
     isSwitchUp_fake.return_val = false;
     isDown_fake.return_val = false;
 
-    deviceStateInfo_t* deviceState = get_modifiable_device_state();
-    deviceState -> displayMode = DISPLAY_SET_GOAL;
-    uint32_t newGoal = value;
-    deviceState -> newGoal = newGoal;
+    setNewGoal(newGoal);
 
     // Act
 
@@ -75,6 +76,3 @@ void test_set_current_goal_to_new_goal(void)
     TEST_ASSERT_EQUAL(deviceState->currentGoal, value);
     
 }
-
-
-

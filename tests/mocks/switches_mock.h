@@ -18,4 +18,4 @@
 
 VOID_FUNC(initSwitch);
 VOID_FUNC(updateSwitch);
-VALUE_FUNC(bool, isSwitchUp)
+VALUE_FUNC(bool, isSwitchUp);

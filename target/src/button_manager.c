@@ -16,6 +16,8 @@
 #include "switches.h"
 #include "step_counter_main.h"
 #include "device_state.h"
+#include "new_goal_reader.h"
+
 
 #define DEBUG_STEP_INCREMENT 100
 #define DEBUG_STEP_DECREMENT 500
@@ -45,11 +47,13 @@ void btnInit(void)
 void btnUpdateState()
 {
     deviceStateInfo_t* deviceState = get_modifiable_device_state();
+    uint32_t newGoal = getNewGoal();
 
     updateButtons();
     updateSwitch();
 
     displayMode_t currentDisplayMode = deviceState ->displayMode;
+    
 
     // Changing screens
     if (checkButton(LEFT) == PUSHED) {
@@ -109,7 +113,7 @@ void btnUpdateState()
             }
         } else {
             if ((currentDisplayMode == DISPLAY_SET_GOAL) && checkButton(DOWN) == PUSHED) {
-                deviceState -> currentGoal = deviceState -> newGoal;
+                deviceState -> currentGoal = newGoal;
                 deviceState -> displayMode = DISPLAY_STEPS;
 
                 allowLongPress = false; // Hacky solution: Protection against double-registering as a short press then a long press

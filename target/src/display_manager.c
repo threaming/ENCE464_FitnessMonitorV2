@@ -29,6 +29,7 @@
 
 #include "serial_sender.h"
 #include "display_manager.h"
+#include "new_goal_reader.h"
 
 
 //********************************************************
@@ -64,6 +65,8 @@ void displayInit(void)
 void displayUpdate(uint16_t secondsElapsed)
 {
     deviceStateInfo_t* deviceState = get_modifiable_device_state();
+
+    uint32_t newGoal = getNewGoal();
 
     // Check for flash message override
     if (deviceState->flashTicksLeft != 0) {
@@ -115,16 +118,16 @@ void displayUpdate(uint16_t secondsElapsed)
 
         // Display the step/distance preview
         char toDraw[DISPLAY_WIDTH+1]; // Must be one character longer to account for EOFs
-        uint16_t distance = deviceState->newGoal * M_PER_STEP;
+        uint16_t distance = newGoal * M_PER_STEP;
         if (deviceState->displayUnits != UNITS_SI) {
             distance = distance * KM_TO_MILES;
         }
 
         // if <10 km/miles, use a decimal point. Otherwise display whole units (to save space)
         if (distance < 10*1000) {
-            usnprintf(toDraw, DISPLAY_WIDTH + 1, "%d stps/%d.%01d%s", deviceState->newGoal, distance / 1000, (distance % 1000)/100, deviceState->displayUnits == UNITS_SI ? "km" : "mi");
+            usnprintf(toDraw, DISPLAY_WIDTH + 1, "%d stps/%d.%01d%s", newGoal, distance / 1000, (distance % 1000)/100, deviceState->displayUnits == UNITS_SI ? "km" : "mi");
         } else {
-            usnprintf(toDraw, DISPLAY_WIDTH + 1, "%d stps/%d%s", deviceState->newGoal, distance / 1000, deviceState->displayUnits == UNITS_SI ? "km" : "mi");
+            usnprintf(toDraw, DISPLAY_WIDTH + 1, "%d stps/%d%s", newGoal, distance / 1000, deviceState->displayUnits == UNITS_SI ? "km" : "mi");
         }
 
         displayLine(toDraw, 1, ALIGN_CENTRE);

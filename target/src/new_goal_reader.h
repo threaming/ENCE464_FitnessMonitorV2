@@ -19,5 +19,7 @@ void initNewGoalReader(void);
 void pollNewGoalReader(void);         // Called periodically at high frequency
 uint32_t readNewGoalValue(void);     // Call to read the averaged readings from the buffer
 void setNewGoalValue(void);
+void setNewGoal(uint32_t);
+uint32_t getNewGoal(void);
 
 #endif //ADC_READ_H_

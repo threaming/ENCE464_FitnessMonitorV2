@@ -18,5 +18,5 @@
 
 VOID_FUNC(initButtons);
 VOID_FUNC(updateButtons);
-VALUE_FUNC(uint8_t, checkButton, uint8_t)
-VALUE_FUNC(bool, isDown, uint8_t)
+VALUE_FUNC(uint8_t, checkButton, uint8_t);
+VALUE_FUNC(bool, isDown, uint8_t);
