@@ -1,5 +1,6 @@
 #include "unity.h"
 #include "timer_hal.h"
+#include "inc/hw_memmap.h"
 
 #include "fff.h"
 DEFINE_FFF_GLOBALS;
@@ -7,18 +8,22 @@ DEFINE_FFF_GLOBALS;
 
 // Include Mocks
 #include "tiva_mocks/timer_mock.h"
-#include "inc/hw_memmap.h"
 #include "tiva_mocks/sysctl_mock.h"
 #include "mocks/prompt_to_move_mock.h"
 #include "mocks/rtos_mocks/rtos_mock.h"
+#include "step_counter_main_mock.h"
+#include "device_state_mock.h"
 
 /* Helper functions */
 void reset_fff(void)
 {
     printf("Resetting FFF\n");
     FFF_TIMER_FAKES_LIST(RESET_FAKE);
-    FFF_RTOS_WRAPPER_FAKES_LIST(RESET_FAKE);
+    FFF_SYSCTL_FAKES_LIST(RESET_FAKE);
     FFF_PROMPT_TO_MOVE_FAKES_LIST(RESET_FAKE);
+    FFF_RTOS_WRAPPER_FAKES_LIST(RESET_FAKE);
+    FFF_STEP_COUNTER_MAIN_FAKES_LIST(RESET_FAKE);
+    FFF_DEVICE_STATE_FAKES_LIST(RESET_FAKE);
     FFF_RESET_HISTORY();
 }
 
