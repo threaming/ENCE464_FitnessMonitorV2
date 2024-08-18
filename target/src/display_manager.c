@@ -22,24 +22,6 @@
 #include "new_goal_reader.h"
 
 
-//********************************************************
-// Constants and static vars
-//********************************************************
-
-#define KM_TO_MILES 62/100 // Multiply by 0.6215 to convert, this should be good enough
-#define MS_TO_KMH 36/10
-#define TIME_UNIT_SCALE 60
-
-
-
-/*******************************************
- *      Local prototypes
- *******************************************/
-static void displayLine(char* inStr, uint8_t row, textAlignment_t alignment);
-static void displayValue(char* prefix, char* suffix, int32_t value, uint8_t row, textAlignment_t alignment, bool thousandsFormatting);
-static void displayTime(char* prefix, uint16_t time, uint8_t row, textAlignment_t alignment);
-
-
 /*******************************************
  *      Global functions
  *******************************************/
@@ -61,10 +43,10 @@ void displayUpdate(uint16_t secondsElapsed)
     // Check for flash message override
     if (deviceState->flashTicksLeft != 0) {
         char* emptyLine = "                ";
-        OLEDStringDraw (emptyLine, 0, 0);
+        display_hal_draw_string(emptyLine, 0, 0);
         displayLine(deviceState->flashMessage, 1, ALIGN_CENTRE);
-        OLEDStringDraw (emptyLine, 0, 2);
-        OLEDStringDraw (emptyLine, 0, 3);
+        display_hal_draw_string (emptyLine, 0, 2);
+        display_hal_draw_string (emptyLine, 0, 3);
         return;
     }
 
