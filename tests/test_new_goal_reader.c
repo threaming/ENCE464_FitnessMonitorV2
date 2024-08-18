@@ -1,6 +1,7 @@
 #include "unity.h"
 #include "new_goal_reader.h"
 
+
 #include "fff.h"
 DEFINE_FFF_GLOBALS;
 #define FFF_MOCK_IMPL // Includes mock implementations

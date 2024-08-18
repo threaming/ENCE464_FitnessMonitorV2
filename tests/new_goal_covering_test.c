@@ -1,5 +1,8 @@
 #include "unity.h"
 #include "new_goal_reader.h"
+#include "button_manager.h"
+#include "display_manager.h"
+#include "device_state.h"
 
 #include "fff.h"
 DEFINE_FFF_GLOBALS;
