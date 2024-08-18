@@ -19,6 +19,7 @@
 #include "display_manager.h"
 #include "display_helpers.h"
 #include "hal/display_hal.h"
+#include "temp_manager.h"
 
 
 /*******************************************
@@ -58,6 +59,7 @@ void displayUpdate(deviceStateInfo_t deviceState, uint16_t secondsElapsed)
             displayValue("", "% of goal", deviceState.stepsTaken * 100 / deviceState.currentGoal, 1, ALIGN_CENTRE, false);
         }
         displayTime("Time:", secondsElapsed, 2, ALIGN_CENTRE);
+        //displayValue("Temp:","C", (int32_t)(tempGetTemp()*1000), 3, ALIGN_CENTRE, true);
         break;
     case DISPLAY_DISTANCE:
         displayTime("Time:", secondsElapsed, 1, ALIGN_CENTRE);

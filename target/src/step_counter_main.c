@@ -31,6 +31,7 @@
 #include "math.h"
 #include "circBufV.h"
 #include "ADC_read.h"
+#include "temp_manager.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -259,6 +260,7 @@ int main(void)
     btnInit();
     acclInit();
     initADC();
+    tempInit();
 
     #ifdef SERIAL_PLOTTING_ENABLED
     SerialInit ();
