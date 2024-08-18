@@ -10,6 +10,7 @@
 #include "src/prompt_to_move.h"
 #include "src/rtos_wrapper.h"
 #include "../step_counter_main.h"
+#include "device_state.h"
 
 #include <stdio.h>
 
