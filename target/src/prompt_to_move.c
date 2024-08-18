@@ -19,17 +19,21 @@ void act_on_prompt_to_move(void)
         if (deviceState->stepsTaken == 0)
         {
             flashMessage("Get Moving!", deviceState, 1);
+            // flashMessage("Get Moving!", deviceState, 1);
         } else {
-            flashMessage("Keep Moving!", deviceState, 5);
+            flashMessage("Keep Moving!", deviceState, 1);
+            // flashMessage("Keep Moving!", deviceState, 5);
         }
     }
+
+    previousStepsTaken = deviceState->stepsTaken;
 
 }
 
 void init_prompt_to_move(void)
 {
     // Initialize the timer
-    timer_hal_init(20);
+    timer_hal_init(5);
     // Start the timer task
     timer_hal_start_task();
 }

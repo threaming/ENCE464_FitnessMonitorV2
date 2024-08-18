@@ -17,25 +17,9 @@
 // Task handle for the task that will be notified by the timer interrupt
 static TaskHandle_t xTaskHandle = NULL;
 
-static uint32_t previousStepsTaken = 0;
-
 // Interrupt handler for Timer0A
 static void timer_interrupt(void)
 {
-    deviceStateInfo_t* deviceState = get_modifiable_device_state();
-
-    //TODO: This function is not currently calling the vTask correctly, therefore I have temporarily added the flashMessage logic here
-    if (deviceState->stepsTaken == previousStepsTaken)
-    {
-        flashMessage("Keep Moving!", get_modifiable_device_state(), 5);
-        if (deviceState->stepsTaken == 0)
-        {
-            flashMessage("Get Moving!", get_modifiable_device_state(), 1);
-        } else {
-            flashMessage("Keep Moving!", get_modifiable_device_state(), 5);
-        }
-    }
-    previousStepsTaken = deviceState->stepsTaken;
     // Clear the timer interrupt
     TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
 
