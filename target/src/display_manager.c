@@ -1,13 +1,13 @@
 /*
-* display_manager.c
-*
-* Handles drawing to the device's screen, given its current state
-*
-*  Created on: 23/03/2022
-*      Author: Matthew Suter
-*
-*  FitnessThur9-1
-*/
+ * display_manager.c
+ *
+ * Handles drawing to the device's screen, given its current state
+ *
+ *  Created on: 23/03/2022
+ *      Author: Matthew Suter
+ *
+ *  FitnessThur9-1
+ */
 
 
 #include <stdint.h>
