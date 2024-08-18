@@ -43,18 +43,20 @@ void tearDown(void)
 void test_timer_hal_init_initializes_timer(void)
 {
     // Arrange
-    // uint8_t timer_period_seconds = 5;
+    uint8_t timer_period_seconds = 5;
+
+    SysCtlPeripheralReady_fake.return_val = 1;
 
     // // Act
-    // timer_hal_init(timer_period_seconds);
+    timer_hal_init(timer_period_seconds);
 
     // //Assert
-    // TEST_ASSERT_EQUAL(1, TimerConfigure_fake.call_count);
-    // TEST_ASSERT_EQUAL(TIMER0_BASE, TimerConfigure_fake.arg0_val);
-    // TEST_ASSERT_EQUAL(TIMER_CFG_PERIODIC, TimerConfigure_fake.arg1_val);
-    // TEST_ASSERT_EQUAL(1, TimerLoadSet_fake.call_count);
-    // TEST_ASSERT_EQUAL(TIMER0_BASE, TimerLoadSet_fake.arg0_val);
-    // TEST_ASSERT_EQUAL(TIMER_A, TimerLoadSet_fake.arg1_val);
+    TEST_ASSERT_EQUAL(1, TimerConfigure_fake.call_count);
+    TEST_ASSERT_EQUAL(TIMER0_BASE, TimerConfigure_fake.arg0_val);
+    TEST_ASSERT_EQUAL(TIMER_CFG_PERIODIC, TimerConfigure_fake.arg1_val);
+    TEST_ASSERT_EQUAL(1, TimerLoadSet_fake.call_count);
+    TEST_ASSERT_EQUAL(TIMER0_BASE, TimerLoadSet_fake.arg0_val);
+    TEST_ASSERT_EQUAL(TIMER_A, TimerLoadSet_fake.arg1_val);
 }
 
 /* Test cases - timer_hal_reset */
