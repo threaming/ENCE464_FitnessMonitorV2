@@ -11,26 +11,33 @@
 #include "queue.h"
 #include "hal/temp_hal.h"
 
-QueueHandle_t tempQueue;
+static QueueHandle_t tempQueue;
 void tempTask(void *pvParameters);
-TaskHandle_t tempTaskHndl;
+static TaskHandle_t tempTaskHndl;
 
 void tempInit(void){
-    temp_hal_init();
+    bool success = temp_hal_init();
+    configASSERT(success);
     tempQueue = xQueueCreate(1, sizeof(float));
-    xTaskCreate(tempTask, "READ_TEMP", configMINIMAL_STACK_SIZE, NULL, 4, &tempTaskHndl);
+    configASSERT(tempQueue != NULL);
+    BaseType_t check = xTaskCreate(tempTask, "READ_TEMP", configMINIMAL_STACK_SIZE, NULL, 4, &tempTaskHndl);
+    configASSERT(check == pdPASS);
 }
 
 void tempTask(void *pvParameters){
     float temp;
+    #ifndef UNIT_TESTING
     while(1){
+    #endif
         temp_hal_read(&temp);
-        xQueueSend(tempQueue, &temp,10000);
+        xQueueSend(tempQueue, &temp,portMAX_DELAY);
+    #ifndef UNIT_TESTING
     }
+    #endif
 }
 
 float tempGetTemp(void){
     float temp;
-    xQueueReceive(tempQueue, &temp, 0);
+    xQueueReceive(tempQueue, &temp, portMAX_DELAY);
     return temp;
 }
