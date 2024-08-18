@@ -15,6 +15,7 @@ add_tiva_executable(fitness-tracker
     hal/i2c_hal_tiva.c
     hal/imu_hal_tiva.c
     hal/display_hal_tiva.c
+    hal/temp_hal_tiva.c
     device_state.c
     hal/timer_hal_tiva.c
     prompt_to_move.c
