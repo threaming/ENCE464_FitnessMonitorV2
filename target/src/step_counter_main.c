@@ -247,6 +247,7 @@ int main(void)
     deviceState->displayMode = DISPLAY_STEPS;
     deviceState->stepsTaken = 0;
     deviceState->currentGoal = TARGET_DISTANCE_DEFAULT;
+    deviceState->temperature = 0;
     deviceState->debugMode = false;
     deviceState->displayUnits= UNITS_SI;
     deviceState->workoutStartTick = 0;

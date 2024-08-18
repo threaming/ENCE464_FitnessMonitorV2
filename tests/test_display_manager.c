@@ -13,6 +13,7 @@ DEFINE_FFF_GLOBALS;
 #include "display_hal_mock.h"
 #include "adc_hal_mock.h"
 #include "circBufT_mock.h"
+#include "temp_manager_mock.h"
 
 #define MAX_CALL_HISTORY 100
 #define MAX_STRING_SIZE  200
@@ -26,6 +27,10 @@ static uint32_t custom_arg2_history_list[MAX_CALL_HISTORY];
 void reset_fff(void)
 {
     FFF_DISPLAY_HAL_FAKES_LIST(RESET_FAKE);
+    FFF_TEMP_MANAGER_FAKES_LIST(RESET_FAKE);
+    FFF_CIRCBUFT_FAKES_LIST(RESET_FAKE);
+    FFF_ADC_HAL_FAKES_LIST(RESET_FAKE);
+    FFF_OLED_FAKES_LIST(RESET_FAKE);
     FFF_RESET_HISTORY();
     
     // Clear the history buffers

@@ -40,6 +40,7 @@ void displayUpdate(uint16_t secondsElapsed)
     deviceStateInfo_t* deviceState = get_modifiable_device_state();
 
     uint32_t newGoal = getNewGoal();
+    deviceState->temperature = tempGetTemp();
 
     // Check for flash message override
     if (deviceState->flashTicksLeft != 0) {
@@ -56,14 +57,14 @@ void displayUpdate(uint16_t secondsElapsed)
 
     switch (deviceState->displayMode) {
     case DISPLAY_STEPS:
-        displayLine("", 0, ALIGN_CENTRE); // Clear the top line
+        displayLine("FitMon V2.0", 0, ALIGN_CENTRE); // Clear the top line
         if (deviceState->displayUnits == UNITS_SI) {
             displayValue("", "steps", deviceState->stepsTaken, 1, ALIGN_CENTRE, false);
         } else {
             displayValue("", "% of goal", deviceState->stepsTaken * 100 / deviceState->currentGoal, 1, ALIGN_CENTRE, false);
         }
         displayTime("Time:", secondsElapsed, 2, ALIGN_CENTRE);
-        //displayValue("Temp:","C", (int32_t)(tempGetTemp()*1000), 3, ALIGN_CENTRE, true);
+        displayValue("Temp:","C", (int32_t)(deviceState->temperature*1000), 3, ALIGN_CENTRE, true);
         break;
     case DISPLAY_DISTANCE:
         displayTime("Time:", secondsElapsed, 1, ALIGN_CENTRE);
@@ -84,7 +85,7 @@ void displayUpdate(uint16_t secondsElapsed)
             displayValue("Dist:", "mi", mTravelled * KM_TO_MILES, 0, ALIGN_CENTRE, true);
             displayValue("Speed", "mph", speed * KM_TO_MILES, 2, ALIGN_CENTRE, false);
         }
-
+        displayLine("", 3, ALIGN_CENTRE); // Clear the bottom line
         break;
     case DISPLAY_SET_GOAL:
         displayLine("Set goal:", 0, ALIGN_CENTRE);
@@ -105,7 +106,7 @@ void displayUpdate(uint16_t secondsElapsed)
         }
 
         displayLine(toDraw, 1, ALIGN_CENTRE);
-
+        displayLine("", 3, ALIGN_CENTRE); // Clear the bottom line
         break;
     
     default:
