@@ -32,7 +32,15 @@ void displayInit(void)
     display_hal_init();
 }
 
+char* checkForWalkingOrRunning(uint16_t speed)
+{   
+    if (speed >= 10) {
+        return "Running!";
+    } else {
+        return "Walking.";
+    }
 
+}
 
 // Update the display, called on a loop
 void displayUpdate(uint16_t secondsElapsed)
@@ -85,7 +93,7 @@ void displayUpdate(uint16_t secondsElapsed)
             displayValue("Dist:", "mi", mTravelled * KM_TO_MILES, 0, ALIGN_CENTRE, true);
             displayValue("Speed", "mph", speed * KM_TO_MILES, 2, ALIGN_CENTRE, false);
         }
-        displayLine("", 3, ALIGN_CENTRE); // Clear the bottom line
+        displayLine(checkForWalkingOrRunning(speed), 3, ALIGN_CENTRE); // Clear the bottom line
         break;
     case DISPLAY_SET_GOAL:
         displayLine("Set goal:", 0, ALIGN_CENTRE);
