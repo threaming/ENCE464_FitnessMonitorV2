@@ -8,7 +8,7 @@
 #include "inc/tm4c123gh6pm.h"
 #include "inc/hw_memmap.h"
 #include "src/prompt_to_move.h"
-#include "rtos_wrapper.h"
+#include "src/rtos_wrapper.h"
 
 #include <stdio.h>
 
