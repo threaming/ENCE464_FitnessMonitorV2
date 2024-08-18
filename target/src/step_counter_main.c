@@ -31,6 +31,7 @@
 #include "math.h"
 #include "circBufV.h"
 #include "new_goal_reader.h"
+#include "temp_manager.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -258,6 +259,7 @@ int main(void)
     btnInit();
     acclInit();
     initNewGoalReader();
+    tempInit();
 
     #ifdef SERIAL_PLOTTING_ENABLED
     SerialInit ();
