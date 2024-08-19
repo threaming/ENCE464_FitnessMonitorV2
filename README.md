@@ -1,60 +1,48 @@
-# ENCE464 Fitness Monitor Project
+# Project Title
+**Group Number:** X
+**Group Members:** Member 1, Member 2, Member 3
 
-This repository contains the code and build system for the ENCE464 Fitness
-Monitor project, to run on the
-[Texas Instruments TM4C123G LaunchPad Evaluation Kit](https://www.ti.com/tool/EK-TM4C123GXL). 
+## Table of Contents
+- [Introduction](#introduction)
+- [Analysis of Existing Architecture](#analysis-of-existing-architecture)
+- ...
 
-## Repository structure
+## Introduction
+Provide an overview of the project and the purpose of this documentation.
 
-The repository is structured as follows:
+## Analysis of Existing Architecture
+### Overview of v1.0 Architecture
+Describe the architecture.
 
-* `docs`: Instructions for building and running the project code, and installing the
-  development toolchain on your own computer. Also contains Fitness Monitor v1.0 
-  documentation and some additional project help.
-* `labs`: Supporting code for your lab sessions.
-* `target`: Code that targets the LaunchPad; contains the main project code,
-  libraries, and a few simple demo programs.
-* `tests`: Tests targeting the host (development) machine.
-* `.vscode`: Visual Studio Code (VS Code) configuration files.
+![v1.0 Architecture Diagram](path_to_diagram.png)
 
-## 🚀 Getting started
+### Execution Architecture
+Describe how tasks or functions are executed in v1.0.
 
-The project is set up for development using Microsoft _Visual Studio Code_, the 
-_CMake_ build system, the _GCC ARM_ cross-compiler, and _OpenOCD_. 
+### Module Classification
+Identify and describe the modules.
 
-### Toolchain setup
+## Design of New Architecture (v2.0)
+### Overview of v2.0 Architecture
+Describe the new architecture.
 
-If you're working on a UC Embedded Systems Lab (ESL) computer then you should find that the 
-necessary toolchain is pre-installed. 
+![v2.0 Architecture Diagram](path_to_diagram.png)
 
-If you want to build the project on _your personal machine_ you'll need to make sure that you 
-install all of the necessary tools. Check the toolchain installation guide for your operating system:
+### Task Architecture
+Describe and justify the task architecture.
 
-* [Windows](docs/toolchain.md#windows)
-* [Linux](docs/toolchain.md#linux)
-* [macOS](docs/toolchain.md#macos)
+<!-- ### Example Code Snippet
+```c
+// Example FreeRTOS task creation
+xTaskCreate(TaskFunction, "TaskName", stackSize, NULL, priority, &taskHandle);
 
-### Building the code 
+![Class Diagram](path_to_class_diagram.png) -->
 
-Assuming that you have the [toolchain installed](#toolchain), you can use the command line or _VS Code_ to 
-build the code and program your LaunchPad. Here are instructions on building/programming using each approach:
+## Conclusion
+Summarize the key aspects of the new architecture and design improvements.
 
-* [VS Code](docs/vs-code.md)
-* [Command line](docs/cli.md)
+## References
+- [Doxygen Documentation](https://www.doxygen.nl/)
 
-See the [CMake guide](docs/cmake.md) for additional info on performing various tasks with
-the CMake build system.
-
-For tips on debugging and fixing common issues, including some common FreeRTOS
-errors, see the [FAQ](docs/faq.md).
-
-## 🌐 Additional resources
-
-* [Tiva TM4C123GH6PM datasheet (PDF)](https://www.ti.com/lit/ds/symlink/tm4c123gh6pm.pdf)
-* [Tiva LaunchPad manual (PDF)](https://www.ti.com/lit/ug/spmu296/spmu296.pdf)
-* [Orbit BoosterPack manual (PDF)](https://digilent.com/reference/_media/orbit_boosterpack/orbit_boosterpack_rm.pdf)
-* [TivaWare API documentation (PDF)](https://www.ti.com/lit/ug/spmu298e/spmu298e.pdf)
-* [FreeRTOS Documentation](https://www.freertos.org/Documentation/RTOS_book.html)
-* [Unity test framework documentation](https://github.com/ThrowTheSwitch/Unity/blob/master/docs/UnityGettingStartedGuide.md)
-    - [Assertions cheatsheet (PDF)](https://github.com/ThrowTheSwitch/Unity/blob/master/docs/UnityAssertionsCheatSheetSuitableforPrintingandPossiblyFraming.pdf)
-* [CMake documentation](https://cmake.org/cmake/help/latest/)
+## Appendices
+Additional detailed information.
