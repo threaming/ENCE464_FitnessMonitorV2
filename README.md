@@ -20,7 +20,7 @@ The architecture of the Fitness Monitor v1.0 is clearly outlined in the provided
 
 Each module's structure is depicted using class diagrams, showing the functions (methods) and attributes (fields) within each class. For example, the step_counter_main module includes functions like initClock(), initDisplay(), and readCurrentTick(), among others. This diagram provides a clear overview of how different components interact and the roles they play in the system.
 
-![v1.0 Architecture Diagram](system_diagram_v1.png)
+![v1.0 Architecture Diagram](system_diagram_v1.jpg)
 
 The v1.0 dependencies depicted in the diagram illustrate how different modules interact with each other. The step_counter_main module serves as the central hub, interacting with nearly all other modules. For example, it communicates with the display_manager to update the display and with the acc_manager to process accelerometer data.
 
