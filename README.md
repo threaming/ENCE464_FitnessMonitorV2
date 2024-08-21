@@ -8,6 +8,7 @@
 - [Summary of software design problem](#summary-of-software-design-problem)
 - [Design of New Architecture (v2.0)](#design-of-new-architecture-v20)
 - [Design of FreeRTOS tasking](#design-of-freertos-tasking)
+- [I<sup>2</sup>C Implementation](#I<sup>2</sup>C Implementation)
 - [Application of static and dynamic analysis](#application-of-static-and-dynamic-analysis)
 - [Usefulness of documentation to future developers](#usefulness-of-documentation-to-future-developers)
 
@@ -58,11 +59,11 @@ xTaskCreate(TaskFunction, "TaskName", stackSize, NULL, priority, &taskHandle);
 
 ### I<sup>2</sup>C Implementation
 
-The I<sup>2</sup>C bus is implemented through a hardware abstraction layer. There are two tasks using the bus to acquire data from the IMU and the temperature sensor. The following swimlane diagram shows that the two tasks "superloop" and "temp_read" are synchronized through a blocking queue with one entry and thus the I<sup>2</sup>C hardware is protected from double access. For the sake of simplicity only the functions concerning the I<sup>2</sup>C bus are shown.
+The I<sup>2</sup>C bus is implemented through a hardware abstraction layer. There are two tasks using the bus to acquire data from the IMU and the temperature sensor. The following swimlane diagram shows that the two tasks "superloop" and "read_temp" are synchronized through a blocking queue with one entry and thus the I<sup>2</sup>C hardware is protected from double access. For the sake of simplicity only the functions concerning the I<sup>2</sup>C bus are shown.
 
 ![Task which use the I2C Bus](i2c_task_distribution.jpg)
 
-This implementation is tested and doesn't lead to any issues in this implementation. However, it must be noted that this isn't a very robust implementation, especially if the codebase is refactored and updated in the future. To better protect the hardware from simultaneous access, a mutex in the I<sup>2</sup>C module should be introduced.
+This implementation is tested and doesn't lead to any issues in this implementation. However, it must be noted that this isn't a robust implementation, especially if the codebase is refactored and updated in the future. To better protect the hardware from simultaneous access, a mutex in the I<sup>2</sup>C module should be introduced.
 
 ## Application of static and dynamic analysis
 Analyses aspects of the design to guide decisions (Poorly/Satisfactorily/Proficiently)
