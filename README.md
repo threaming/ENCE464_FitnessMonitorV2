@@ -16,6 +16,14 @@ Provide an overview of the project and the purpose of this documentation.
 
 ## Analysis of Existing Architecture
 
+Think we need to talk more about the actual architecture style. 
+
+Very layered architecture pattern. Not the best design for "Good" code, not the most maintainable (requires testing), it functions correctly but makes it difficult to extend the code if the scope changes.
+
+Need to talk about maintainability and portability.
+How to improve v1.0 - More abstraction, testing, consistent naming, encapsulation
+
+
 The architecture of the Fitness Monitor v1.0 is clearly outlined in the provided diagram. The system is divided into several key modules, each responsible for a specific aspect of the overall functionality. The diagram uses a color-coded legend to differentiate between standard libraries, leaf modules or libraries, and components requiring further investigation. Key modules include step_counter_main, display_manager, acc_manager, ADC_read, button_manager, and several others that interact to form the system.
 
 Each module's structure is depicted using class diagrams, showing the functions (methods) and attributes (fields) within each class. For example, the step_counter_main module includes functions like initClock(), initDisplay(), and readCurrentTick(), among others. This diagram provides a clear overview of how different components interact and the roles they play in the system.
@@ -35,8 +43,10 @@ This dependency structure shows a layered architecture where a single high-level
 Specifies the v2.0 design (Superficially/Sufficiently/Comprehensively)
 
 
+
 ## Design of New Architecture (v2.0)
-The new architecture takes a 
+
+New code has mixture of multiple architecture types, overall architecture could be microkernel (we haven't really done this that well), with ports and adapters or pipes and filters with our extra abstraction layers.
 
 ![v2.0 Architecture Diagram](system_diagram_v2.png)
 
