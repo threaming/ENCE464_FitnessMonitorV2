@@ -9,19 +9,16 @@
 *  FitnessThur9-1
 */
 
-
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include "utils/ustdlib.h"
-
 #include "serial_sender.h"
 #include "display_manager.h"
 #include "display_helpers.h"
 #include "hal/display_hal.h"
 #include "new_goal_reader.h"
 #include "temp_manager.h"
-
 
 /*******************************************
  *      Global functions

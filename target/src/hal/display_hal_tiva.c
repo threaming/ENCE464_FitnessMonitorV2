@@ -1,5 +1,4 @@
 #include "display_hal.h"
-#include <stdio.h>
 #include <stdint.h>
 #include "../../target/libs/OrbitOLED/OrbitOLEDInterface.h"
 

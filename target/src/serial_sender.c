@@ -11,24 +11,13 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stdlib.h>
 #include "inc/hw_memmap.h"
-#include "inc/hw_types.h"
-#include "inc/hw_ints.h"
 #include "driverlib/gpio.h"
 #include "driverlib/uart.h"
 #include "driverlib/sysctl.h"
-#include "driverlib/systick.h"
-#include "driverlib/debug.h"
 #include "driverlib/pin_map.h"
 #include "utils/ustdlib.h"
-#include "stdio.h"
-#include "stdlib.h"
-#include "utils/ustdlib.h"
-
-
 #include "serial_sender.h"
-
 
 //********************************************************
 // Constants and static vars
@@ -45,11 +34,7 @@
 #define UART_USB_GPIO_PINS      UART_USB_GPIO_PIN_RX | UART_USB_GPIO_PIN_TX
 //--Circular Buffer
 
-
-
 static char sendStr[MAX_SERIAL_STR_LEN + 1];
-
-
 
 /*******************************************
  *      Global functions
