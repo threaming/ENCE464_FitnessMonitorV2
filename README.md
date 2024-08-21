@@ -8,7 +8,7 @@
 - [Summary of software design problem](#summary-of-software-design-problem)
 - [Design of New Architecture (v2.0)](#design-of-new-architecture-v20)
 - [Design of FreeRTOS tasking](#design-of-freertos-tasking)
-- [I<sup>2</sup>C Implementation](#I<sup>2</sup>C Implementation)
+- [I<sup>2</sup>C Implementation](#I<sup>2</sup>C-Implementation)
 - [Application of static and dynamic analysis](#application-of-static-and-dynamic-analysis)
 - [Usefulness of documentation to future developers](#usefulness-of-documentation-to-future-developers)
 
