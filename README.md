@@ -13,7 +13,7 @@
 
 ## Introduction
 
-This project is about the improvement of the current *Fitness Monitor V1.0*. The present documentation summarizes the findings and development of a imporved version *Fitness Monitor V2.0*. First a analysis of the software version 1.0 is done and key areas of improvements highlighted. After that the improved architecture of V2.0 is presented and detailed implementations of different components such as FreeRTOS are discussed. A short reflection on the involvement of static and dynamic analysis methods, a section on future improvements and a conclusion close the report.
+This project is about the improvement of the current *Fitness Monitor V1.0*. The present documentation summarizes the findings and development of a imporved version *Fitness Monitor V2.0*. First a analysis of the software version 1.0 is done and key areas of improvements highlighted. After that the improved architecture of V2.0 is presented and detailed implementations of different components such as FreeRTOS or I^2^C are discussed. A short reflection on the involvement of static and dynamic analysis methods, a section on future improvements and a conclusion close the report.
 
 ## Analysis of Existing Architecture
 
@@ -55,6 +55,14 @@ Describe and justify the task architecture.
 xTaskCreate(TaskFunction, "TaskName", stackSize, NULL, priority, &taskHandle);
 
 ![Class Diagram](path_to_class_diagram.png) -->
+
+### I^2^C Implementation
+
+The I^2^C bus is implemented through a hardware abstraction layer. There are two tasks using the bus to acquire data from the IMU and the temperature sensor. The following swimlane diagram shows that the two tasks "superloop" and "temp_read" are synchronized through a blocking queue with one entry and thus the I^2^C hardware is protected from double access. For the sake of simplicity only the functions concerning the I^2^C bus are shown.
+
+![Task which use the I2C Bus](i2c_task_distribution.jpg)
+
+This implementation is tested and doesn't lead to any issues in this implementation. However, it must be noted that this isn't a very robust implementation, especially if the codebase is refactored and updated in the future. To better protect the hardware from simultaneous access, a mutex in the I^2^C module should be introduced.
 
 ## Application of static and dynamic analysis
 Analyses aspects of the design to guide decisions (Poorly/Satisfactorily/Proficiently)
