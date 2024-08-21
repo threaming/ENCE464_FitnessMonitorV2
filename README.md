@@ -14,14 +14,10 @@
 
 ## Introduction
 
-This project is about the improvement of the current *Fitness Monitor V1.0*. The present documentation summarizes the findings and development of a imporved version *Fitness Monitor V2.0*. First a analysis of the software version 1.0 is done and key areas of improvements highlighted. After that the improved architecture of V2.0 is presented and detailed implementations of different components such as FreeRTOS or I<sup>2</sup>C are discussed. A short reflection on the involvement of static and dynamic analysis methods, a section on future improvements and a conclusion close the report.
+The purpose of this project was to further develop the current *Fitness Monitor V1.0* embedded software project. We have been instructed to start from the version 1.0 software, and incrementally improve and enhance it. 
+The present documentation summarises the findings and development of a imporved version *Fitness Monitor V2.0*. First a analysis of the software version 1.0 is done and key areas of improvements highlighted. After that, the improved architecture of V2.0 is presented and detailed implementations of different components such as FreeRTOS or I<sup>2</sup>C are discussed. A short reflection on the involvement of static and dynamic analysis methods, a section on future improvements and a conclusion close the report.
 
 ## Analysis of Existing Architecture
-
-Very layered architecture pattern. Not the best design for "Good" code, not the most maintainable (requires testing), it functions correctly but makes it difficult to extend the code if the scope changes.
-
-Need to talk about maintainability and portability.
-How to improve v1.0 - More abstraction, testing, consistent naming, encapsulation
 
 The architecture of the Fitness Monitor v1.0 is clearly outlined in the provided diagram. The system is divided into several key modules, each responsible for a specific aspect of the overall functionality. The diagram uses a color-coded legend to differentiate between standard libraries, leaf modules or libraries, and components requiring further investigation. Key modules include `step_counter_main`, `display_manager`, `acc_manager`, `ADC_read`, `button_manager`, and several others that interact to form the system.
 
@@ -35,7 +31,14 @@ The v1.0 dependencies depicted in the diagram illustrate how different modules i
 
 ### Potential Issues
 
-From a maintenance point of view there are already several design issues which have to be addressed. First, there is a circular dependency from the two modules `display_manager` and `button_manager` back to the main module `step_count_main` through the type definition `deviceStateInfo_t`. In other words, the submodules need to know the state of the whole application to work, which prevents interchangeability and reuse of these modules. Another flaw of this architecture is a lack of hardware abstraction. Nearly all submodules, except for `button_manager` have hardware dependencies which restrict the portability of the application to another hardware platform. Lastly there is the whole "intelligence" of the application which is in a single loop in the main module `step_counter_main`. This makes maintenance of the code hard, as it's not very clearly laid out. The missing of any tests makes it hard to comprehend the functionality of different modules and introduces big risks of breaks if refactoring is tried.
+From a maintenance point of view there are already several design issues which have to be addressed. First, there is a circular dependency from the two modules `display_manager` and `button_manager` back to the main module `step_count_main` through the type definition `deviceStateInfo_t`. In other words, the submodules need to know the state of the whole application to work, which prevents interchangeability and reuse of these modules. 
+
+Another critical flaw is the direct interaction of most modules with hardware-specific libraries. For example, the `acc_manager` and `ADC_read` modules directly interface with the accelerometer and ADC hardware, respectively, without any abstraction layer. This design choice tightly couples the software with the specific hardware, reducing the system's portability to other platforms.
+The absence of a hardware abstraction layer (HAL) means that any attempt to migrate the system to a new hardware platform would require extensive rework. This design also complicates testing since hardware-specific dependencies cannot be easily mocked or simulated.
+
+Lastly, the core logic or "intelligence" of the application is concentrated within a single loop in the step_counter_main module. This design not only complicates the maintenance of the code but also obscures the overall structure and flow of the application, making it difficult to understand and extend. The absence of any testing framework further exacerbates this issue, as it becomes challenging to verify the correctness of individual modules or identify potential breakages during refactoring. To address this, the introduction of an RTOS (Real-Time Operating System) in the subsequent version has been employed to distribute tasks more effectively, improving code organization, maintainability, and scalability.
+
+
 
 ## Summary of software design problem
 Specifies the v2.0 design (Superficially/Sufficiently/Comprehensively)
