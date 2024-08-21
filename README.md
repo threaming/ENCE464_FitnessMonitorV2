@@ -48,7 +48,7 @@ Specifies the v2.0 design (Superficially/Sufficiently/Comprehensively)
 
 New code has mixture of multiple architecture types, overall architecture could be microkernel (we haven't really done this that well), with ports and adapters or pipes and filters with our extra abstraction layers.
 
-![v2.0 Architecture Diagram](system_diagram_v2.png)
+![v2.0 Architecture Diagram](system_diagram_v2.jpg)
 
 
 ### Design of FreeRTOS tasking
