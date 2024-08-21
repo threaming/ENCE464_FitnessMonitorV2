@@ -23,7 +23,6 @@ Very layered architecture pattern. Not the best design for "Good" code, not the 
 Need to talk about maintainability and portability.
 How to improve v1.0 - More abstraction, testing, consistent naming, encapsulation
 
-
 The architecture of the Fitness Monitor v1.0 is clearly outlined in the provided diagram. The system is divided into several key modules, each responsible for a specific aspect of the overall functionality. The diagram uses a color-coded legend to differentiate between standard libraries, leaf modules or libraries, and components requiring further investigation. Key modules include `step_counter_main`, `display_manager`, `acc_manager`, `ADC_read`, `button_manager`, and several others that interact to form the system.
 
 Each module's structure is depicted using class diagrams, showing the functions and attributes within each class. For example, the `step_counter_main` module includes functions like `initClock()`, `initDisplay()`, and `readCurrentTick()`, among others. This diagram provides a clear overview of how different components interact and the roles they play in the system.
@@ -34,11 +33,14 @@ The v1.0 dependencies depicted in the diagram illustrate how different modules i
 
 `display_manager` depends directly on the `OrbiOLEDInterface` for hardware-specific operations. `acc_manager` interacts directly with a circular buffer (`circBuf`) to manage accelerometer data and uses the `i2c_driver` for communication with the accelerometer chip. `ADC_read` interacts with `step_counter_main` to provide ADC data when required. `button_manager` and `switches` interact to manage user inputs, which are then relayed to the main module. This dependency structure shows a layered architecture where a single high-level module (`step_counter_main`) coordinates the actions of hardware-specific low level modules.
 
+### Potential Issues
+
+From a maintenance point of view there are already several design issues which have to be addressed. First, there is a circular dependency from the two modules `display_manager` and `button_manager` back to the main module `step_count_main` through the type definition `deviceStateInfo_t`. In other words, the submodules need to know the state of the whole application to work, which prevents interchangeability and reuse of these modules. Another flaw of this architecture is a lack of hardware abstraction. Nearly all submodules, except for `button_manager` have hardware dependencies which restrict the portability of the application to another hardware platform. Lastly there is the whole "intelligence" of the application which is in a single loop in the main module `step_counter_main`. This makes maintenance of the code hard, as it's not very clearly laid out. The missing of any tests makes it hard to comprehend the functionality of different modules and introduces big risks of breaks if refactoring is tried.
 
 ## Summary of software design problem
 Specifies the v2.0 design (Superficially/Sufficiently/Comprehensively)
 
-
+A rework of this application should involve the encapsulation of data, especially the `deviceStateInfo_t`, the abstraction of the hardware interaction through the introduction of hardware interfaces and the split of a single place of dataprocessing. For these adjustments to succeed FreeRTOS should be introduced and test driven design (TDD) should support the whole development process.
 
 ## Design of New Architecture (v2.0)
 
