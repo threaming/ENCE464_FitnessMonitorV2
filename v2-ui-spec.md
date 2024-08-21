@@ -1,6 +1,4 @@
-# Fitness Monitor v1.0 User Interface Specification
-
-_Note: The Fitness Monitor v1.0 was originally developed as an ENCE361 project. This is an edited and restructured version of the "User Interface Specification" that was provided to the class._
+# Fitness Monitor v2.0 User Interface Specification
 
 1. The program should respond reliably and in real time to button pushes and a scroll wheel.
 
@@ -12,7 +10,44 @@ _Note: The Fitness Monitor v1.0 was originally developed as an ENCE361 project. 
 
    2.2. The default goal value is 1,000 steps
 
-3. At startup the OLED board should display the number of steps counted since the last reset or power cycle.
+3. At startup the OLED board should display:
+
+   3.1. The fitness monitor current spec that is loaded
+
+   3.2. The number of steps counted since the last reset or power cycle (initialised to zero)
+
+   3.3. The elapsed time from when the fitness monitor detects its first step (initialised to zero)
+
+   3.4. The current temperature in deg C
+
+
+There are 3 main screens:
+Screen #1 (Fitness monitor main screen - version, steps, time, temp):
+   1. The fitness monitor current spec that is loaded
+
+   2. The number of steps counted since the last reset or power cycle (initialised to zero)
+
+   3. The elapsed time from when the fitness monitor detects its first step (initialised to zero)
+
+   4. The current temperature in deg C
+
+Screen #2 (Set goal screen - new goal, current goal):
+   1. A new prospective step goal adjusted by the scroll wheel (potentiometer)
+
+   2. The current step goal
+
+Screen #3 (Distance and speed screen - distance, time, speed, walking/running)
+   1. The distance travelled based on the number of steps travelled
+
+   2. The elapsed time from when the fitness monitor detects its first step
+
+   3. Average speed since first step
+
+   4. Information about whether you have been walking or running (based on average speed <10km/h = Running)
+
+   
+
+
 
 4. LEFT button behaviour:
 
