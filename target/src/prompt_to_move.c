@@ -1,9 +1,7 @@
 //TODO: Need to include where flashMessage function comes from and CURRENT STEP COUNT
 #include "prompt_to_move.h"
 #include "hal/timer_hal.h"
-#include "display_manager.h"
 #include "step_counter_main.h" 
-#include "stdio.h"
 #include "device_state.h"
 
 

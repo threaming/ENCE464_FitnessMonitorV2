@@ -1,16 +1,12 @@
 #include "timer_hal.h"
 #include "FreeRTOS.h"
 #include "task.h"
-#include "queue.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/timer.h"
 #include "driverlib/interrupt.h"
 #include "inc/tm4c123gh6pm.h"
 #include "inc/hw_memmap.h"
-#include "src/prompt_to_move.h"
 #include "src/rtos_wrapper.h"
-#include "../step_counter_main.h"
-#include "../device_state.h"
 
 #include <stdio.h>
 

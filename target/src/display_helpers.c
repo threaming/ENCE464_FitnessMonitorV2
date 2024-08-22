@@ -1,11 +1,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "utils/ustdlib.h"
-
 #include "display_helpers.h"
 #include "hal/display_hal.h"
-
-
 
 // Draw a line to the OLED screen, with the specified alignment
 void displayLine(char* inStr, uint8_t row, textAlignment_t alignment)

@@ -14,10 +14,8 @@
 #include "buttons4.h"
 #include "button_manager.h"
 #include "switches.h"
-#include "step_counter_main.h"
 #include "device_state.h"
 #include "new_goal_reader.h"
-
 
 #define DEBUG_STEP_INCREMENT 100
 #define DEBUG_STEP_DECREMENT 500
@@ -109,7 +107,6 @@ void btnUpdateState()
             longPressCount++;
             if (longPressCount >= LONG_PRESS_CYCLES) {
                 deviceState -> stepsTaken = 0;
-                flashMessage("Reset!", deviceState, 1);
             }
         } else {
             if ((currentDisplayMode == DISPLAY_SET_GOAL) && checkButton(DOWN) == PUSHED) {
