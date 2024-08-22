@@ -50,10 +50,11 @@ To address the *Fitness Monitor V1.0* issues, several changes will be made to th
 
 ## Design of New Architecture (v2.0)
 
-In order to address the next steps required to make *Fitness Monitor V2.0* work the overall architecture needed to be changed. Using FreeRTOS tasks essentially creates a microkernel structure, the internal architecture of each task was changes to ports and adapters to incorporate the HAL (and improve portability). The overall structure can be seen in the diagram below.
+In order to address the next steps required to make *Fitness Monitor V2.0* work the overall architecture needed to be changed. Using FreeRTOS tasks essentially creates a microkernel structure, the internal architecture of each task was changes to ports and adapters to incorporate the HAL's (and improve portability). The overall structure can be seen in the diagram below.
 
 ![v2.0 Architecture Diagram](system_diagram_v2.jpg)
 
+This change in architecture has improved the overall maintainability of the code by decreasing coupling, removing circular dependancies, and increasing abstraction. 
 
 
 ### Implementation of Test-Driven-Design
