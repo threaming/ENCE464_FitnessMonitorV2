@@ -65,14 +65,26 @@ Test files for new modules such as the hardware abstraction modules were impleme
 
 
 ### Design of FreeRTOS tasking
-Describe and justify the task architecture.
 
-<!-- ### Example Code Snippet
-```c
-// Example FreeRTOS task creation
-xTaskCreate(TaskFunction, "TaskName", stackSize, NULL, priority, &taskHandle);
+In the *Fitness Monitor V2.0* architecture, FreeRTOS is employed to manage the scheduling and execution of tasks in a more organized and responsive manner. The key tasks implemented under this design include the superloop task, prompt-to-move task, and read temperature task. Each task is designed with specific responsibilities and priority levels to ensure efficient operation of the fitness monitor. 
 
-![Class Diagram](path_to_class_diagram.png) -->
+#### Superloop Task
+
+The superloop task contains calls to all original V1.0 program functionality. It is responsible for managing core functionalities such as polling inputs, processing accelerometer data, updating the display, and sending data over serial communication (when enabled). It operates continuously in a loop, checking for time intervals to execute its various subtasks. 
+- Polling Inputs: The superloop periodically polls buttons and the potentiometer to capture user interactions. The timing for these polls is managed by checking against a system tick counter (`currentTick`), ensuring that inputs are processed at regular intervals defined by `RATE_IO_HZ`.
+- Accelerometer Processing: The task also handles the accelerometer data processing. It calculates the magnitude of the accelerometer vector and determines if a step has been detected. This processing is critical for the step counting functionality of the fitness monitor. The task also monitors whether the user has reached their goal, triggering a flash message if the goal is achieved.
+- Display Update: Another critical function of the superloop is updating the display at regular intervals, ensuring that the information presented to the user (e.g., steps taken, elapsed time) is current. The display update is handled in a manner that integrates seamlessly with the device's state, including handling flash messages when necessary.
+- Serial Communication: If serial plotting is enabled, the superloop also handles the sending of data via USB at specified intervals. This functionality is critical for logging and external monitoring of the device's operation.
+
+#### Prompt-to-Move Task
+The prompt-to-move task is a periodic task triggered by a hardware timer interrupt. This task serves as a reminder to the user to stay active by prompting them to move after a set period of inactivity - _this period can be set in `prompt_to_move.c`_.
+The timer is initialized to generate interrupts at a specified interval, configured via the `timer_hal_init` function. Upon each interrupt, the corresponding interrupt service routine (ISR) clears the interrupt and notifies the prompt-to-move task. 
+Once notified, the task executes the `act_on_prompt_to_move` function, which could involve displaying a message on the screen or triggering an alert to prompt the user to get moving.
+
+#### Read-Temperature Task
+The read temperature task is responsible for periodically reading the device's temperature sensor and storing the results for use by other system components, such as the display manager.
+This task uses a FreeRTOS queue to store the most recent temperature reading. The temperature is read via the temp_hal_read function and then sent to the queue (more depth in section: I<sup>2</sup>C Implementation). Other tasks, such as those responsible for updating the display, can retrieve the temperature data from this queue when needed.
+The task runs continuously in a loop, periodically reading the temperature sensor and updating the queue. It is designed with a relatively high priority to ensure that the temperature readings are kept current, which is especially important for applications where temperature monitoring is critical.
 
 
 ### I<sup>2</sup>C Implementation
@@ -100,13 +112,15 @@ These general purpose functions call the hardware abstraction layer `display_hal
 
 The system is designed with a clear separation of concerns. Each module is responsible for a specific aspect of the display management process, which makes the system easier to maintain, extend, and test. For example, the HAL layer can be modified to support a different display type without changing the higher-level display logic.
 
-Here is an excert from the hal file showing how the program could be modified for alternative hardware:
+Here is an excerpt from the hal file showing how the program could be modified for alternative hardware (for future developers):
 ```c
-// Example HAL Layer
+// Example HAL Layer Function
 void display_hal_init(void) {
     switch (CURRENT_BOARD) {
         case TIVA_BOARD:
             OLEDInitialise();
+            break;
+        case ALTERNATIVE_HARDWARE:
             break;
         default:
             break;
