@@ -25,20 +25,24 @@ Each module's structure is depicted using class diagrams, showing the functions 
 
 ![v1.0 Architecture Diagram](system_diagram_v1.jpg)
 
-The v1.0 dependencies depicted in the diagram illustrate how different modules interact with each other. The `step_counter_main` module serves as the central hub, interacting with nearly all other modules. For example, it communicates with the `display_manager` to update the display and with the `acc_manager` to process accelerometer data.
+The `step_counter_main` module serves as the central hub, interacting with nearly all other modules. For example, it communicates with the `display_manager` to update the display and with the `acc_manager` to process accelerometer data.
 
-`display_manager` depends directly on the `OrbiOLEDInterface` for hardware-specific operations. `acc_manager` interacts directly with a circular buffer (`circBuf`) to manage accelerometer data and uses the `i2c_driver` for communication with the accelerometer chip. `ADC_read` interacts with `step_counter_main` to provide ADC data when required. `button_manager` and `switches` interact to manage user inputs, which are then relayed to the main module. 
+`display_manager` depends directly on the `OrbitOLEDInterface` for hardware-specific operations. `acc_manager` interacts directly with a circular buffer (`circBuf`) to manage accelerometer data and uses the `i2c_driver` for communication with the accelerometer chip. `ADC_read` interacts with `step_counter_main` to provide ADC data when required. `button_manager` and `switches` interact to manage user inputs, which are then relayed to the main module. 
 
-### Potential Issues
+### Initial Issues
 
-From a maintenance point of view there are already several design issues which have to be addressed. First, there is a circular dependency from the two modules `display_manager` and `button_manager` back to the main module `step_count_main` through the type definition `deviceStateInfo_t`. In other words, the submodules need to know the state of the whole application to work, which prevents interchangeability and reuse of these modules. 
+Fitness monitor v1.0 met the previous desired specifications, however with the intentions of extending the functionality several issues needed to be addressed. The main issues have to do with code maintainability and portability.
 
-Another critical flaw is the direct interaction of most modules with hardware-specific libraries. For example, the `acc_manager` and `ADC_read` modules directly interface with the accelerometer and ADC hardware, respectively, without any abstraction layer. This design choice tightly couples the software with the specific hardware, reducing the system's portability to other platforms.
-The absence of a hardware abstraction layer (HAL) means that any attempt to migrate the system to a new hardware platform would require extensive rework. This design also complicates testing since hardware-specific dependencies cannot be easily mocked or simulated.
+In order to improve the code maintainability the circular dependency from the two modules `display_manager` and `button_manager` back to the main module `step_count_main` through the type definition `deviceStateInfo_t` needed to be addressed. This circular dependancy prevents interchangeability and reuse of these modules, and means that in order to improve code changes need to be made in multiple locations.
 
-Lastly, the core logic or "intelligence" of the application is concentrated within a single loop in the step_counter_main module. This design not only complicates the maintenance of the code but also obscures the overall structure and flow of the application, making it difficult to understand and extend. The absence of any testing framework further exacerbates this issue, as it becomes challenging to verify the correctness of individual modules or identify potential breakages during refactoring. To address this, the introduction of an RTOS (Real-Time Operating System) in the subsequent version has been employed to distribute tasks more effectively, improving code organization, maintainability, and scalability.
+Another critical flaw is the direct interaction of most modules with hardware-specific libraries, this reduces the system's portability to other platforms. For example, the `acc_manager` and `ADC_read` modules directly interface with the accelerometer and ADC hardware, respectively, without any abstraction layer. This design choice tightly couples the software with the specific hardware. The absence of a hardware abstraction layer (HAL) means that any attempt to migrate the system to a new hardware platform would require extensive rework. This design also complicates testing since hardware-specific dependencies cannot be easily mocked or simulated.
 
+Another maintainability issue is that the core logic of the application is concentrated within a single loop in the step_counter_main module. This design obscures the overall structure and flow of the application, making it difficult to understand and extend. The absence of any testing framework further exacerbates this issue, as it becomes challenging to verify the correctness of individual modules or identify potential breakages during refactoring. 
 
+To address these issues, several changes will be made to the code including:
+    - Implementing an RTOS (Real-Time Operating System) to distribute tasks more effectively, improve code organization, maintainability, and scalability.
+    - The Unit test framework (Unity) will be used for both maintaining/refactoring code, verifying correctness, and when using test driven design.
+    - Code will be refactored to incorporate SOLID principles in order to keep the code clean.
 
 ### Summary of software design problem
 Specifies the v2.0 design (Superficially/Sufficiently/Comprehensively)
