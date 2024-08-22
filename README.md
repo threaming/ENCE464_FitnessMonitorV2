@@ -46,14 +46,15 @@ To address the *Fitness Monitor V1.0* issues, several changes will be made to th
 - Hardware interactions should be abstracted through the implementation of hardware interfaces, enhancing portability and simplifying potential future hardware migrations.
 - Implementing an RTOS (Real-Time Operating System) to distribute tasks more effectively, improve code organization, maintainability, and scalability.
 - The Unit test framework (Unity) will be used for both maintaining/refactoring code, verifying correctness, and when using test driven design (TDD).
-
-For these adjustments to succeed, TDD should support the entire development process.
+- Implement extended functionality.
 
 ## Design of New Architecture (v2.0)
 
-New code has mixture of multiple architecture types, overall architecture could be microkernel (we haven't really done this that well), with ports and adapters or pipes and filters with our extra abstraction layers.
+In order to address the next steps required to make *Fitness Monitor V2.0* work the overall architecture needed to be changed. Using FreeRTOS tasks essentially creates a microkernel structure, the internal architecture of each task was changes to ports and adapters to incorporate the HAL (and improve portability). The overall structure can be seen in the diagram below.
 
 ![v2.0 Architecture Diagram](system_diagram_v2.jpg)
+
+
 
 ### Implementation of Test-Driven-Design
 
