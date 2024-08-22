@@ -56,6 +56,12 @@ New code has mixture of multiple architecture types, overall architecture could 
 
 ![v2.0 Architecture Diagram](system_diagram_v2.jpg)
 
+### Implementation of Test-Driven-Design
+
+The *Fitness Monitor V1.0* had not implemented any tests throughout the code. This was the most important issue to address initially as with a relatively large software project such as this, issues can pop up quickly from changing small things. Implementing test cases was a preemptive solution to this.
+Test cases were written for existing files top-level modules such as `accl_manager`, `display_manager` and `ADC_read`, as well as lower level modules such as 
+`circBuf`.
+Test files for new modules such as the hardware abstraction modules were implemented __before__ the modules themselves. Applying proper TDD principles and developing a range of test cases __first__ allowed for early bug detection and maintainability.
 
 ### Design of FreeRTOS tasking
 Describe and justify the task architecture.
@@ -66,6 +72,7 @@ Describe and justify the task architecture.
 xTaskCreate(TaskFunction, "TaskName", stackSize, NULL, priority, &taskHandle);
 
 ![Class Diagram](path_to_class_diagram.png) -->
+
 
 ### I<sup>2</sup>C Implementation
 
