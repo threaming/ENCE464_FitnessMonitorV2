@@ -5,12 +5,10 @@
 ## Table of Contents
 - [Introduction](#introduction)
 - [Analysis of Existing Architecture](#analysis-of-existing-architecture)
-- [Summary of software design problem](#summary-of-software-design-problem)
 - [Design of New Architecture (v2.0)](#design-of-new-architecture-v20)
 - [Design of FreeRTOS tasking](#design-of-freertos-tasking)
 - [I<sup>2</sup>C Implementation](#I<sup>2</sup>C-Implementation)
-- [Application of static and dynamic analysis](#application-of-static-and-dynamic-analysis)
-- [Usefulness of documentation to future developers](#usefulness-of-documentation-to-future-developers)
+
 
 ## Introduction
 
@@ -57,9 +55,9 @@ In order to address the next steps required to make *Fitness Monitor V2.0* work 
 This change in architecture has improved the overall maintainability of the code by decreasing coupling, removing circular dependancies, and increasing abstraction. 
 
 
-### Implementation of Test-Driven-Design
+### Implementation of Testing
 
-The *Fitness Monitor V1.0* had not implemented any tests throughout the code. This was the most important issue to address initially as with a relatively large software project such as this, issues can pop up quickly from changing small things. Implementing test cases was a preemptive solution to this.
+Testing was incorporated into the design of *Fitness Monitor V2.0* both to protect the code when refactoring and when using TDD to program new functionality.
 Test cases were written for existing files top-level modules such as `accl_manager`, `display_manager` and `ADC_read`, as well as lower level modules such as 
 `circBuf`.
 Test files for new modules such as the hardware abstraction modules were implemented _before_ the modules themselves. Applying proper TDD principles and developing a range of test cases _first_ allowed for early bug detection and maintainability.
@@ -128,13 +126,3 @@ void display_hal_init(void) {
     }
 }
 ```
-
-
-## Conclusion
-Summarize the key aspects of the new architecture and design improvements.
-
-## References
-- [Doxygen Documentation](https://www.doxygen.nl/)
-
-## Appendices
-Additional detailed information.
