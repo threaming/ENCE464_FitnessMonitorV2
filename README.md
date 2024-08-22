@@ -14,20 +14,20 @@
 
 ## Introduction
 
-The purpose of this project was to further develop the current *Fitness Monitor V1.0* embedded software project. We have been instructed to start from the version 1.0 software, and incrementally improve and enhance it. 
-The present documentation summarises the findings and development of a imporved version *Fitness Monitor V2.0*. First a analysis of the software version 1.0 is done and key areas of improvements highlighted. After that, the improved architecture of V2.0 is presented and detailed implementations of different components such as FreeRTOS or I<sup>2</sup>C are discussed. A short reflection on the involvement of static and dynamic analysis methods, a section on future improvements and a conclusion close the report.
+The purpose of this project was to extend the functionality of an existing *Fitness Monitor V1.0* embedded software project. This project implements a simple step counter based on the provided specifications. This documentation summarises the findings and development of an extended version *Fitness Monitor V2.0* of the project. 
+The software version 1.0 was analysed with key areas for improvements highlighted. The improved architecture of V2.0 is also presented and detailed implementations of key components are discussed. 
 
 ## Analysis of Existing Architecture
 
-The architecture of the Fitness Monitor v1.0 is clearly outlined in the provided diagram. The system is divided into several key modules, each responsible for a specific aspect of the overall functionality. The diagram uses a color-coded legend to differentiate between standard libraries, leaf modules or libraries, and components requiring further investigation. Key modules include `step_counter_main`, `display_manager`, `acc_manager`, `ADC_read`, `button_manager`, and several others that interact to form the system.
+The architectural structure of Fitness Monitor v1.0 is a layered architecture where a single high-level module (`step_counter_main`) coordinates the actions of hardware-specific low level modules. The dependancies of the Fitness Monitor v1.0 are clearly outlined in the provided diagram. The system is divided into several key modules, each responsible for a specific aspect of the overall functionality. The diagram uses a color-coded legend to differentiate between standard libraries, leaf modules or libraries, and components requiring further investigation. Key modules include `step_counter_main`, `display_manager`, `acc_manager`, `ADC_read`, `button_manager`, and several others that interact to form the system.
 
-Each module's structure is depicted using class diagrams, showing the functions and attributes within each class. For example, the `step_counter_main` module includes functions like `initClock()`, `initDisplay()`, and `readCurrentTick()`, among others. This diagram provides a clear overview of how different components interact and the roles they play in the system.
+Each module's structure is depicted using class diagrams, showing the functions and attributes within each class. For example, the `step_counter_main` module includes functions like `initClock()`, `initDisplay()`, and `readCurrentTick()`, etc. This diagram provides a clear overview of how different components interact and the roles they play in the system.
 
 ![v1.0 Architecture Diagram](system_diagram_v1.jpg)
 
 The v1.0 dependencies depicted in the diagram illustrate how different modules interact with each other. The `step_counter_main` module serves as the central hub, interacting with nearly all other modules. For example, it communicates with the `display_manager` to update the display and with the `acc_manager` to process accelerometer data.
 
-`display_manager` depends directly on the `OrbiOLEDInterface` for hardware-specific operations. `acc_manager` interacts directly with a circular buffer (`circBuf`) to manage accelerometer data and uses the `i2c_driver` for communication with the accelerometer chip. `ADC_read` interacts with `step_counter_main` to provide ADC data when required. `button_manager` and `switches` interact to manage user inputs, which are then relayed to the main module. This dependency structure shows a layered architecture where a single high-level module (`step_counter_main`) coordinates the actions of hardware-specific low level modules.
+`display_manager` depends directly on the `OrbiOLEDInterface` for hardware-specific operations. `acc_manager` interacts directly with a circular buffer (`circBuf`) to manage accelerometer data and uses the `i2c_driver` for communication with the accelerometer chip. `ADC_read` interacts with `step_counter_main` to provide ADC data when required. `button_manager` and `switches` interact to manage user inputs, which are then relayed to the main module. 
 
 ### Potential Issues
 
@@ -127,16 +127,6 @@ void display_hal_init(void) {
     }
 }
 ```
-
-
-
-## Application of static and dynamic analysis
-Analyses aspects of the design to guide decisions (Poorly/Satisfactorily/Proficiently)
-
-
-## Usefulness of documentation to future developers
-Explains the existing design and how to modify it (Superficially/Sufficiently/Comprehensively)
-
 
 
 ## Conclusion
