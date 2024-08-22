@@ -61,7 +61,7 @@ New code has mixture of multiple architecture types, overall architecture could 
 The *Fitness Monitor V1.0* had not implemented any tests throughout the code. This was the most important issue to address initially as with a relatively large software project such as this, issues can pop up quickly from changing small things. Implementing test cases was a preemptive solution to this.
 Test cases were written for existing files top-level modules such as `accl_manager`, `display_manager` and `ADC_read`, as well as lower level modules such as 
 `circBuf`.
-Test files for new modules such as the hardware abstraction modules were implemented **before** the modules themselves. Applying proper TDD principles and developing a range of test cases **first** allowed for early bug detection and maintainability.
+Test files for new modules such as the hardware abstraction modules were implemented _before_ the modules themselves. Applying proper TDD principles and developing a range of test cases _first_ allowed for early bug detection and maintainability.
 
 
 
