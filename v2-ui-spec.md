@@ -9,29 +9,29 @@
 
    2.1 Screen #1 (Fitness monitor main screen - version, steps, time, temp):
 
-      2.1.1 The fitness monitor current spec that is loaded
+   - The fitness monitor current spec that is loaded
 
-      2.1.2 The number of steps counted since the last reset or power cycle (initialised to zero)
+   - The number of steps counted since the last reset or power cycle (initialised to zero)
 
-      2.1.3 The elapsed time from when the fitness monitor detects its first step (initialised to zero)
+   - The elapsed time from when the fitness monitor detects its first step (initialised to zero)
 
-      2.1.4 The current temperature in deg C
+   - The current temperature in deg C
 
    2.2 Screen #2 (Set goal screen - new goal, current goal):
       
-      2.2.1 A new prospective step goal adjusted by the scroll wheel (potentiometer)
+   - A new prospective step goal adjusted by the scroll wheel (potentiometer)
 
-      2.2.2 The current step goal
+   - The current step goal
 
    2.3 Screen #3 (Distance and speed screen - distance, time, speed, walking/running)
       
-      2.3.1 The distance travelled based on the number of steps travelled
+   - The distance travelled based on the number of steps travelled
 
-      2.3.2 The elapsed time from when the fitness monitor detects its first step
+   - The elapsed time from when the fitness monitor detects its first step
 
-      2.3.3 Average speed since first step
+   - Average speed since first step
 
-      2.3.4 Information about whether you have been walking or running (based on average speed <10km/h = Running)
+   - Information about whether you have been walking or running (based on average speed <10km/h = Running)
 
 
 3. At startup the OLED board should display screen #1 with all information set to their defaults:
@@ -108,15 +108,15 @@
 
    13.2 When the user is on screen #3 the device displays whether the user has been running or walking based on their average speed.
       
-      13.2.1 If the user has an average speed >= 10 km/h the screen displays, "Running!".
+   - If the user has an average speed >= 10 km/h the screen displays, "Running!".
 
-      13.2.2 If the user has an average speed < 10 km/h the screen displays, "Walking.".
+   - If the user has an average speed < 10 km/h the screen displays, "Walking.".
 
    13.3 When steps are not detected for more than 60 seconds a prompt to move flashes on the screen. This overrides the current screen, but the device can still detect steps.
 
-      13.3.1 If the user has not taken any steps since startup the prompt, "Get Moving!" flashes on the screen.
+   - If the user has not taken any steps since startup the prompt, "Get Moving!" flashes on the screen.
 
-      13.3.2 If the user has taken steps since startup but has been stationary for the last 60 seconds the prompt, "Keep Moving!" flashes on the screen.
+   -  If the user has taken steps since startup but has been stationary for the last 60 seconds the prompt, "Keep Moving!" flashes on the screen.
 
 
 
