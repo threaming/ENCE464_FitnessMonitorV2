@@ -46,6 +46,25 @@ To address the *Fitness Monitor V1.0* issues, several changes will be made to th
 - The Unit test framework (Unity) will be used for both maintaining/refactoring code, verifying correctness, and when using test driven design (TDD).
 - Implement extended functionality.
 
+
+## Fitness Monitor V2.0 Specification
+
+The Fitness Monitor v2.0 is designed with an intuitive and responsive user interface that interacts seamlessly with the user via buttons and a scroll wheel. The scroll wheel input is controlled by the potentiometer on the Orbit board, providing an analogue signal on pin AIN0. There are three main screens available:
+
+- Screen #1 (Fitness Monitor Main Screen) displays the current version of the fitness monitor, the number of steps counted since the last reset or power cycle (initialized to zero), the elapsed time from when the first step is detected (also initialized to zero), and the current temperature in degrees Celsius.
+- Screen #2 (Set Goal Screen) allows users to adjust a new prospective step goal using the scroll wheel while displaying the current step goal.
+- Screen #3 (Distance and Speed Screen) shows the distance traveled based on the number of steps, the elapsed time since the first step was detected, the average speed, and whether the user has been walking or running (running is defined as an average speed of 10 km/h or more).
+
+Upon startup, the OLED board defaults to Screen #1, with all values initialized to zero except for the step goal, which is set at 1,000 steps. Pressing the RESET button on the TIVA board restarts the program and returns all stored step, distance, and goal values to their defaults.
+
+The RIGHT button on the Orbit board cycles through the screens in a forward direction: from Screen #1 to Screen #2, then to Screen #3, and wraps around back to Screen #1. The LEFT button cycles through the screens in the opposite direction: from Screen #1 to Screen #3, then to Screen #2, and back to Screen #1. The UP button on the TIVA board toggles the units displayed by the fitness monitor. For steps, it toggles between the raw number of steps and the percentage of the step goal achieved. For distance, it toggles between kilometers and miles, with all units clearly displayed on the OLED.
+
+In Screen #2, briefly pressing the DOWN button sets the new step goal displayed. When not on Screen #2, a long press on the DOWN button resets the number of steps and the distance traveled to zero. The user interface provides feedback to differentiate between long and short presses on the DOWN button. The goal value can be adjusted in increments of 100 steps by rotating the potentiometer on the Orbit board, with clockwise rotation increasing and anti-clockwise rotation decreasing the displayed value. This new value is only set as the goal when the DOWN button is briefly pressed.
+
+The fitness monitor also features a test mode activated by setting SW1 to the UP position. In test mode, each press of the UP button increments the step count by 100 and the distance by 0.09 km, while the DOWN button decrements the step count by 500 and the distance by 0.45 km. Other functionalities of the UP and DOWN buttons, such as toggling units and setting goals, are disabled in test mode, but the LEFT and RIGHT buttons function normally. Setting SW1 back to the DOWN position restores normal functionality.
+
+Extended features from Fitness Monitor v1.0 include the display of ambient temperature in degrees Celsius on Screen #1. On Screen #3, the device identifies whether the user has been walking or running based on their average speed, displaying "Running!" for speeds of 10 km/h or more, and "Walking." for slower speeds. If no steps are detected for more than 60 seconds, a prompt flashes on the screen, encouraging the user to move. If no steps have been detected since startup, the message "Get Moving!" appears, while "Keep Moving!" is shown if the user has been stationary after previously taking steps.
+
 ## Design of New Architecture (v2.0)
 
 In order to address the next steps required to make *Fitness Monitor V2.0* work the overall architecture needed to be changed. Using FreeRTOS tasks essentially creates a microkernel structure, the internal architecture of each task was changes to ports and adapters to incorporate the HAL's (and improve portability). The overall structure can be seen in the diagram below.
