@@ -80,7 +80,7 @@
 10. The UI should provide feedback to the user that acknowledges and diﬀerentiates between long and short pushes on the DOWN button.
 
 
-11. Setting the goal value
+11. Setting the goal value.
 
    11.1 Rotating the potentiometer on the Orbit board clockwise when in the Set Goal state should increase the number displayed.
 
@@ -89,7 +89,7 @@
    11.3 The Goal value should increment in units of 100 steps. Note that the goal value should only be overwritten with the displayed value when the DOWN button is briefly pushed.
 
 
-12. Setting SW1 to the UP position should put the fitness monitor in a test mode, where the functionality of the GUI can be verified. In the test mode:
+12. Setting SW1 to the UP position should put the fitness monitor in a test mode, where the functionality of the GUI can be verified. In the test mode.
 
    12.1 Each push of the UP button should increment the step count by 100 and the distance by 0.09 km.
 
@@ -102,7 +102,7 @@
    12.5 Setting SW1 to DOWN should restore the normal functionality of the UP and DOWN buttons.
 
    
-13. Summary of extended functionality from fitness monitor v1.0:
+13. Summary of extended functionality from fitness monitor v1.0.
 
    13.1 When the user is on screen #1 the current ambient temperature is shown on the display in deg C.
 
