@@ -39,20 +39,15 @@ Another critical flaw is the direct interaction of most modules with hardware-sp
 
 Another maintainability issue is that the core logic of the application is concentrated within a single loop in the step_counter_main module. This design obscures the overall structure and flow of the application, making it difficult to understand and extend. The absence of any testing framework further exacerbates this issue, as it becomes challenging to verify the correctness of individual modules or identify potential breakages during refactoring. 
 
-To address these issues, several changes will be made to the code including:
-    - Implementing an RTOS (Real-Time Operating System) to distribute tasks more effectively, improve code organization, maintainability, and scalability.
-    - The Unit test framework (Unity) will be used for both maintaining/refactoring code, verifying correctness, and when using test driven design.
-    - Code will be refactored to incorporate SOLID principles in order to keep the code clean.
+### Summary of next steps
 
-### Summary of software design problem
-Specifies the v2.0 design (Superficially/Sufficiently/Comprehensively)
-
-After extensive investigation into the *Fitness Monitor V1.0* software design, a few key sections demanded immediate attention.
-- The application needs to be restructured to better encapsulate data, particularly the deviceStateInfo_t, to improve modularity and reduce tight coupling between components.
+To address the *Fitness Monitor V1.0* issues, several changes will be made to the code including:
+- Refactoring key sections of the codebase to incorporate SOLID principles. Mainly to better encapsulate data, particularly the deviceStateInfo_t, to improve modularity and reduce tight coupling between components.
 - Hardware interactions should be abstracted through the implementation of hardware interfaces, enhancing portability and simplifying potential future hardware migrations.
-- The integration of an RTOS is necessary to efficiently manage tasks, improve system responsiveness, and address the limitations of the current single-loop design.
+- Implementing an RTOS (Real-Time Operating System) to distribute tasks more effectively, improve code organization, maintainability, and scalability.
+- The Unit test framework (Unity) will be used for both maintaining/refactoring code, verifying correctness, and when using test driven design (TDD).
 
-For these adjustments to succeed, test driven design (TDD) should support the entire development process.
+For these adjustments to succeed, TDD should support the entire development process.
 
 ## Design of New Architecture (v2.0)
 
