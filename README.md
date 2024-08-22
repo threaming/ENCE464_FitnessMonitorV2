@@ -40,7 +40,7 @@ Lastly, the core logic or "intelligence" of the application is concentrated with
 
 
 
-## Summary of software design problem
+### Summary of software design problem
 Specifies the v2.0 design (Superficially/Sufficiently/Comprehensively)
 
 After extensive investigation into the *Fitness Monitor V1.0* software design, a few key sections demanded immediate attention.
@@ -64,8 +64,6 @@ Test cases were written for existing files top-level modules such as `accl_manag
 Test files for new modules such as the hardware abstraction modules were implemented _before_ the modules themselves. Applying proper TDD principles and developing a range of test cases _first_ allowed for early bug detection and maintainability.
 
 
-
-
 ### Design of FreeRTOS tasking
 Describe and justify the task architecture.
 
@@ -84,6 +82,39 @@ The I<sup>2</sup>C bus is implemented through a hardware abstraction layer. Ther
 ![Task which use the I2C Bus](i2c_task_distribution.jpg)
 
 This implementation is tested and doesn't lead to any issues in this implementation. However, it must be noted that this isn't a robust implementation, especially if the codebase is refactored and updated in the future. To better protect the hardware from simultaneous access, a mutex in the I<sup>2</sup>C module should be introduced.
+
+### Display Implementation
+
+The design of the display modules follows a modular architecture where each module is responsible for a specific set of tasks. The primary modules involved are:
+
+- `display_manager.c`: Handles the overall display update logic based on the device's state.
+- `display_hal.c`: Provides hardware abstraction for display operations, allowing the display manager to work with different hardware without modification.
+- `display_helpers.c`: Contains utility functions for rendering text and values on the display, supporting different alignment options and formatting.
+
+The display manager file handles the most basic commands to the display, initialize and update.
+The `displayInit` function initializes the display subsystem by calling the hardware abstraction layer's initialization function `display_hal_init`.
+The `displayUpdate` is called periodically to update the screen based on the current state of the device.
+
+These functions call the `display_helpers` functions `displayLine`, `displayValue`, and `displayTime`. These are general purpose functions that 'draw' onto the screen. 
+These general purpose functions call the hardware abstraction layer `display_hal` functions. The purpoe of this file is to allow the software to be modified minimally in order to change hardware. The functions within this module 
+
+The system is designed with a clear separation of concerns. Each module is responsible for a specific aspect of the display management process, which makes the system easier to maintain, extend, and test. For example, the HAL layer can be modified to support a different display type without changing the higher-level display logic.
+
+Here is an excert from the hal file showing how the program could be modified for alternative hardware:
+```c
+// Example HAL Layer
+void display_hal_init(void) {
+    switch (CURRENT_BOARD) {
+        case TIVA_BOARD:
+            OLEDInitialise();
+            break;
+        default:
+            break;
+    }
+}
+```
+
+
 
 ## Application of static and dynamic analysis
 Analyses aspects of the design to guide decisions (Poorly/Satisfactorily/Proficiently)
